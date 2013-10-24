@@ -1,5 +1,5 @@
 $:.unshift(File.dirname(__FILE__) + '/lib')
-require 'ffi-yajl/version'
+require 'ffi_yajl/version'
 
 Gem::Specification.new do |s|
   s.name = 'ffi-yajl'
