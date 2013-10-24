@@ -86,7 +86,7 @@ module FFI_Yajl
   # void  yajl_gen_free (yajl_gen handle)
   attach_function :yajl_gen_free, [:yajl_gen], :void
 
-  attach_function :yajl_gen_integer, [:yajl_gen, :long], :yajl_gen_status
+  attach_function :yajl_gen_integer, [:yajl_gen, :long_long], :yajl_gen_status
   attach_function :yajl_gen_double, [:yajl_gen, :double], :yajl_gen_status
 #  attach_function :yajl_gen_number
   attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :yajl_gen_status
@@ -106,18 +106,28 @@ module FFI_Yajl
 
   class Parser
     class State
-      attr_accessor :stack, :key
+      attr_accessor :stack, :key_stack, :key
+
       def initialize
         @stack = Array.new
+        @key_stack = Array.new
+      end
+
+      def save_key
+        key_stack.push(key)
+      end
+
+      def restore_key
+        @key = key_stack.pop()
       end
 
       def set_value(val)
-        case @stack.last
+        case stack.last
         when Hash
           raise if key.nil?
-          @stack.last[@key] = val
+          stack.last[key] = val
         when Array
-          @stack.last.push(val)
+          stack.last.push(val)
         else
           raise
         end
@@ -141,7 +151,7 @@ module FFI_Yajl
       1
     end
     NumberCallback = FFI::Function.new(:int, [:pointer, :pointer, :size_t]) do |ctx, numberval, numberlen|
-      raise "not implemented"
+      raise "NumberCallback: not implemented"
       1
     end
     StringCallback = FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
@@ -149,7 +159,9 @@ module FFI_Yajl
       1
     end
     StartMapCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
-      @@CTX_MAPPING[ctx.get_ulong(0)].stack.push(Hash.new)
+      state = @@CTX_MAPPING[ctx.get_ulong(0)]
+      state.save_key
+      state.stack.push(Hash.new)
       1
     end
     MapKeyCallback = FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
@@ -157,15 +169,21 @@ module FFI_Yajl
       1
     end
     EndMapCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value( @@CTX_MAPPING[ctx.get_ulong(0)].stack.pop ) unless @@CTX_MAPPING[ctx.get_ulong(0)].stack.length == 1
+      state = @@CTX_MAPPING[ctx.get_ulong(0)]
+      state.restore_key
+      state.set_value( state.stack.pop ) if state.stack.length > 1
       1
     end
     StartArrayCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
-      @@CTX_MAPPING[ctx.get_ulong(0)].stack.push(Array.new)
+      state = @@CTX_MAPPING[ctx.get_ulong(0)]
+      state.save_key
+      state.stack.push(Array.new)
       1
     end
     EndArrayCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value( @@CTX_MAPPING[ctx.get_ulong(0)].stack.pop ) unless @@CTX_MAPPING[ctx.get_ulong(0)].stack.length == 1
+      state = @@CTX_MAPPING[ctx.get_ulong(0)]
+      state.restore_key
+      @@CTX_MAPPING[ctx.get_ulong(0)].set_value( @@CTX_MAPPING[ctx.get_ulong(0)].stack.pop ) if @@CTX_MAPPING[ctx.get_ulong(0)].stack.length > 1
       1
     end
 
@@ -181,7 +199,7 @@ module FFI_Yajl
       callbacks[:yajl_boolean] = BooleanCallback
       callbacks[:yajl_integer] = IntegerCallback
       callbacks[:yajl_double] = DoubleCallback
-      callbacks[:yajl_number] = NumberCallback
+      callbacks[:yajl_number] = nil #NumberCallback
       callbacks[:yajl_string] = StringCallback
       callbacks[:yajl_start_map] = StartMapCallback
       callbacks[:yajl_map_key] = MapKeyCallback
@@ -240,7 +258,7 @@ module FFI_Yajl
       when Fixnum
         FFI_Yajl.yajl_gen_integer(yajl_gen, obj)
       when Bignum
-        raise "not implemented"
+        raise "Bignum encoding: not implemented"
       when Float
         FFI_Yajl.yajl_gen_double(yajl_gen, obj)
       when String
@@ -248,10 +266,10 @@ module FFI_Yajl
       else
         if obj.respond_to?(to_json)
           # obj.to_json
-          raise "not implemented"
+          raise "to_json: not implemented"
         else
           # obj.to_s
-          raise "not implemented"
+          raise "to_s: not implemented"
         end
       end
     end
