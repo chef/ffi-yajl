@@ -1,19 +1,19 @@
-before_install: sudo apt-get install libyajl2 libyajl-dev
+before_install: sudo apt-get install libyajl-dev
 script: bundle exec rspec
 language: ruby
 rvm:
   - 2.0.0
   - 1.9.3
   - 1.9.2
-  - jruby-18mode
-  - jruby-19mode
-  - rbx-18mode
-  - rbx-19mode
-  - ruby-head
-  - jruby-head
-  - 1.8.7
-  - ree
-jdk:
-  - openjdk7
-  - oraclejdk7
-  - openjdk6
+#  - jruby-18mode
+#  - jruby-19mode
+#  - rbx-18mode
+#  - rbx-19mode
+#  - ruby-head
+#  - jruby-head
+#  - 1.8.7
+#  - ree
+#jdk:
+#  - openjdk7
+#  - oraclejdk7
+#  - openjdk6
