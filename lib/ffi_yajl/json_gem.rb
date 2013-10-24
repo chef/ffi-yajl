@@ -17,12 +17,12 @@ module JSON
   class ParserError < JSONError; end unless defined?(JSON::ParserError)
 
   def self.generate(obj, opts=nil)
-    #opts ||= {}
+    opts ||= {}
     options_map = {}
-    #if opts.has_key?(:indent)
-    #  options_map[:pretty] = true
-    #  options_map[:indent] = opts[:indent]
-    #end
+    if opts.has_key?(:indent)
+      options_map[:pretty] = true
+      options_map[:indent] = opts[:indent]
+    end
     FFI_Yajl::Encoder.encode(obj, options_map)
   rescue FFI_Yajl::EncodeError => e
     raise JSON::GeneratorError, e.message
@@ -30,9 +30,9 @@ module JSON
 
   def self.pretty_generate(obj, opts={})
     options_map = {}
-    #options_map[:pretty] = true
-    #options_map[:indent] = opts[:indent] if opts.has_key?(:indent)
-    FFI_Yajl::Encoder.encode(obj, options_map)
+    options_map[:pretty] = true
+    options_map[:indent] = opts[:indent] if opts.has_key?(:indent)
+    FFI_Yajl::Encoder.encode(obj, options_map).chomp
   rescue FFI_Yajl::EncodeError => e
     raise JSON::GeneratorError, e.message
   end

@@ -77,7 +77,7 @@ module FFI_Yajl
   #
   attach_function :yajl_config, [:yajl_handle, :yajl_option, :int], :int
 
-  attach_function :yajl_gen_config, [:yajl_gen, :yajl_gen_option, :int], :int
+  attach_function :yajl_gen_config, [:yajl_gen, :yajl_gen_option, :varargs], :int
 
   # yajl_gen yajl_gen_alloc (const yajl_gen_config *config, const yajl_alloc_funcs *allocFuncs)
   attach_function :yajl_gen_alloc, [:pointer, :pointer], :yajl_gen
@@ -220,8 +220,14 @@ module FFI_Yajl
   class Encoder
     def self.encode(obj, opts)
       yajl_gen = FFI_Yajl.yajl_gen_alloc(nil, nil)
-      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, 1);
-      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, 1);
+      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]
+      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
+      indent = if opts[:pretty]
+                 opts[:indent] ? opts[:indent] : "  "
+               else
+                 " "
+               end
+      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_indent_string, :string, indent)
       encode_part(obj, yajl_gen)
       string_ptr = FFI::MemoryPointer.new(:string)
       length_ptr = FFI::MemoryPointer.new(:int)
