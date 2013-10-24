@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
 
   s.add_development_dependency "rspec", "~> 2.14"
+  s.add_development_dependency "pry", "~> 0.9"
   s.add_dependency "ffi", "~> 1.9"
 
   s.bindir       = "bin"
