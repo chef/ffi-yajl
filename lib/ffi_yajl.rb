@@ -234,12 +234,12 @@ module FFI_Yajl
 
     private
 
-    def self.encode_part(obj, yajl_gen)
+    def self.encode_part(obj, yajl_gen, processing_key = false)
       case obj
       when Hash
         FFI_Yajl.yajl_gen_map_open(yajl_gen)
         obj.each do |key, value|
-          encode_part(key, yajl_gen)
+          encode_part(key, yajl_gen, true)
           encode_part(value, yajl_gen)
         end
         FFI_Yajl.yajl_gen_map_close(yajl_gen)
@@ -256,7 +256,12 @@ module FFI_Yajl
       when FalseClass
         FFI_Yajl.yajl_gen_bool(yajl_gen, 1)
       when Fixnum
-        FFI_Yajl.yajl_gen_integer(yajl_gen, obj)
+        if processing_key  # XXX: is this standard JSON? do we have to promote other types?
+          str = obj.to_s
+          FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
+        else
+          FFI_Yajl.yajl_gen_integer(yajl_gen, obj)
+        end
       when Bignum
         raise "Bignum encoding: not implemented"
       when Float
