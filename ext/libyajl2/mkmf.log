@@ -1,0 +1,47 @@
+have_header: checking for yajl/yajl_tree.h... -------------------- yes
+
+"/usr/bin/clang -o conftest -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-darwin12.4.0 -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I/Users/lamont/.rvm/gems/ruby-2.0.0-p247/bin -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT -I/usr/local/opt/libyaml/include -I/usr/local/opt/readline/include -I/usr/local/opt/libksba/include -I/usr/local/opt/openssl/include   -O3 -march=nocona -O2 -pipe -fno-common conftest.c  -L. -L/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/libksba/lib -L/usr/local/opt/openssl/lib -L. -fstack-protector -L/usr/local/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/libksba/lib -L/usr/local/opt/openssl/lib      -lruby.2.0.0  -lpthread -ldl -lobjc "
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"/usr/bin/clang -E -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-darwin12.4.0 -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I/Users/lamont/.rvm/gems/ruby-2.0.0-p247/bin -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT -I/usr/local/opt/libyaml/include -I/usr/local/opt/readline/include -I/usr/local/opt/libksba/include -I/usr/local/opt/openssl/include   -O3 -march=nocona -O2 -pipe -fno-common  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <yajl/yajl_tree.h>
+/* end */
+
+--------------------
+
+have_library: checking for yajl_tree_parse() in -lyajl... -------------------- yes
+
+"/usr/bin/clang -o conftest -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-darwin12.4.0 -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I/Users/lamont/.rvm/gems/ruby-2.0.0-p247/bin -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT -I/usr/local/opt/libyaml/include -I/usr/local/opt/readline/include -I/usr/local/opt/libksba/include -I/usr/local/opt/openssl/include   -O3 -march=nocona -O2 -pipe -fno-common conftest.c  -L. -L/Users/lamont/.rvm/rubies/ruby-2.0.0-p247/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/libksba/lib -L/usr/local/opt/openssl/lib -L. -fstack-protector -L/usr/local/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/libksba/lib -L/usr/local/opt/openssl/lib      -lruby.2.0.0 -lyajl  -lpthread -ldl -lobjc "
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <yajl/yajl_tree.h>
+ 4: 
+ 5: /*top*/
+ 6: extern int t(void);
+ 7: int t(void) { void ((*volatile p)()); p = (void ((*)()))yajl_tree_parse; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+

@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+
+require 'mkmf'
+require 'rbconfig'
+
+## the customer is always right, ruby is always compiled to be stupid
+#$CFLAGS = ENV['CFLAGS'] if ENV['CFLAGS']
+#$LDFLAGS = ENV['LDFLAGS'] if ENV['LDFLAGS']
+#RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
+#
+## except if you're doing an unoptimized gcc install we're going to help you out a bit
+#if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
+#  $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
+#end
+
+have_header("yajl/yajl_tree.h") || find_header("yajl/yajl_tree.h", "/usr/local/include")
+
+libyajl2_ok = have_library("yajl", "yajl_tree_parse", "yajl/yajl_tree.h")
+
+prefix=File.expand_path(File.join(ENV['RUBYARCHDIR'], ".."))
+
+unless libyajl2_ok
+  desc "Build the shared library"
+  task :default do
+
+    sh "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1"
+    sh "tar xvf yajl-2.0.1.tar.gz"
+    Dir.chdir "lloyd-yajl-f4b2b1a"
+    sh "./configure --prefix=#{prefix} > /tmp/libyajl.out"
+    sh "make install >> /tmp/libyajl.out"
+  end
+else
+  desc "Use the system libyajl2"
+  task :default do
+    puts "looking good"
+  end
+end
+
+#LIBYAJL_VERSION="2.0.1"
+#SUPPORT_LIB = FFI.map_library_name("libyajl2-#{LIBYAJL_VERSION}")
+#
+#require 'pp'
+#
+#File.open "/tmp/env.out", "w+" do |f|
+#  PP.pp(ENV, f)
+#end
+#
+#prefix=File.expand_path(File.join(ENV['RUBYARCHDIR'], ".."))
+#
+#end
+
