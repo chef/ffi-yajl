@@ -22,9 +22,11 @@ task :ship => [:clean, :gem] do
   end
 end
 
+unix_gemspec = eval(File.read("ffi-yajl.gemspec"))
+
 desc "install the gem locally"
 task :install => [:package] do
-  sh %{gem install pkg/#{gem_spec.name}-#{gem_spec.version}}
+  sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}.gem}
 end
 
 desc "remove build files"
