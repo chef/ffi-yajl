@@ -1,5 +1,5 @@
 before_install: sudo dpkg -P libyajl1 || true
-#before_script: cat /home/travis/build/lamont-granquist/ffi-yajl/ext/libyajl2/mkmf.log
+before_script: find /home/travis -name libyajl.so
 script: rake install && rake spec
 language: ruby
 rvm:
