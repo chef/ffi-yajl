@@ -1,6 +1,6 @@
 before_install: sudo apt-get uninstall libyajl1 || true
-before_script: cat /home/travis/build/lamont-granquist/ffi-yajl/ext/libyajl2/mkmf.log
-script: bundle exec rspec
+#before_script: cat /home/travis/build/lamont-granquist/ffi-yajl/ext/libyajl2/mkmf.log
+script: rake install && rake spec
 language: ruby
 rvm:
   - 2.0.0
