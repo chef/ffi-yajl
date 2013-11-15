@@ -1,5 +1,5 @@
 before_install: sudo dpkg -P libyajl1 || true
-script: rake install && rake spec
+script: rake install ; dirname=`gem which ffi-yajl`; basename=`basename $dirname`; cd $basename/..; rake spec
 after_script: find /home/travis -name libyajl.so
 language: ruby
 rvm:
