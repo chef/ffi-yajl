@@ -1,5 +1,5 @@
 #before_install: sudo apt-get install libyajl-dev
-before_script: find /home/travis -name libyajl.so
+before_script: cat /home/travis/build/lamont-granquist/ffi-yajl/ext/libyajl2/mkmf.log
 script: bundle exec rspec
 language: ruby
 rvm:
