@@ -22,4 +22,14 @@ task :ship => [:clean, :gem] do
   end
 end
 
+desc "install the gem locally"
+task :install => [:package] do
+  sh %{gem install pkg/#{gem_spec.name}-#{gem_spec.version}}
+end
+
+desc "remove build files"
+task :clean do
+  sh %Q{ rm -f pkg/*.gem }
+end
+
 task :default => :spec
