@@ -26,4 +26,4 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-ext/libyajl2/mkmf.log
+mkmf.log
