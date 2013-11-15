@@ -3,3 +3,7 @@
 
 nothing yet...
 
+
+FIXME:
+  * curl'ing yajl2 sources down is certainly going to offend someone
+
