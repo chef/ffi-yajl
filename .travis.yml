@@ -1,4 +1,4 @@
-before_install: sudo apt-get install libyajl-dev
+#before_install: sudo apt-get install libyajl-dev
 script: bundle exec rspec
 language: ruby
 rvm:
