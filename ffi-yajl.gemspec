@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
   s.extensions   = %w(ext/libyajl2/Rakefile)
 
+  s.add_development_dependency "rake"
   s.add_development_dependency "rspec", "~> 2.14"
   s.add_development_dependency "pry", "~> 0.9"
   s.add_dependency "ffi", "~> 1.9"
