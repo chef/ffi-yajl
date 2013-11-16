@@ -14,7 +14,8 @@ rvm:
   - rbx-19mode
   - jruby-19mode
   - jruby-18mode
-  - jruby-head
+# ffi in jruby-head seems busted
+#  - jruby-head
 env:
   - JRUBY_OPTS="-Xcext.enabled=true"
 # jruby in travis has C ext completely disabled
