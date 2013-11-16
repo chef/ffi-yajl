@@ -12,10 +12,12 @@ rvm:
   - ree
   - rbx-18mode
   - rbx-19mode
+  - jruby-19mode
+  - jruby-18mode
+  - jruby-head
+env:
+  - JRUBY_OPTS="-Xcext.enabled=true"
 # jruby in travis has C ext completely disabled
-#  - jruby-19mode
-#  - jruby-18mode
-#  - jruby-head
 #jdk:
 #  - openjdk7
 #  - oraclejdk7
