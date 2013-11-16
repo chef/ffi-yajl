@@ -13,12 +13,6 @@ RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
 #  $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
 #end
 
-require 'pp'
-
-File.open "/tmp/env.out", "w+" do |f|
-  PP.pp(ENV, f)
-end
-
 pkg_config('yajl')
 
 # yajl_tree.h is only in >= 2.0
