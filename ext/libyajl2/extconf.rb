@@ -23,6 +23,12 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   # yajl_complete_parse is only in >= 2.0
   libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
 
+  create_makefile("dummy")
+
+else
+  libyajl2_ok = false
+end
+
   prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
   unless libyajl2_ok
@@ -34,9 +40,6 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
     Dir.chdir ".."
   end
 
-  create_makefile("dummy")
-
-end
 
 File.open("Makefile", "w") do |mf|
   mf.puts "# Dummy makefile for non-mri rubies"
