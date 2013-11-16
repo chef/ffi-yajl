@@ -14,7 +14,7 @@ require 'rbconfig'
 #end
 
 # yajl_tree.h is only in >= 2.0
-have_header("yajl/yajl_tree.h") || find_header("yajl/yajl_tree.h", "/usr/local/include")
+#have_header("yajl/yajl_tree.h") || find_header("yajl/yajl_tree.h", "/usr/local/include")
 
 # yajl_complete_parse is only in >= 2.0
 libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
