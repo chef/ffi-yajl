@@ -221,12 +221,12 @@ module FFI_Yajl
         error = FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
         raise FFI_Yajl::ParseError.new(error)
       end
-      rb_ctx.stack.pop
       if ( stat = FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
         # FIXME: dup the error and call yajl_free_error?
         error = FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
         raise FFI_Yajl::ParseError.new(error)
       end
+      rb_ctx.stack.pop
     ensure
       FFI_Yajl.yajl_free(yajl_handle) if yajl_handle
       @@CTX_MAPPING.delete(rb_ctx.object_id) if rb_ctx && rb_ctx.object_id
