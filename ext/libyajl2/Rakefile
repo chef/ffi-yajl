@@ -17,7 +17,7 @@ require 'rbconfig'
 have_header("yajl/yajl_tree.h") || find_header("yajl/yajl_tree.h", "/usr/local/include")
 
 # yajl_complete_parse is only in >= 2.0
-libyajl2_ok = have_library("yajl", "yajl_complete_parse", "yajl/yajl_parse.h")
+libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
 
 prefix=File.expand_path(File.join(ENV['RUBYARCHDIR'], ".."))
 
