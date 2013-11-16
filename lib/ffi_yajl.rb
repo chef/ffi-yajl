@@ -4,14 +4,15 @@ require 'ffi'
 
 module FFI_Yajl
   extend FFI::Library
-  begin
-    # search the default paths for libyajl2
+
+  libname = FFI.map_library_name("yajl")
+  libpath = File.join(File.dirname(__FILE__), libname)
+
+  if File.file?(libpath)
+    # use our vendored version of libyajl2 if we find it installed
+    ffi_lib libpath
+  else
     ffi_lib 'yajl'
-    # FIXME: need to explode if we find libyajl1 accidentally
-  rescue LoadError
-    # use the bundled libyajl2
-    libname = FFI.map_library_name("yajl")
-    ffi_lib File.join(File.dirname(__FILE__), libname)
   end
 
   class YajlCallbacks < FFI::Struct
