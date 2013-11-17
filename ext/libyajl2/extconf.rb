@@ -32,11 +32,11 @@ unless libyajl2_ok
 #  ENV['CFLAGS'] = $CFLAGS
 #  ENV['LDFLAGS'] = $LDFLAGS
 #  ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
-  system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1"
-  system "tar xvf yajl-2.0.1.tar.gz"
-  Dir.chdir "lloyd-yajl-f4b2b1a"
-  system "./configure --prefix=#{prefix} > /tmp/libyajl.out"
-  system "make install >> /tmp/libyajl.out"
+  system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1" or raise "wget failed"
+  system "tar xvf yajl-2.0.1.tar.gz" or raise "tar xvf failed"
+  Dir.chdir "lloyd-yajl-f4b2b1a" or raise "chdir failed"
+  system "./configure --prefix=#{prefix} > /tmp/libyajl.out" or raise "configure failed"
+  system "make install >> /tmp/libyajl.out" or raise "make install failed
   Dir.chdir ".."
 end
 
