@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ffi", "~> 1.9"
 
   s.bindir       = "bin"
-  s.executables  = []
+  s.executables  = %w( ffi-yajl-bench )
   s.require_path = 'lib'
-  s.files = %w(Rakefile LICENSE README.md) + Dir.glob("{bin,lib,spec}/**/*", File::FNM_DOTMATCH).reject {|f| File.directory?(f) }
+  s.files = %w(Rakefile LICENSE README.md) + Dir.glob("{lib,spec}/**/*", File::FNM_DOTMATCH).reject {|f| File.directory?(f) }
 end

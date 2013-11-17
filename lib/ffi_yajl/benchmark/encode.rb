@@ -16,15 +16,18 @@ begin
 rescue LoadError
 end
 
-class FFI_Yajl::Benchmark::Encode
+module FFI_Yajl
+  class Benchmark
+    class Encode
 
   def run
-    filename = ARGV[0] || 'benchmark/subjects/ohai.json'
+    #filename = ARGV[0] || 'benchmark/subjects/ohai.json'
+    filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
     hash = File.open(filename, 'rb') { |f| Yajl::Parser.new.parse(f.read) }
 
     times = ARGV[1] ? ARGV[1].to_i : 1000
     puts "Starting benchmark encoding #{filename} #{times} times\n\n"
-    Benchmark.bmbm { |x|
+    ::Benchmark.bmbm { |x|
       io_encoder = Yajl::Encoder.new
       string_encoder = Yajl::Encoder.new
 
@@ -83,6 +86,8 @@ class FFI_Yajl::Benchmark::Encode
         }
       end
     }
+  end
+  end
   end
 
 end

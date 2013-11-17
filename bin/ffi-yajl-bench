@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path(File.join(File.dirname( File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__ ), "../lib"))
+
+require 'ffi_yajl/benchmark'
+
+FFI_Yajl::Benchmark::Encode.new().run()
+
