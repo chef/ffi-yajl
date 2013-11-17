@@ -3,28 +3,26 @@
 
 require 'rubygems'
 require 'benchmark'
-unless RUBY_VERSION =~ /jruby/
-  begin
-    require 'yajl'
-    require 'stringio'
-  rescue
-    puts "INFO: yajl-ruby not installed"
-  end
+require 'stringio'
+begin
+  require 'yajl'
+rescue Exception
+  puts "INFO: yajl-ruby not installed"
 end
 require 'ffi_yajl'
 begin
   require 'json'
-rescue
+rescue Exception
   puts "INFO: json gem not installed"
 end
 begin
   require 'psych'
-rescue
+rescue Exception
   puts "INFO: psych gem not installed"
 end
 begin
   require 'active_support'
-rescue
+rescue Exception
   puts "INFO: active_support gem not installed"
 end
 
