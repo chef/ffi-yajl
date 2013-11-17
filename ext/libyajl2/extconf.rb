@@ -5,20 +5,15 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   require 'mkmf'
   require 'rbconfig'
 
-  ## the customer is always right, ruby is always compiled to be stupid
+  # the customer is always right, ruby is always compiled to be stupid
   $CFLAGS = ENV['CFLAGS'] if ENV['CFLAGS']
   $LDFLAGS = ENV['LDFLAGS'] if ENV['LDFLAGS']
   RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
 
-  ## except if you're doing an unoptimized gcc install we're going to help you out a bit
+  # except if you're doing an unoptimized gcc install we're going to help you out a bit
   if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
     $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
   end
-
-  pkg_config('yajl')
-
-  # yajl_tree.h is only in >= 2.0
-  have_header("yajl/yajl_tree.h") || find_header("yajl/yajl_tree.h", "/usr/local/include")
 
   # yajl_complete_parse is only in >= 2.0
   libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
