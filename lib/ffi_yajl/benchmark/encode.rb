@@ -3,7 +3,10 @@
 
 require 'rubygems'
 require 'benchmark'
-require 'yajl'
+begin
+  require 'yajl'
+rescue LoadError
+end
 require 'stringio'
 require 'ffi_yajl'
 begin
@@ -30,8 +33,6 @@ module FFI_Yajl
       times = ARGV[1] ? ARGV[1].to_i : 1000
       puts "Starting benchmark encoding #{filename} #{times} times\n\n"
       ::Benchmark.bmbm { |x|
-        io_encoder = Yajl::Encoder.new
-        string_encoder = Yajl::Encoder.new
 
         x.report("FFI_Yajl::Encoder.encode (to a String)") {
           times.times {
@@ -45,16 +46,22 @@ module FFI_Yajl
           }
         }
 
-        x.report("Yajl::Encoder#encode (to an IO)") {
-          times.times {
-            io_encoder.encode(hash, StringIO.new)
+        if defined?(Yajl::Encoder)
+          io_encoder = Yajl::Encoder.new
+          x.report("Yajl::Encoder#encode (to an IO)") {
+            times.times {
+              io_encoder.encode(hash, StringIO.new)
+            }
           }
-        }
-        x.report("Yajl::Encoder#encode (to a String)") {
-          times.times {
-            output = string_encoder.encode(hash)
+
+          string_encoder = Yajl::Encoder.new
+          x.report("Yajl::Encoder#encode (to a String)") {
+            times.times {
+              output = string_encoder.encode(hash)
+            }
           }
-        }
+        end
+
         if defined?(JSON)
           x.report("JSON.generate") {
             times.times {
