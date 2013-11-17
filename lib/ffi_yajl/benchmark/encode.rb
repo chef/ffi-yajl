@@ -5,26 +5,24 @@ require 'rubygems'
 require 'benchmark'
 begin
   require 'yajl'
-rescue LoadError
+rescue
   puts "INFO: yajl-ruby not installed"
-rescue RuntimeException
-  puts "INFO: yajl-ruby not loading under jruby"
 end
 require 'stringio'
 require 'ffi_yajl'
 begin
   require 'json'
-rescue LoadError
+rescue
   puts "INFO: json gem not installed"
 end
 begin
   require 'psych'
-rescue LoadError
+rescue
   puts "INFO: psych gem not installed"
 end
 begin
   require 'active_support'
-rescue LoadError
+rescue
   puts "INFO: active_support gem not installed"
 end
 
