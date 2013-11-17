@@ -6,6 +6,8 @@ require 'benchmark'
 begin
   require 'yajl'
 rescue LoadError
+rescue RuntimeException
+  puts "INFO: yajl-ruby not loading under jruby"
 end
 require 'stringio'
 require 'ffi_yajl'
