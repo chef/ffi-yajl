@@ -6,6 +6,7 @@ require 'benchmark'
 begin
   require 'yajl'
 rescue LoadError
+  puts "INFO: yajl-ruby not installed"
 rescue RuntimeException
   puts "INFO: yajl-ruby not loading under jruby"
 end
@@ -14,14 +15,17 @@ require 'ffi_yajl'
 begin
   require 'json'
 rescue LoadError
+  puts "INFO: json gem not installed"
 end
 begin
   require 'psych'
 rescue LoadError
+  puts "INFO: psych gem not installed"
 end
 begin
   require 'active_support'
 rescue LoadError
+  puts "INFO: active_support gem not installed"
 end
 
 module FFI_Yajl
