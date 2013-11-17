@@ -36,7 +36,7 @@ unless libyajl2_ok
   system "tar xvf yajl-2.0.1.tar.gz" or raise "tar xvf failed"
   Dir.chdir "lloyd-yajl-f4b2b1a" or raise "chdir failed"
   system "./configure --prefix=#{prefix} > /tmp/libyajl.out" or raise "configure failed"
-  system "make install >> /tmp/libyajl.out" or raise "make install failed
+  system "make install >> /tmp/libyajl.out" or raise "make install failed"
   Dir.chdir ".."
 end
 
