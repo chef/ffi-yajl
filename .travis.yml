@@ -14,8 +14,7 @@ rvm:
   - rbx-19mode
   - jruby-19mode
   - jruby-18mode
-# ffi in jruby-head seems busted
-#  - jruby-head
+  - jruby-head
 jdk:
   - openjdk7
   - oraclejdk7
@@ -58,5 +57,7 @@ matrix:
       jdk: openjdk6
     - rvm: rbx-19mode
       jdk: openjdk7
+  allow_failures:
+    - rvm: jruby-head
 env:
   - JRUBY_OPTS="-Xcext.enabled=true"
