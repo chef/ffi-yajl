@@ -11,9 +11,9 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
 
   ## except if you're doing an unoptimized gcc install we're going to help you out a bit
-  #if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
-  #  $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
-  #end
+  if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
+    $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
+  end
 
   pkg_config('yajl')
 
@@ -26,19 +26,24 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   create_makefile("dummy")
 
 else
+  # always install libyajl2 on Jruby
+  # FIXME: get the conditional mkmf stuff to work on Jruby
   libyajl2_ok = false
 end
 
-  prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
+prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
-  unless libyajl2_ok
-    system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1"
-    system "tar xvf yajl-2.0.1.tar.gz"
-    Dir.chdir "lloyd-yajl-f4b2b1a"
-    system "./configure --prefix=#{prefix} > /tmp/libyajl.out"
-    system "make install >> /tmp/libyajl.out"
-    Dir.chdir ".."
-  end
+unless libyajl2_ok
+  ENV['CFLAGS'] = $CFLAGS
+  ENV['LDFLAGS'] = $LDFLAGS
+  ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
+  system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1"
+  system "tar xvf yajl-2.0.1.tar.gz"
+  Dir.chdir "lloyd-yajl-f4b2b1a"
+  system "./configure --prefix=#{prefix} > /tmp/libyajl.out"
+  system "make install >> /tmp/libyajl.out"
+  Dir.chdir ".."
+end
 
 
 File.open("Makefile", "w") do |mf|
@@ -46,10 +51,3 @@ File.open("Makefile", "w") do |mf|
   mf.puts "all install::\n"
 end
 
-##LIBYAJL_VERSION="2.0.1"
-##SUPPORT_LIB = FFI.map_library_name("libyajl2-#{LIBYAJL_VERSION}")
-##
-##prefix=File.expand_path(File.join(ENV['RUBYARCHDIR'], ".."))
-##
-##end
-#
