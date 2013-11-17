@@ -98,7 +98,7 @@ module FFI_Yajl
   attach_function :yajl_gen_integer, [:yajl_gen, :long_long], :yajl_gen_status
   attach_function :yajl_gen_double, [:yajl_gen, :double], :yajl_gen_status
 #  attach_function :yajl_gen_number
-  attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :yajl_gen_status
+  attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :int  # XXX: FFI Enums are slow?
   attach_function :yajl_gen_null, [:yajl_gen], :yajl_gen_status
   attach_function :yajl_gen_bool, [:yajl_gen, :int], :yajl_gen_status
   attach_function :yajl_gen_map_open, [:yajl_gen], :yajl_gen_status
@@ -196,7 +196,7 @@ module FFI_Yajl
       1
     end
 
-    def self.parse(str, opts)
+    def self.parse(str, opts = {})
       @@CTX_MAPPING ||= Hash.new
       rb_ctx = FFI_Yajl::Parser::State.new()
       @@CTX_MAPPING[rb_ctx.object_id] = rb_ctx
@@ -234,7 +234,7 @@ module FFI_Yajl
   end
 
   class Encoder
-    def self.encode(obj, opts)
+    def self.encode(obj, opts = {})
       yajl_gen = FFI_Yajl.yajl_gen_alloc(nil, nil)
       FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]
       FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
@@ -257,51 +257,101 @@ module FFI_Yajl
     private
 
     def self.encode_part(obj, yajl_gen, processing_key = false)
-      case obj
-      when Hash
-        FFI_Yajl.yajl_gen_map_open(yajl_gen)
-        obj.each do |key, value|
-          encode_part(key, yajl_gen, true)
-          encode_part(value, yajl_gen)
-        end
-        FFI_Yajl.yajl_gen_map_close(yajl_gen)
-      when Array
-        FFI_Yajl.yajl_gen_array_open(yajl_gen)
-        obj.each do |value|
-          encode_part(value, yajl_gen)
-        end
-        FFI_Yajl.yajl_gen_array_close(yajl_gen)
-      when NilClass
-        FFI_Yajl.yajl_gen_null(yajl_gen)
-      when TrueClass
-        FFI_Yajl.yajl_gen_bool(yajl_gen, 0)
-      when FalseClass
-        FFI_Yajl.yajl_gen_bool(yajl_gen, 1)
-      when Fixnum
-        if processing_key  # XXX: is this standard JSON? do we have to promote other types?
-          str = obj.to_s
-          FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
-        else
-          FFI_Yajl.yajl_gen_integer(yajl_gen, obj)
-        end
-      when Bignum
-        raise "Bignum encoding: not implemented"
-      when Float
-        FFI_Yajl.yajl_gen_double(yajl_gen, obj)
-      when String
-        FFI_Yajl.yajl_gen_string(yajl_gen, obj, obj.length)
-      else
-        if obj.respond_to?(to_json)
-          # obj.to_json
-          raise "to_json: not implemented"
-        else
-          # obj.to_s
-          raise "to_s: not implemented"
-        end
+      # inspecting the object class is expensive compared to method dispatch
+      # "case obj when Hash ..." had 'Module#===' as the top function in profiling
+      # obj.respond_to? is similarly expensive
+      # instead, we expect objects to all have a #ffi_yajl method which we can call
+      begin
+        obj.ffi_yajl(yajl_gen, processing_key)
+      rescue NoMethodError
+        raise "ffi_yajl hook missing from object"
       end
     end
 
   end
 end
 
+
+class Hash
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_map_open(yajl_gen)
+    self.each do |key, value|
+      FFI_Yajl::Encoder.encode_part(key, yajl_gen, true)
+      FFI_Yajl::Encoder.encode_part(value, yajl_gen)
+    end
+    FFI_Yajl.yajl_gen_map_close(yajl_gen)
+  end
+end
+
+class Array
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_array_open(yajl_gen)
+    self.each do |value|
+      FFI_Yajl::Encoder.encode_part(value, yajl_gen)
+    end
+    FFI_Yajl.yajl_gen_array_close(yajl_gen)
+  end
+end
+
+class NilClass
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_null(yajl_gen)
+  end
+end
+
+class TrueClass
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_bool(yajl_gen, 0)
+  end
+end
+
+class FalseClass
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_bool(yajl_gen, 1)
+  end
+end
+
+class Fixnum
+  def ffi_yajl(yajl_gen, processing_key)
+    if processing_key
+      str = self.to_s
+      FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
+    else
+      FFI_Yajl.yajl_gen_integer(yajl_gen, self)
+    end
+  end
+end
+
+class Bignum
+  def ffi_yajl(yajl_gen, processing_key)
+    raise NotImpelementedError
+  end
+end
+
+class Float
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_double(yajl_gen, self)
+  end
+end
+
+class String
+  def ffi_yajl(yajl_gen, processing_key)
+    FFI_Yajl.yajl_gen_string(yajl_gen, self, self.length)
+  end
+end
+
+# I feel dirty
+class Object
+  def ffi_yajl(yajl_gen, processing_key)
+    begin
+      # if objects implement to_json then...
+      opts = {} # i need to get the encoding opts into here
+      json = self.to_json(opts)  # this is a string, what do i do with it???
+      raise NotImplementedError
+    rescue NoMethodError
+      str = self.to_s
+      FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
+    end
+  end
+end
 
