@@ -3,12 +3,14 @@
 
 require 'rubygems'
 require 'benchmark'
-begin
-  require 'yajl'
-rescue
-  puts "INFO: yajl-ruby not installed"
+unless RUBY_VERSION =~ /jruby/
+  begin
+    require 'yajl'
+    require 'stringio'
+  rescue
+    puts "INFO: yajl-ruby not installed"
+  end
 end
-require 'stringio'
 require 'ffi_yajl'
 begin
   require 'json'
