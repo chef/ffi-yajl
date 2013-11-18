@@ -49,6 +49,13 @@ module FFI_Yajl
             }
           }
 
+          ffi_string_encoder = FFI_Yajl::Encoder.new
+          x.report("FFI_Yajl::Encoder#encode (to a String)") {
+            times.times {
+              output = ffi_string_encoder.encode(hash)
+            }
+          }
+
           if defined?(Yajl::Encoder)
             x.report("Yajl::Encoder.encode (to a String)") {
               times.times {
