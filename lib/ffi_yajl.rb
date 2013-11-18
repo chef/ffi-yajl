@@ -244,7 +244,11 @@ module FFI_Yajl
                  " "
                end
       FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_indent_string, :string, indent)
-      encode_part(obj, yajl_gen)
+      state = {
+        :json_opts => opts,
+        :processing_key => false,
+      }
+      encode_part(obj, yajl_gen, state)
       string_ptr = FFI::MemoryPointer.new(:string)
       length_ptr = FFI::MemoryPointer.new(:int)
       FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr)
@@ -256,15 +260,16 @@ module FFI_Yajl
 
     private
 
-    def self.encode_part(obj, yajl_gen, processing_key = false)
+    def self.encode_part(obj, yajl_gen, state)
       # inspecting the object class is expensive compared to method dispatch
       # "case obj when Hash ..." had 'Module#===' as the top function in profiling
       # obj.respond_to? is similarly expensive
       # instead, we expect objects to all have a #ffi_yajl method which we can call
       begin
-        obj.ffi_yajl(yajl_gen, processing_key)
-#      rescue NoMethodError
-#        raise "ffi_yajl hook missing from object"
+        obj.ffi_yajl(yajl_gen, state)
+      rescue NoMethodError
+        # FIXME: should add descriptive error message here
+        raise
       end
     end
 
@@ -273,47 +278,47 @@ end
 
 
 class Hash
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_map_open(yajl_gen)
     self.each do |key, value|
-      FFI_Yajl::Encoder.encode_part(key, yajl_gen, true)
-      FFI_Yajl::Encoder.encode_part(value, yajl_gen)
+      FFI_Yajl::Encoder.encode_part(key, yajl_gen, state.merge({:processing_key => true}))
+      FFI_Yajl::Encoder.encode_part(value, yajl_gen, state)
     end
     FFI_Yajl.yajl_gen_map_close(yajl_gen)
   end
 end
 
 class Array
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_array_open(yajl_gen)
     self.each do |value|
-      FFI_Yajl::Encoder.encode_part(value, yajl_gen)
+      FFI_Yajl::Encoder.encode_part(value, yajl_gen, state)
     end
     FFI_Yajl.yajl_gen_array_close(yajl_gen)
   end
 end
 
 class NilClass
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_null(yajl_gen)
   end
 end
 
 class TrueClass
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_bool(yajl_gen, 0)
   end
 end
 
 class FalseClass
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_bool(yajl_gen, 1)
   end
 end
 
 class Fixnum
-  def ffi_yajl(yajl_gen, processing_key)
-    if processing_key
+  def ffi_yajl(yajl_gen, state)
+    if state[:processing_key]
       str = self.to_s
       FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
     else
@@ -323,19 +328,19 @@ class Fixnum
 end
 
 class Bignum
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     raise NotImpelementedError
   end
 end
 
 class Float
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_double(yajl_gen, self)
   end
 end
 
 class String
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_string(yajl_gen, self, self.length)
   end
 end
@@ -348,13 +353,12 @@ class Object
     end
   end
 
-  def ffi_yajl(yajl_gen, processing_key)
+  def ffi_yajl(yajl_gen, state)
     begin
-      opts = {}
-      # FIXME: i need to get the encoding opts into here
-      json = self.to_json(opts)
+      json = self.to_json(state[:json_opts])
       FFI_Yajl.yajl_gen_number(yajl_gen, json, json.length)
     rescue NoMethodError
+      # FIXME: more descriptive error message
       raise
     end
   end
