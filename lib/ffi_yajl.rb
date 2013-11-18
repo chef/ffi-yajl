@@ -234,8 +234,20 @@ module FFI_Yajl
   end
 
   class Encoder
-    def self.encode(obj, opts = {})
+    attr_accessor :opts
+
+    def self.encode(obj, *args)
+      new(*args).encode(obj)
+    end
+
+    def initialize(opts = {})
+      @opts = opts
+    end
+
+    def encode(obj)
       yajl_gen = FFI_Yajl.yajl_gen_alloc(nil, nil)
+
+      # configure the yajl encoder
       FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]
       FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
       indent = if opts[:pretty]
@@ -244,36 +256,30 @@ module FFI_Yajl
                  " "
                end
       FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_indent_string, :string, indent)
+
+      # setup our own state
       state = {
         :json_opts => opts,
         :processing_key => false,
       }
-      encode_part(obj, yajl_gen, state)
+
+      # do the encoding
+      obj.ffi_yajl(yajl_gen, state)
+
+      # get back our encoded JSON
       string_ptr = FFI::MemoryPointer.new(:string)
       length_ptr = FFI::MemoryPointer.new(:int)
       FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr)
       length = length_ptr.read_int
       string = string_ptr.get_pointer(0).read_string
-      FFI_Yajl.yajl_gen_free(yajl_gen)
+
       return string
+    ensure
+      # free up the yajl encoder
+      FFI_Yajl.yajl_gen_free(yajl_gen)
     end
-
-    private
-
-    def self.encode_part(obj, yajl_gen, state)
-      # inspecting the object class is expensive compared to method dispatch
-      # "case obj when Hash ..." had 'Module#===' as the top function in profiling
-      # obj.respond_to? is similarly expensive
-      # instead, we expect objects to all have a #ffi_yajl method which we can call
-      begin
-        obj.ffi_yajl(yajl_gen, state)
-      rescue NoMethodError
-        # FIXME: should add descriptive error message here
-        raise
-      end
-    end
-
   end
+
 end
 
 
@@ -281,8 +287,8 @@ class Hash
   def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_map_open(yajl_gen)
     self.each do |key, value|
-      FFI_Yajl::Encoder.encode_part(key, yajl_gen, state.merge({:processing_key => true}))
-      FFI_Yajl::Encoder.encode_part(value, yajl_gen, state)
+      key.ffi_yajl(yajl_gen, state.merge({:processing_key => true}))
+      value.ffi_yajl(yajl_gen, state)
     end
     FFI_Yajl.yajl_gen_map_close(yajl_gen)
   end
@@ -292,7 +298,7 @@ class Array
   def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_array_open(yajl_gen)
     self.each do |value|
-      FFI_Yajl::Encoder.encode_part(value, yajl_gen, state)
+      value.ffi_yajl(yajl_gen, state)
     end
     FFI_Yajl.yajl_gen_array_close(yajl_gen)
   end
@@ -354,13 +360,8 @@ class Object
   end
 
   def ffi_yajl(yajl_gen, state)
-    begin
-      json = self.to_json(state[:json_opts])
-      FFI_Yajl.yajl_gen_number(yajl_gen, json, json.length)
-    rescue NoMethodError
-      # FIXME: more descriptive error message
-      raise
-    end
+    json = self.to_json(state[:json_opts])
+    FFI_Yajl.yajl_gen_number(yajl_gen, json, json.length)
   end
 end
 
