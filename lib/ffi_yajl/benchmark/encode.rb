@@ -4,7 +4,7 @@
 require 'rubygems'
 require 'benchmark'
 require 'stringio'
-unless RUBY_ENGINE =~ /jruby/
+if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
   begin
     require 'yajl'
   rescue Exception
