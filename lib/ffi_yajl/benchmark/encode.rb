@@ -4,7 +4,7 @@
 require 'rubygems'
 require 'benchmark'
 require 'stringio'
-unless JSON_VERSION =~ /jruby/
+unless RUBY_VERSION =~ /jruby/
   begin
     require 'yajl'
   rescue Exception
