@@ -4,10 +4,14 @@
 require 'rubygems'
 require 'benchmark'
 require 'stringio'
-begin
-  require 'yajl'
-rescue Exception
-  puts "INFO: yajl-ruby not installed"
+unless JSON_VERSION =~ /jruby/
+  begin
+    require 'yajl'
+  rescue Exception
+    puts "INFO: yajl-ruby not installed"
+  end
+else
+  puts "INFO: skipping yajl-ruby on jruby"
 end
 require 'ffi_yajl'
 begin
