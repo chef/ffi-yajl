@@ -3,14 +3,6 @@
 
 require 'ffi_yajl' unless defined?(FFI_Yajl::Parser)
 
-unless defined?(ActiveSupport)
-  class Object
-    def to_json(*args, &block)
-      "\"#{to_s}\""
-    end
-  end
-end
-
 module JSON
   class JSONError < StandardError; end unless defined?(JSON::JSONError)
   class GeneratorError < JSONError; end unless defined?(JSON::GeneratorError)

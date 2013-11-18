@@ -97,7 +97,7 @@ module FFI_Yajl
 
   attach_function :yajl_gen_integer, [:yajl_gen, :long_long], :yajl_gen_status
   attach_function :yajl_gen_double, [:yajl_gen, :double], :yajl_gen_status
-#  attach_function :yajl_gen_number
+  attach_function :yajl_gen_number, [:yajl_gen, :ustring, :int], :yajl_gen_status
   attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :int  # XXX: FFI Enums are slow?
   attach_function :yajl_gen_null, [:yajl_gen], :yajl_gen_status
   attach_function :yajl_gen_bool, [:yajl_gen, :int], :yajl_gen_status
@@ -263,8 +263,8 @@ module FFI_Yajl
       # instead, we expect objects to all have a #ffi_yajl method which we can call
       begin
         obj.ffi_yajl(yajl_gen, processing_key)
-      rescue NoMethodError
-        raise "ffi_yajl hook missing from object"
+#      rescue NoMethodError
+#        raise "ffi_yajl hook missing from object"
       end
     end
 
@@ -342,15 +342,20 @@ end
 
 # I feel dirty
 class Object
+  unless defined?(ActiveSupport)
+    def to_json(*args, &block)
+      "\"#{to_s}\""
+    end
+  end
+
   def ffi_yajl(yajl_gen, processing_key)
     begin
-      # if objects implement to_json then...
-      opts = {} # i need to get the encoding opts into here
-      json = self.to_json(opts)  # this is a string, what do i do with it???
-      raise NotImplementedError
+      opts = {}
+      # FIXME: i need to get the encoding opts into here
+      json = self.to_json(opts)
+      FFI_Yajl.yajl_gen_number(yajl_gen, json, json.length)
     rescue NoMethodError
-      str = self.to_s
-      FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
+      raise
     end
   end
 end
