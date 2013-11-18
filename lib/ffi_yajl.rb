@@ -1,12 +1,26 @@
 require 'rubygems'
 require 'ffi'
 
-require 'ffi_yajl/encoder'
+begin
+  require 'ffi_yajl/ext'
+  module FFI_Yajl
+    class Encoder
+      include FFI_Yajl::Ext::Encoder
+    end
+  end
+rescue LoadError
+  require 'ffi_yajl/ffi'
+  module FFI_Yajl
+    class Encoder
+      include FFI_Yajl::FFI::Encoder
+    end
+  end
+end
 
 module FFI_Yajl
-  extend FFI::Library
+  extend ::FFI::Library
 
-  libname = FFI.map_library_name("yajl")
+  libname = ::FFI.map_library_name("yajl")
   libpath = File.join(File.dirname(__FILE__), libname)
 
   if File.file?(libpath)
@@ -16,7 +30,7 @@ module FFI_Yajl
     ffi_lib 'yajl'
   end
 
-  class YajlCallbacks < FFI::Struct
+  class YajlCallbacks < ::FFI::Struct
     layout :yajl_null, :pointer,
       :yajl_boolean, :pointer,
       :yajl_integer, :pointer,
@@ -144,53 +158,53 @@ module FFI_Yajl
       end
     end
 
-    NullCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
+    NullCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
       @@CTX_MAPPING[ctx.get_ulong(0)].set_value(nil)
       1
     end
-    BooleanCallback = FFI::Function.new(:int, [:pointer, :int]) do |ctx, boolval|
+    BooleanCallback = ::FFI::Function.new(:int, [:pointer, :int]) do |ctx, boolval|
       @@CTX_MAPPING[ctx.get_ulong(0)].set_value(boolval == 1 ? true : false)
       1
     end
-    IntegerCallback = FFI::Function.new(:int, [:pointer, :long_long]) do |ctx, intval|
+    IntegerCallback = ::FFI::Function.new(:int, [:pointer, :long_long]) do |ctx, intval|
       @@CTX_MAPPING[ctx.get_ulong(0)].set_value(intval)
       1
     end
-    DoubleCallback = FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
+    DoubleCallback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
       @@CTX_MAPPING[ctx.get_ulong(0)].set_value(doubleval)
       1
     end
-    NumberCallback = FFI::Function.new(:int, [:pointer, :pointer, :size_t]) do |ctx, numberval, numberlen|
+    NumberCallback = ::FFI::Function.new(:int, [:pointer, :pointer, :size_t]) do |ctx, numberval, numberlen|
       raise "NumberCallback: not implemented"
       1
     end
-    StringCallback = FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
+    StringCallback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
       @@CTX_MAPPING[ctx.get_ulong(0)].set_value(stringval.slice(0,stringlen))
       1
     end
-    StartMapCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
+    StartMapCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
       state = @@CTX_MAPPING[ctx.get_ulong(0)]
       state.save_key
       state.stack.push(Hash.new)
       1
     end
-    MapKeyCallback = FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
+    MapKeyCallback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
       @@CTX_MAPPING[ctx.get_ulong(0)].key = key.slice(0,keylen)
       1
     end
-    EndMapCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
+    EndMapCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
       state = @@CTX_MAPPING[ctx.get_ulong(0)]
       state.restore_key
       state.set_value( state.stack.pop ) if state.stack.length > 1
       1
     end
-    StartArrayCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
+    StartArrayCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
       state = @@CTX_MAPPING[ctx.get_ulong(0)]
       state.save_key
       state.stack.push(Array.new)
       1
     end
-    EndArrayCallback = FFI::Function.new(:int, [:pointer]) do |ctx|
+    EndArrayCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
       state = @@CTX_MAPPING[ctx.get_ulong(0)]
       state.restore_key
       @@CTX_MAPPING[ctx.get_ulong(0)].set_value( @@CTX_MAPPING[ctx.get_ulong(0)].stack.pop ) if @@CTX_MAPPING[ctx.get_ulong(0)].stack.length > 1
@@ -201,9 +215,9 @@ module FFI_Yajl
       @@CTX_MAPPING ||= Hash.new
       rb_ctx = FFI_Yajl::Parser::State.new()
       @@CTX_MAPPING[rb_ctx.object_id] = rb_ctx
-      ctx = FFI::MemoryPointer.new(:long)
+      ctx = ::FFI::MemoryPointer.new(:long)
       ctx.write_long( rb_ctx.object_id )
-      callback_ptr = FFI::MemoryPointer.new(FFI_Yajl::YajlCallbacks)
+      callback_ptr = ::FFI::MemoryPointer.new(FFI_Yajl::YajlCallbacks)
       callbacks = FFI_Yajl::YajlCallbacks.new(callback_ptr)
       callbacks[:yajl_null] = NullCallback
       callbacks[:yajl_boolean] = BooleanCallback

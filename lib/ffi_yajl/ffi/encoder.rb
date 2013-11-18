@@ -1,54 +1,63 @@
 
+require 'ffi'
+# FIXME: should require the lower level ffi stuff here instead of having this included higher up
+
 module FFI_Yajl
-  class Encoder
-    attr_accessor :opts
+  module FFI
+    module Encoder
+      module ClassMethods
+        def encode(obj, *args)
+          new(*args).encode(obj)
+        end
+      end
 
-    def self.encode(obj, *args)
-      new(*args).encode(obj)
-    end
+      def self.included(base)
+        base.extend ClassMethods
+      end
 
-    def initialize(opts = {})
-      @opts = opts
-    end
+      attr_accessor :opts
 
-    def encode(obj)
-      yajl_gen = FFI_Yajl.yajl_gen_alloc(nil, nil)
+      def initialize(opts = {})
+        @opts = opts
+      end
 
-      # configure the yajl encoder
-      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]
-      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
-      indent = if opts[:pretty]
-                 opts[:indent] ? opts[:indent] : "  "
-               else
-                 " "
-               end
-      FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_indent_string, :string, indent)
+      def encode(obj)
+        yajl_gen = FFI_Yajl.yajl_gen_alloc(nil, nil)
 
-      # setup our own state
-      state = {
-        :json_opts => opts,
-        :processing_key => false,
-      }
+        # configure the yajl encoder
+        FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]
+        FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
+        indent = if opts[:pretty]
+                   opts[:indent] ? opts[:indent] : "  "
+                 else
+                   " "
+                 end
+        FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_indent_string, :string, indent)
 
-      # do the encoding
-      obj.ffi_yajl(yajl_gen, state)
+        # setup our own state
+        state = {
+          :json_opts => opts,
+          :processing_key => false,
+        }
 
-      # get back our encoded JSON
-      string_ptr = FFI::MemoryPointer.new(:string)
-      length_ptr = FFI::MemoryPointer.new(:int)
-      FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr)
-      length = length_ptr.read_int
-      string = string_ptr.get_pointer(0).read_string
+        # do the encoding
+        obj.ffi_yajl(yajl_gen, state)
 
-      return string
-    ensure
-      # free up the yajl encoder
-      FFI_Yajl.yajl_gen_free(yajl_gen)
+        # get back our encoded JSON
+        string_ptr = ::FFI::MemoryPointer.new(:string)
+        length_ptr = ::FFI::MemoryPointer.new(:int)
+        FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr)
+        length = length_ptr.read_int
+        string = string_ptr.get_pointer(0).read_string
+
+        return string
+      ensure
+        # free up the yajl encoder
+        FFI_Yajl.yajl_gen_free(yajl_gen)
+      end
     end
   end
-
 end
-
 
 class Hash
   def ffi_yajl(yajl_gen, state)

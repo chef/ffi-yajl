@@ -13,6 +13,9 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   # except if you're doing an unoptimized gcc install we're going to help you out a bit
   if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
     $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
+    # how many people realize that -Wall is a compiler-specific flag???
+    # apparently not many based on reading lots of shitty extconf.rb's out there
+    $CFLAGS << " -Wall"
   end
 
   # yajl_complete_parse is only in >= 2.0
