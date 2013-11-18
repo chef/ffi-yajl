@@ -37,7 +37,7 @@ module FFI_Yajl
       def run
         #filename = ARGV[0] || 'benchmark/subjects/ohai.json'
         filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
-        hash = File.open(filename, 'rb') { |f| Yajl::Parser.new.parse(f.read) }
+        hash = File.open(filename, 'rb') { |f| FFI_Yajl::Parser.parse(f.read) }
 
         times = ARGV[1] ? ARGV[1].to_i : 1000
         puts "Starting benchmark encoding #{filename} #{times} times\n\n"
@@ -49,13 +49,13 @@ module FFI_Yajl
             }
           }
 
-          x.report("Yajl::Encoder.encode (to a String)") {
-            times.times {
-              output = Yajl::Encoder.encode(hash)
-            }
-          }
-
           if defined?(Yajl::Encoder)
+            x.report("Yajl::Encoder.encode (to a String)") {
+              times.times {
+                output = Yajl::Encoder.encode(hash)
+              }
+            }
+
             io_encoder = Yajl::Encoder.new
             x.report("Yajl::Encoder#encode (to an IO)") {
               times.times {
