@@ -287,7 +287,10 @@ class Hash
   def ffi_yajl(yajl_gen, state)
     FFI_Yajl.yajl_gen_map_open(yajl_gen)
     self.each do |key, value|
-      key.ffi_yajl(yajl_gen, state.merge({:processing_key => true}))
+      # Perf Fix: mutate state hash rather than creating new copy
+      state[:processing_key] = true
+      key.ffi_yajl(yajl_gen, state)
+      state[:processing_key] = false
       value.ffi_yajl(yajl_gen, state)
     end
     FFI_Yajl.yajl_gen_map_close(yajl_gen)
