@@ -1,7 +1,7 @@
 before_install: sudo dpkg -P libyajl1 || true
   # this would probably all be easier if i fixed bundle install not working...
-script: rake gem ; gem install pkg/ffi-yajl*.gem ; lib=`gem which ffi_yajl`; dirname=`dirname $lib`; cd $dirname/..; rspec
-after_success: gem install yajl-ruby; gem install json; gem install psych; ffi-yajl-bench
+script: rake gem ; gem install pkg/ffi-yajl*.gem ; lib=`gem which ffi_yajl`; dirname=`dirname $lib`; cd $dirname/..; FORCE_FFI_YAJL="ext" rspec
+after_success: gem install yajl-ruby; gem install json; gem install psych; FORCE_FFI_YAJL="ext" ffi-yajl-bench
 language: ruby
 rvm:
   - 2.0.0
