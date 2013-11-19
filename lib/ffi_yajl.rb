@@ -3,6 +3,7 @@ require 'ffi'
 
 begin
   require 'ffi_yajl/ext'
+  puts "W00T! native extensions!"
   module FFI_Yajl
     class Encoder
       include FFI_Yajl::Ext::Encoder

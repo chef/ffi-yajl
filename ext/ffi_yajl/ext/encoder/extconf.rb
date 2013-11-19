@@ -13,4 +13,6 @@ if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
   $CFLAGS << " -Wall"
 end
 
-create_makefile 'encoder'
+dir_config 'encoder'
+
+create_makefile 'ffi_yajl/ext/encoder'

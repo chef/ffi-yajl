@@ -1,5 +1,6 @@
 require 'rspec/core/rake_task'
 require 'rubygems/package_task'
+require 'rake/extensiontask'
 
 Dir[File.expand_path("../*gemspec", __FILE__)].reverse.each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
@@ -32,6 +33,14 @@ end
 desc "remove build files"
 task :clean do
   sh %Q{ rm -f pkg/*.gem }
+end
+
+spec = Gem::Specification.load('ffi-yajl.gemspec')
+Rake::ExtensionTask.new do |ext|
+  ext.name = 'encoder'
+  ext.lib_dir = 'lib/ffi_yajl/ext'
+  ext.ext_dir = 'ext/ffi_yajl/ext/encoder'
+  ext.gem_spec = spec
 end
 
 task :default => :spec
