@@ -34,10 +34,9 @@ module FFI_Yajl
         length = length_ptr.read_int
         string = string_ptr.get_pointer(0).read_string
 
-        return string
-      ensure
-        # free up the yajl encoder
         FFI_Yajl.yajl_gen_free(yajl_gen)
+
+        return string
       end
     end
   end

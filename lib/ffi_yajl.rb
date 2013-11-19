@@ -13,19 +13,12 @@ module FFI_Yajl
       @opts = opts
     end
 
-    if defined?(Yajl)
-      puts "oh shit, yajl is loaded, don't cross the streams, going ffi.."
+    begin
+      require 'ffi_yajl/ext'
+      include FFI_Yajl::Ext::Encoder
+    rescue LoadError
       require 'ffi_yajl/ffi'
       include FFI_Yajl::FFI::Encoder
-    else
-      begin
-        require 'ffi_yajl/ext'
-        puts "W00T! native extensions!"
-        include FFI_Yajl::Ext::Encoder
-      rescue LoadError
-        require 'ffi_yajl/ffi'
-        include FFI_Yajl::FFI::Encoder
-      end
     end
   end
 end
@@ -116,8 +109,8 @@ module FFI_Yajl
 
   attach_function :yajl_gen_config, [:yajl_gen, :yajl_gen_option, :varargs], :int
 
-  # yajl_gen yajl_gen_alloc (const yajl_gen_config *config, const yajl_alloc_funcs *allocFuncs)
-  attach_function :yajl_gen_alloc, [:pointer, :pointer], :yajl_gen
+  # yajl_gen yajl_gen_alloc (const yajl_alloc_funcs *allocFuncs)
+  attach_function :yajl_gen_alloc, [:pointer], :yajl_gen
   # yajl_gen yajl_gen_alloc2 (const yajl_print_t callback, const yajl_gen_config *config, const yajl_alloc_funcs *allocFuncs, void *ctx)
   # attach_function :yajl_gen_alloc2, [:pointer, :pointer, :pointer, :pointer], :yajl_gen
   # void  yajl_gen_free (yajl_gen handle)
