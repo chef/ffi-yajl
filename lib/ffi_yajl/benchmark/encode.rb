@@ -5,10 +5,14 @@ require 'rubygems'
 require 'benchmark'
 require 'stringio'
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
-  begin
-    require 'yajl'
-  rescue Exception
-    puts "INFO: yajl-ruby not installed"
+  if ENV['FORCE_FFI_YAJL'] != 'ext'
+    begin
+      require 'yajl'
+    rescue Exception
+      puts "INFO: yajl-ruby not installed"
+    end
+  else
+    puts "INFO: skipping yajl-ruby because we're using the C extension"
   end
 else
   puts "INFO: skipping yajl-ruby on jruby"

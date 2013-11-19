@@ -14,9 +14,20 @@ optparse = OptionParser.new do |o|
   o.on( '-p', '--profile', 'Run perftools.rb profiling' ) do
     opts[:profile] = true
   end
+
+  o.on( '-F', '--ffi', 'Force using FFI' ) do
+    opts[:ffi] = true
+  end
+
+  o.on( '-E', '--ext', 'Force using C ext' ) do
+    opts[:ext] = true
+  end
 end
 
 optparse.parse!
+
+ENV['FORCE_FFI_YAJL'] = 'ffi' if opts[:ffi]
+ENV['FORCE_FFI_YAJL'] = 'ext' if opts[:ext]
 
 if opts[:profile]
   FFI_Yajl::Benchmark::EncodeProfile.new().run()
