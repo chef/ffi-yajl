@@ -5,6 +5,23 @@ module FFI_Yajl
   class Encoder
     attr_accessor :opts
 
+    def encode(obj)
+      # initialization that we can do in pure ruby
+      yajl_gen_opts = {}
+
+      yajl_gen_opts[:yajl_gen_validate_utf8] = true
+      yajl_gen_opts[:yajl_gen_beautify] = false
+      yajl_gen_opts[:yajl_gen_indent_string] = " "
+
+      if opts[:pretty]
+        yajl_gen_opts[:yajl_gen_beautify] = true
+        yajl_gen_opts[:yajl_gen_indent_string] = opts[:indent] ? opts[:indent] : "  "
+      end
+
+      # call either the ext or ffi hook
+      do_yajl_encode(obj, yajl_gen_opts)
+    end
+
     def self.encode(obj, *args)
       new(*args).encode(obj)
     end
@@ -13,12 +30,24 @@ module FFI_Yajl
       @opts = opts
     end
 
-    begin
+    if ENV['FORCE_FFI_YAJL'] == "ext"
       require 'ffi_yajl/ext'
       include FFI_Yajl::Ext::Encoder
-    rescue LoadError
+    elsif ENV['FORCE_FFI_YAJL'] == "ffi"
       require 'ffi_yajl/ffi'
       include FFI_Yajl::FFI::Encoder
+    elsif defined?(Yajl)
+      # on Linux yajl-ruby and non-FFI ffi_yajl conflict
+      require 'ffi_yajl/ffi'
+      include FFI_Yajl::FFI::Encoder
+    else
+      begin
+        require 'ffi_yajl/ext'
+        include FFI_Yajl::Ext::Encoder
+      rescue LoadError
+        require 'ffi_yajl/ffi'
+        include FFI_Yajl::FFI::Encoder
+      end
     end
   end
 end

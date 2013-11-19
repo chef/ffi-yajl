@@ -5,17 +5,18 @@ require 'ffi'
 module FFI_Yajl
   module FFI
     module Encoder
-      def encode(obj)
+      def do_yajl_encode(obj, yajl_gen_opts = {})
+
         yajl_gen = FFI_Yajl.yajl_gen_alloc(nil);
 
         # configure the yajl encoder
-        FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]
-        FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
-        indent = if opts[:pretty]
-                   opts[:indent] ? opts[:indent] : "  "
-                 else
-                   " "
-                 end
+        if yajl_gen_opts[:yajl_gen_beautify]
+          FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1)
+        end
+        if yajl_gen_opts[:yajl_gen_validate_utf8]
+          FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_validate_utf8, :int, 1)
+        end
+        indent = yajl_gen_opts[:yajl_gen_indent_string] || " "
         FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_indent_string, :string, indent)
 
         # setup our own state
@@ -97,7 +98,8 @@ end
 
 class Bignum
   def ffi_yajl(yajl_gen, state)
-    raise NotImpelementedError
+    str = self.to_s
+    FFI_Yajl.yajl_gen_number(yajl_gen, str, str.length)
   end
 end
 
