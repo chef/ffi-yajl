@@ -5,24 +5,8 @@ require 'ffi'
 module FFI_Yajl
   module FFI
     module Encoder
-      module ClassMethods
-        def encode(obj, *args)
-          new(*args).encode(obj)
-        end
-      end
-
-      def self.included(base)
-        base.extend ClassMethods
-      end
-
-      attr_accessor :opts
-
-      def initialize(opts = {})
-        @opts = opts
-      end
-
       def encode(obj)
-        yajl_gen = FFI_Yajl.yajl_gen_alloc(nil, nil)
+        yajl_gen = FFI_Yajl.yajl_gen_alloc(nil);
 
         # configure the yajl encoder
         FFI_Yajl.yajl_gen_config(yajl_gen, :yajl_gen_beautify, :int, 1) if opts[:pretty]

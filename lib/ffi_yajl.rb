@@ -1,19 +1,31 @@
 require 'rubygems'
 require 'ffi'
 
-begin
-  require 'ffi_yajl/ext'
-  puts "W00T! native extensions!"
-  module FFI_Yajl
-    class Encoder
-      include FFI_Yajl::Ext::Encoder
+module FFI_Yajl
+  class Encoder
+    attr_accessor :opts
+
+    def self.encode(obj, *args)
+      new(*args).encode(obj)
     end
-  end
-rescue LoadError
-  require 'ffi_yajl/ffi'
-  module FFI_Yajl
-    class Encoder
+
+    def initialize(opts = {})
+      @opts = opts
+    end
+
+    if defined?(Yajl)
+      puts "oh shit, yajl is loaded, don't cross the streams, going ffi.."
+      require 'ffi_yajl/ffi'
       include FFI_Yajl::FFI::Encoder
+    else
+      begin
+        require 'ffi_yajl/ext'
+        puts "W00T! native extensions!"
+        include FFI_Yajl::Ext::Encoder
+      rescue LoadError
+        require 'ffi_yajl/ffi'
+        include FFI_Yajl::FFI::Encoder
+      end
     end
   end
 end
