@@ -275,6 +275,10 @@ describe "JSON Gem Compat API" do
         parsed_json = JSON.parse(json)
         expect({"1"=>2}).to eq(parsed_json)
       end
+
+      it "JSON.generate should handle nil second argument" do
+        expect(JSON.generate(["foo"], nil)).to eql(%q{["foo"]})
+      end
     end
   end
 end
