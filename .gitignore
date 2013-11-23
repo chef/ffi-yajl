@@ -1,4 +1,6 @@
+*.a
 *.bundle
+*.dylib
 *.gem
 *.rake_tasks~
 *.rbc
@@ -17,10 +19,13 @@
 Gemfile.lock
 InstalledFiles
 _yardoc
+bin/json_reformat
+bin/json_verify
 coverage
 doc
 doc/
 erl_crash.dump
+include
 lib/bundler/man
 mkmf.log
 pkg
