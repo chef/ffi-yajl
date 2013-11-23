@@ -1,8 +1,8 @@
+*.bundle
 *.gem
 *.rake_tasks~
 *.rbc
 *.so
-*.bundle
 *.swo
 *.swp
 */tags
