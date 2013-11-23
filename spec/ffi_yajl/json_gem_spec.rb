@@ -164,7 +164,6 @@ describe "JSON Gem Compat API" do
         expect{ JSON.parse("blah") }.to raise_error(JSON::ParserError)
       end
       it "should raise JSON::GeneratorError on encoding NaN" do
-        pending("fix NaN encoding issue")
         expect{ JSON.generate(0.0/0.0) }.to raise_error(JSON::GeneratorError)
       end
       it "should raise JSON::GeneratorError on encoding a partial UTF-8 character" do

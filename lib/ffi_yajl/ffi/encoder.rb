@@ -31,7 +31,9 @@ module FFI_Yajl
         # get back our encoded JSON
         string_ptr = ::FFI::MemoryPointer.new(:string)
         length_ptr = ::FFI::MemoryPointer.new(:int)
-        FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr)
+        if ( status = FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr) ) != 0
+          FFI_Yajl::Encoder.raise_error_for_status(status)
+        end
         length = length_ptr.read_int
         string = string_ptr.get_pointer(0).read_string
 
@@ -39,13 +41,16 @@ module FFI_Yajl
 
         return string
       end
+
     end
   end
 end
 
 class Hash
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_map_open(yajl_gen)
+    if ( status = FFI_Yajl.yajl_gen_map_open(yajl_gen) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
     self.each do |key, value|
       # Perf Fix: mutate state hash rather than creating new copy
       state[:processing_key] = true
@@ -53,35 +58,47 @@ class Hash
       state[:processing_key] = false
       value.ffi_yajl(yajl_gen, state)
     end
-    FFI_Yajl.yajl_gen_map_close(yajl_gen)
+    if ( status = FFI_Yajl.yajl_gen_map_close(yajl_gen) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
 class Array
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_array_open(yajl_gen)
+    if ( status = FFI_Yajl.yajl_gen_array_open(yajl_gen) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
     self.each do |value|
       value.ffi_yajl(yajl_gen, state)
     end
-    FFI_Yajl.yajl_gen_array_close(yajl_gen)
+    if ( status = FFI_Yajl.yajl_gen_array_close(yajl_gen) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
 class NilClass
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_null(yajl_gen)
+    if ( status = FFI_Yajl.yajl_gen_null(yajl_gen) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
 class TrueClass
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_bool(yajl_gen, 0)
+    if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 0) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
 class FalseClass
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_bool(yajl_gen, 1)
+    if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 1) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
@@ -89,9 +106,13 @@ class Fixnum
   def ffi_yajl(yajl_gen, state)
     if state[:processing_key]
       str = self.to_s
-      FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length)
+      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.length) ) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status)
+      end
     else
-      FFI_Yajl.yajl_gen_integer(yajl_gen, self)
+      if ( status = FFI_Yajl.yajl_gen_integer(yajl_gen, self) ) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status)
+      end
     end
   end
 end
@@ -99,19 +120,25 @@ end
 class Bignum
   def ffi_yajl(yajl_gen, state)
     str = self.to_s
-    FFI_Yajl.yajl_gen_number(yajl_gen, str, str.length)
+    if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.length) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
 class Float
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_double(yajl_gen, self)
+    if ( status = FFI_Yajl.yajl_gen_double(yajl_gen, self) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
 class String
   def ffi_yajl(yajl_gen, state)
-    FFI_Yajl.yajl_gen_string(yajl_gen, self, self.length)
+    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, self, self.length) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 
@@ -125,7 +152,9 @@ class Object
 
   def ffi_yajl(yajl_gen, state)
     json = self.to_json(state[:json_opts])
-    FFI_Yajl.yajl_gen_number(yajl_gen, json, json.length)
+    if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, json, json.length) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
   end
 end
 

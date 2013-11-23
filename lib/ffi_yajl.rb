@@ -30,6 +30,25 @@ module FFI_Yajl
       @opts = opts
     end
 
+    def self.raise_error_for_status(status)
+      case status
+      when 1 # yajl_gen_keys_must_be_strings
+        raise FFI_Yajl::EncodeError, "YAJL internal error: attempted use of non-string object as key"
+      when 2 # yajl_max_depth_exceeded
+        raise FFI_Yajl::EncodeError, "Max nesting depth exceeded"
+      when 3 # yajl_gen_in_error_state
+        raise FFI_Yajl::EncodeError, "YAJL internal error: a generator function (yajl_gen_XXX) was called while in an error state"
+      when 4 # yajl_gen_generation_complete
+        raise FFI_Yajl::EncodeError, "YAJL internal error: attempted to encode to an already-complete document"
+      when 5 # yajl_gen_invalid_number
+        raise FFI_Yajl::EncodeError, "Invalid number: cannot encode Infinity, -Infinity, or NaN"
+      when 6 # yajl_gen_no_buf
+        raise FFI_Yajl::EncodeError, "YAJL internal error: yajl_gen_get_buf was called, but a print callback was specified, so no internal buffer is available"
+      else
+        raise FFI_Yajl::EncodeError, "Unknown YAJL Error, please report this as a bug"
+      end
+    end
+
     if ENV['FORCE_FFI_YAJL'] == "ext"
       require 'ffi_yajl/ext'
       include FFI_Yajl::Ext::Encoder
@@ -86,15 +105,15 @@ module FFI_Yajl
     :yajl_status_error,
   ]
 
-  enum :yajl_gen_status, [
-    :yajl_gen_status_ok,
-    :yajl_gen_keys_must_be_strings,
-    :yajl_max_depth_exceeded,
-    :yajl_gen_in_error_state,
-    :yajl_gen_generation_complete,
-    :yajl_gen_invalid_number,
-    :yajl_gen_no_buf,
-  ]
+#  enum :yajl_gen_status, [
+#    :yajl_gen_status_ok,
+#    :yajl_gen_keys_must_be_strings,
+#    :yajl_max_depth_exceeded,
+#    :yajl_gen_in_error_state,
+#    :yajl_gen_generation_complete,
+#    :yajl_gen_invalid_number,
+#    :yajl_gen_no_buf,
+#  ]
 
   enum :yajl_option, [
     :yajl_allow_comments, 0x01,
@@ -145,18 +164,19 @@ module FFI_Yajl
   # void  yajl_gen_free (yajl_gen handle)
   attach_function :yajl_gen_free, [:yajl_gen], :void
 
-  attach_function :yajl_gen_integer, [:yajl_gen, :long_long], :yajl_gen_status
-  attach_function :yajl_gen_double, [:yajl_gen, :double], :yajl_gen_status
-  attach_function :yajl_gen_number, [:yajl_gen, :ustring, :int], :yajl_gen_status
+  # FFI::Enums are slower than :ints
+  attach_function :yajl_gen_integer, [:yajl_gen, :long_long], :int
+  attach_function :yajl_gen_double, [:yajl_gen, :double], :int
+  attach_function :yajl_gen_number, [:yajl_gen, :ustring, :int], :int
   attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :int  # XXX: FFI Enums are slow?
-  attach_function :yajl_gen_null, [:yajl_gen], :yajl_gen_status
-  attach_function :yajl_gen_bool, [:yajl_gen, :int], :yajl_gen_status
-  attach_function :yajl_gen_map_open, [:yajl_gen], :yajl_gen_status
-  attach_function :yajl_gen_map_close, [:yajl_gen], :yajl_gen_status
-  attach_function :yajl_gen_array_open, [:yajl_gen], :yajl_gen_status
-  attach_function :yajl_gen_array_close, [:yajl_gen], :yajl_gen_status
+  attach_function :yajl_gen_null, [:yajl_gen], :int
+  attach_function :yajl_gen_bool, [:yajl_gen, :int], :int
+  attach_function :yajl_gen_map_open, [:yajl_gen], :int
+  attach_function :yajl_gen_map_close, [:yajl_gen], :int
+  attach_function :yajl_gen_array_open, [:yajl_gen], :int
+  attach_function :yajl_gen_array_close, [:yajl_gen], :int
   # yajl_gen_status yajl_gen_get_buf (yajl_gen hand, const unsigned char **buf, unsigned int *len)
-  attach_function :yajl_gen_get_buf, [:yajl_gen, :pointer ,:pointer], :yajl_gen_status
+  attach_function :yajl_gen_get_buf, [:yajl_gen, :pointer ,:pointer], :int
   # void yajl_gen_clear (yajl_gen hand)
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 
