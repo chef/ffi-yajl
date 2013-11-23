@@ -43,6 +43,7 @@ unless libyajl2_ok
   Dir.chdir ".."
 end
 
+dir_config 'libyajl2'
 
 File.open("Makefile", "w") do |mf|
   mf.puts "# Dummy makefile for non-mri rubies"
