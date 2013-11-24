@@ -28,15 +28,8 @@ end
 prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
 unless libyajl2_ok
-  puts '$cflags = ' + $cflags.to_s
-  puts '$CFLAGS = ' + $CFLAGS.to_s
-  puts '$ldflags = ' + $ldflags.to_s
-  puts '$LDFLAGS = ' + $LDFLAGS.to_s
-  puts RbConfig::MAKEFILE_CONFIG['CC']
-  ENV['cflags'] = $cflags
-  ENV['CFLAGS'] = $CFLAGS
-  ENV['ldflags'] = $ldflags
-  ENV['LDFLAGS'] = $LDFLAGS
+  ENV['CFLAGS'] = RbConfig::expand "$(CFLAGS)"
+  ENV['LDFLAGS'] = RbConfig::expand "$(LDFLAGS)"
   ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
   system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1" or raise "wget failed"
   system "tar xvf yajl-2.0.1.tar.gz" or raise "tar xvf failed"
