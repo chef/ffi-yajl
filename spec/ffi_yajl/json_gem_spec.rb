@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # This started life as yajl-ruby's json_gem_compatibility/compatibility_spec.rb file.
 # Kinda looks like they stole it from the JSON gem.  I updated the syntax a lot.
 
