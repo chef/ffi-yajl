@@ -35,3 +35,4 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+ext/ffi_yajl/ext/encoder/Makefile
