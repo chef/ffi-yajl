@@ -101,8 +101,8 @@ describe "JSON Gem Compat API" do
     end
 
     context "when setting symbolize_names via JSON.default_options" do
-      before(:all) { saved_default = JSON.default_options[:symbolize_names] }
-      after(:all) { JSON.default_options[:symbolize_names] = saved_default }
+      before(:all) { @saved_default = JSON.default_options[:symbolize_names] }
+      after(:all) { JSON.default_options[:symbolize_names] = @saved_default }
 
       it "the default behavior should be to not symbolize keys" do
         expect(JSON.parse('{"foo": 1234}')).to eq({"foo" => 1234})
