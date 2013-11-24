@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
-
   require 'mkmf'
   require 'rbconfig'
 
@@ -20,9 +19,6 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
 
   # yajl_complete_parse is only in >= 2.0
   libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
-
-  create_makefile("dummy")
-
 else
   # always install libyajl2 on Jruby
   # FIXME: get the conditional mkmf stuff to work on Jruby
@@ -32,9 +28,9 @@ end
 prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
 unless libyajl2_ok
-#  ENV['CFLAGS'] = $CFLAGS
-#  ENV['LDFLAGS'] = $LDFLAGS
-#  ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
+  ENV['CFLAGS'] = $CFLAGS
+  ENV['LDFLAGS'] = $LDFLAGS
+  ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
   system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1" or raise "wget failed"
   system "tar xvf yajl-2.0.1.tar.gz" or raise "tar xvf failed"
   Dir.chdir "lloyd-yajl-f4b2b1a" or raise "chdir failed"

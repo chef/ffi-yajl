@@ -78,12 +78,12 @@ optflags = -O3 -fno-fast-math
 debugflags = -ggdb3
 warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wshorten-64-to-32 -Wimplicit-function-declaration
 CCDLFLAGS = -fno-common
-CFLAGS   = $(CCDLFLAGS) -O3 -march=nocona -O2 -pipe -fno-common -Wall $(ARCH_FLAG)
+CFLAGS   = $(CCDLFLAGS) -I/Users/lamont/git/ffi-yajl/include -L/Users/lamont/git/ffi-yajl/lib -O3 -march=nocona -O2 -pipe -fno-common -Wall $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
 CPPFLAGS =  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT -I/usr/local/opt/libyaml/include -I/usr/local/opt/readline/include -I/usr/local/opt/libksba/include -I/usr/local/opt/openssl/include $(DEFS) $(cppflags)
 CXXFLAGS = $(CCDLFLAGS) $(cxxflags) $(ARCH_FLAG)
-ldflags  = -L. -fstack-protector -L/usr/local/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/libksba/lib -L/usr/local/opt/openssl/lib 
+ldflags  = -L/Users/lamont/git/ffi-yajl/lib -I/Users/lamont/git/ffi-yajl/include -L/Users/lamont/git/ffi-yajl/lib -O3 -march=nocona -O2 -pipe -fno-common -lyajl
 dldflags = -Wl,-undefined,dynamic_lookup -Wl,-multiply_defined,suppress -L/usr/local/opt/libyaml/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/libksba/lib -L/usr/local/opt/openssl/lib  
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
@@ -130,7 +130,7 @@ DISTCLEANDIRS =
 
 extout = 
 extout_prefix = 
-target_prefix = /encoder
+target_prefix = /ffi_yajl/ext
 LOCAL_LIBS = 
 LIBS = $(LIBRUBYARG_SHARED)  -lpthread -ldl -lobjc 
 ORIG_SRCS = encoder.c
@@ -228,7 +228,7 @@ site-install-rb: install-rb
 	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -c $<
 
 $(DLLIB): $(OBJS) Makefile
-	$(ECHO) linking shared-object encoder/$(DLLIB)
+	$(ECHO) linking shared-object ffi_yajl/ext/$(DLLIB)
 	-$(Q)$(RM) $(@)
 	$(Q) $(LDSHARED) -o $@ $(OBJS) $(LIBPATH) $(DLDFLAGS) $(LOCAL_LIBS) $(LIBS)
 	$(Q) test -z '$(RUBY_CODESIGN)' || codesign -s '$(RUBY_CODESIGN)' -f $@

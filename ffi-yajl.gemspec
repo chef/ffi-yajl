@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.extensions       = %w{ ext/libyajl2/extconf.rb ext/ffi_yajl/ext/encoder/extconf.rb }
 
   s.add_development_dependency "rake"
-  s.add_development_dependency "rake-compiler"
   s.add_development_dependency "rspec", "~> 2.14"
   s.add_development_dependency "pry", "~> 0.9"
   s.add_dependency "ffi", "~> 1.9"

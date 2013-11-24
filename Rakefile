@@ -37,20 +37,12 @@ end
 
 spec = Gem::Specification.load('ffi-yajl.gemspec')
 
-
-Rake::ExtensionTask.new do |ext|
-  ext.name = 'encoder'
-  ext.lib_dir = 'lib/ffi_yajl/ext'
-  ext.ext_dir = 'ext/ffi_yajl/ext/encoder'
-  ext.gem_spec = spec
+desc "compile extensions"
+task :compile do
+  sh %Q{ ruby ext/libyajl2/extconf.rb }
+  sh %Q{ ruby ext/ffi_yajl/ext/encoder/extconf.rb }
+  sh %Q{ cd ext/ffi_yajl/ext/encoder && make }
+  sh %Q{ cd ext/ffi_yajl/ext/encoder && make install }
 end
-
-Rake::ExtensionTask.new do |ext|
-  ext.name = 'libyajl2'
-  ext.ext_dir = 'ext/libyajl2'
-  ext.gem_spec = spec
-end
-
-task :compile_encodr => :compile_libyajl2
 
 task :default => :spec
