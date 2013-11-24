@@ -1,6 +1,5 @@
 require 'rspec/core/rake_task'
 require 'rubygems/package_task'
-require 'rake/extensiontask'
 
 Dir[File.expand_path("../*gemspec", __FILE__)].reverse.each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
