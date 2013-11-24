@@ -2,6 +2,7 @@
 *.bundle
 *.dylib
 *.gem
+*.o
 *.rake_tasks~
 *.rbc
 *.so
