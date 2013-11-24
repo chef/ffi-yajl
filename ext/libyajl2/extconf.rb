@@ -33,7 +33,9 @@ unless libyajl2_ok
   puts '$ldflags = ' + $ldflags.to_s
   puts '$LDFLAGS = ' + $LDFLAGS.to_s
   puts RbConfig::MAKEFILE_CONFIG['CC']
+  ENV['cflags'] = $cflags
   ENV['CFLAGS'] = $CFLAGS
+  EVN['ldflags'] = $ldflags
   ENV['LDFLAGS'] = $LDFLAGS
   ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
   system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1" or raise "wget failed"
