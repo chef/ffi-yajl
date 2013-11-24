@@ -28,8 +28,10 @@ end
 prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
 unless libyajl2_ok
-  puts $CFLAGS
-  puts $LDFLAGS
+  puts '$cflags = ' + $cflags
+  puts '$CFLAGS = ' + $CFLAGS
+  puts '$ldflags = ' + $ldflags
+  puts '$LDFLAGS = ' + $LDFLAGS
   puts RbConfig::MAKEFILE_CONFIG['CC']
   ENV['CFLAGS'] = $CFLAGS
   ENV['LDFLAGS'] = $LDFLAGS
