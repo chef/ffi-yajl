@@ -183,11 +183,9 @@ describe "JSON Gem Compat API" do
 
     shared_examples_for "handling utf8 correctly" do
       it "should encode the content correctly" do
-        pending "FIXME"
         expect(utf8.to_json).to eq(json)
       end
       it "should parse the content correctly" do
-        pending "FIXME"
         expect(JSON.parse(json)).to eq(utf8)
       end
     end
@@ -235,6 +233,40 @@ describe "JSON Gem Compat API" do
 #      utf8.should eql(JSON.parse(json))
   end
 
+
+    context "when encoding basic types with #to_json" do
+      it "Array#to_json should work" do
+        expect([ "a", "b", "c" ].to_json).to eq(%Q{["a","b","c"]})
+      end
+
+      it "Hash#to_json should work" do
+        expect({"a"=>"b"}.to_json).to eq(%Q{{"a":"b"}})
+      end
+
+      it "Fixnum#to_json should work" do
+        expect(1.to_json).to eq("1")
+      end
+
+      it "Float#to_json should work" do
+        expect(1.1.to_json).to eq("1.1")
+      end
+
+      it "String#to_json should work" do
+        expect("foo".to_json).to eq(%Q{"foo"})
+      end
+
+      it "TrueClass#to_json should work" do
+        expect(true.to_json).to eq("true")
+      end
+
+      it "FalseClass#to_json should work" do
+        expect(false.to_json).to eq("false")
+      end
+
+      it "NilClass#to_json should work" do
+        expect(nil.to_json).to eq("null")
+      end
+    end
 
     context "ported tests for generation" do
       before(:all) do

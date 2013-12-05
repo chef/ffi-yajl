@@ -88,7 +88,7 @@ end
 
 class TrueClass
   def ffi_yajl(yajl_gen, state)
-    if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 0) ) != 0
+    if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 1) ) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status)
     end
   end
@@ -96,7 +96,7 @@ end
 
 class FalseClass
   def ffi_yajl(yajl_gen, state)
-    if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 1) ) != 0
+    if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 0) ) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status)
     end
   end
