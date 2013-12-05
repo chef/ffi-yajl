@@ -12,8 +12,6 @@ rvm:
   - ree
   - rbx-2.1.1
   - rbx
-  - rbx-18mode
-  - rbx-19mode
   - jruby-19mode
   - jruby-18mode
   - jruby-head
@@ -69,18 +67,6 @@ matrix:
       jdk: openjdk6
       env: JRUBY_OPTS="-Xcext.enabled=true"
     - rvm: ree
-      jdk: openjdk7
-      env: JRUBY_OPTS="-Xcext.enabled=true"
-    - rvm: rbx-18mode
-      jdk: openjdk6
-      env: JRUBY_OPTS="-Xcext.enabled=true"
-    - rvm: rbx-18mode
-      jdk: openjdk7
-      env: JRUBY_OPTS="-Xcext.enabled=true"
-    - rvm: rbx-19mode
-      jdk: openjdk6
-      env: JRUBY_OPTS="-Xcext.enabled=true"
-    - rvm: rbx-19mode
       jdk: openjdk7
       env: JRUBY_OPTS="-Xcext.enabled=true"
   allow_failures:
