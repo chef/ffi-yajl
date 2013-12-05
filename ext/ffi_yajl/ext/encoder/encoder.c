@@ -102,12 +102,12 @@ static VALUE rb_cNilClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
 }
 
 static VALUE rb_cTrueClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
-  yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 0);
+  yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 1);
   return Qnil;
 }
 
 static VALUE rb_cFalseClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
-  yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 1);
+  yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 0);
   return Qnil;
 }
 
