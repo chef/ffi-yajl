@@ -1,7 +1,7 @@
 #include <ruby.h>
 #include <yajl/yajl_gen.h>
 
-static VALUE mFFI_Yajl, mExt, mEncoder;
+static VALUE mFFI_Yajl, mExt, mEncoder, cEncodeError;
 
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
 
@@ -130,6 +130,12 @@ static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
 }
 
 static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  ID sym_to_s = rb_intern("to_s");
+  VALUE str = rb_funcall(self, sym_to_s, 0);
+  char *cptr = RSTRING_PTR(str);
+  if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
+    rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
+  }
   yajl_gen_double((struct yajl_gen_t *) yajl_gen, NUM2DBL(self));
   return Qnil;
 }
@@ -160,6 +166,7 @@ static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
 
 void Init_encoder() {
   mFFI_Yajl = rb_define_module("FFI_Yajl");
+  cEncodeError = rb_define_class_under(mFFI_Yajl, "EncodeError", rb_eStandardError);
   mExt = rb_define_module_under(mFFI_Yajl, "Ext");
   mEncoder = rb_define_module_under(mExt, "Encoder");
   rb_define_method(mEncoder, "do_yajl_encode", mEncoder_do_yajl_encode, 2);
