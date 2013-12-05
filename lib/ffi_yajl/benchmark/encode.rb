@@ -33,6 +33,11 @@ begin
 rescue Exception
   puts "INFO: active_support gem not installed"
 end
+begin
+  require 'oj'
+rescue Exception
+  puts "INFO: oj gem not installed"
+end
 
 module FFI_Yajl
   class Benchmark
@@ -59,6 +64,14 @@ module FFI_Yajl
               output = ffi_string_encoder.encode(hash)
             }
           }
+
+          if defined?(Oj)
+            x.report("Oj.dump (to a String)") {
+              times.times {
+                output = Oj.dump(hash)
+              }
+            }
+          end
 
           if defined?(Yajl::Encoder)
             x.report("Yajl::Encoder.encode (to a String)") {
