@@ -39,7 +39,9 @@ spec = Gem::Specification.load('ffi-yajl.gemspec')
 desc "compile extensions"
 task :compile do
   sh %Q{ cd ext/libyajl2 && ruby extconf.rb }
-  sh %Q{ cd ext/ffi_yajl/ext/encoder && ruby extconf.rb && make && make install }
+  # FIXME: please, please, fix me...
+  sh %Q{ cd ext/ffi_yajl/ext/encoder && ruby extconf.rb && make && cp encoder.* ../../../../lib/ffi_yajl/ext }
+  sh %Q{ rm -f lib/ffi_yajl/ext/encoder.{c,o}  }
 end
 
 task :default => :spec
