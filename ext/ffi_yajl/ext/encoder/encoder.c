@@ -113,11 +113,15 @@ static VALUE rb_cFalseClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
 
 static VALUE rb_cFixnum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   ID sym_to_s = rb_intern("to_s");
-  VALUE str;
+  VALUE str = rb_funcall(self, sym_to_s, 0);
+  char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
 
+  if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
+    rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
+  }
   if ( ((ffi_state_t *)state)->processing_key ) {
-    str = rb_funcall(self, sym_to_s, 0);
-    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str));
+    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len);
   } else {
     yajl_gen_integer((struct yajl_gen_t *) yajl_gen, NUM2INT(self));
   }
@@ -125,6 +129,12 @@ static VALUE rb_cFixnum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
 }
 
 static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  ID sym_to_s = rb_intern("to_s");
+  VALUE str = rb_funcall(self, sym_to_s, 0);
+  char *cptr = RSTRING_PTR(str);
+  if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
+    rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
+  }
   rb_raise( rb_eNotImpError, "Bignum#ffi_yajl not implemented");
   return Qnil;
 }
