@@ -181,12 +181,12 @@ describe "JSON Gem Compat API" do
       end
     end
 
-    shared_examples_for "handling utf8 correctly" do
+    shared_examples_for "handles encoding and parsing correctly" do
       it "should encode the content correctly" do
-        expect(utf8.to_json).to eq(json)
+        expect(ruby.to_json).to eq(json)
       end
       it "should parse the content correctly" do
-        expect(JSON.parse(json)).to eq(utf8)
+        expect(JSON.parse(json)).to eq(ruby)
       end
     end
 
@@ -208,17 +208,17 @@ describe "JSON Gem Compat API" do
 #      "\"#{0x7f.chr}\"".should eql(0x7f.chr.to_json)
 
     context"when dealing with common UTF-8 symbols" do
-      let(:utf8) { [ "© ≠ €! \01" ] }
+      let(:ruby) { [ "© ≠ €! \01" ] }
       let(:json) { "[\"© ≠ €! \\u0001\"]" }
 
-      it_behaves_like "handling utf8 correctly"
+      it_behaves_like "handles encoding and parsing correctly"
     end
 
     context "when dealing with Hiragana UTF-8 characters" do
-      let(:utf8) { ["\343\201\202\343\201\204\343\201\206\343\201\210\343\201\212"] }
+      let(:ruby) { ["\343\201\202\343\201\204\343\201\206\343\201\210\343\201\212"] }
       let(:json) { "[\"あいうえお\"]" }
 
-      it_behaves_like "handling utf8 correctly"
+      it_behaves_like "handles encoding and parsing correctly"
     end
 #      utf8 = ['საქართველო']
 #      json = "[\"საქართველო\"]"

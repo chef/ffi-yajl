@@ -19,7 +19,8 @@ module FFI_Yajl
       end
 
       # call either the ext or ffi hook
-      do_yajl_encode(obj, yajl_gen_opts)
+      str = do_yajl_encode(obj, yajl_gen_opts)
+      str.force_encoding('UTF-8') if defined? Encoding
     end
 
     def self.encode(obj, *args)
@@ -234,7 +235,9 @@ module FFI_Yajl
       1
     end
     StringCallback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(stringval.slice(0,stringlen))
+      s = stringval.slice(0,stringlen)
+      s.force_encoding('UTF-8') if defined? Encoding
+      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(s)
       1
     end
     StartMapCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
@@ -286,7 +289,7 @@ module FFI_Yajl
       callbacks[:yajl_start_array] = StartArrayCallback
       callbacks[:yajl_end_array] = EndArrayCallback
       yajl_handle = FFI_Yajl.yajl_alloc(callback_ptr, nil, ctx)
-      if ( stat = FFI_Yajl.yajl_parse(yajl_handle, str, str.length) != :yajl_status_ok )
+      if ( stat = FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
         # FIXME: dup the error and call yajl_free_error?
         error = FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
         raise FFI_Yajl::ParseError.new(error)
