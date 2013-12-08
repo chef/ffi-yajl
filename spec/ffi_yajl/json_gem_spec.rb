@@ -195,17 +195,24 @@ describe "JSON Gem Compat API" do
       expect(''.to_json).to eq( %q{""} )
     end
     it "should encode backspace character" do
-      pending "FIXME"
       expect("\b".to_json).to eq( %q{"\\b"} )
     end
     it "should encode \u0001 correctly" do
-      pending "FIXME"
       expect(0x1.chr.to_json).to eq( %q{"\u0001"} )
     end
 
-#      '"\u001F"'.should eql(0x1f.chr.to_json)
-#      '" "'.should eql(' '.to_json)
-#      "\"#{0x7f.chr}\"".should eql(0x7f.chr.to_json)
+    it "should encode \u001f correctly" do
+      expect(0x1f.chr.to_json).to eq( %q{"\u001F"} )
+    end
+
+    it "should encode a string with a space correctly" do
+      expect(' '.to_json).to eq( %q{" "} )
+    end
+
+    it "should encode 0x75 correctly" do
+      expect(0x7f.chr.to_json).to eq( %Q{"#{0x7f.chr}"} )
+    end
+
 
     context"when dealing with common UTF-8 symbols" do
       let(:ruby) { [ "© ≠ €! \01" ] }
@@ -220,17 +227,37 @@ describe "JSON Gem Compat API" do
 
       it_behaves_like "handles encoding and parsing correctly"
     end
-#      utf8 = ['საქართველო']
-#      json = "[\"საქართველო\"]"
-#      json.should eql(utf8.to_json)
-#      utf8.should eql(JSON.parse(json))
-#      '["Ã"]'.should eql(JSON.generate(["Ã"]))
-#      ["€"].should eql(JSON.parse('["\u20ac"]'))
-#      utf8_str = "\xf0\xa0\x80\x81"
-#      utf8 = [utf8_str]
-#      json = "[\"#{utf8_str}\"]"
-#      json.should eql(JSON.generate(utf8))
-#      utf8.should eql(JSON.parse(json))
+
+    context "whatever this is" do
+      let(:ruby) { ['საქართველო'] }
+      let(:json) { "[\"საქართველო\"]" }
+
+      it_behaves_like "handles encoding and parsing correctly"
+    end
+
+    context "accents" do
+      let(:ruby) { ["Ã"] }
+      let(:json) { '["Ã"]' }
+
+      it_behaves_like "handles encoding and parsing correctly"
+    end
+
+    context "euro symbol" do
+      let(:ruby) { ["€"] }
+      let(:json) { '["\u20ac"]' }
+      it "should parse the content correctly" do
+        expect(JSON.parse(json)).to eq(ruby)
+      end
+    end
+
+    context "and whatever this is" do
+
+      utf8_str = "\xf0\xa0\x80\x81"
+      let(:ruby) {  [utf8_str] }
+      let(:json) { "[\"#{utf8_str}\"]" }
+
+      it_behaves_like "handles encoding and parsing correctly"
+    end
   end
 
 
