@@ -44,12 +44,16 @@ module FFI_Yajl
           ctx_mapping[ctx.get_ulong(0)].set_value(intval)
           1
         end
-        @double_callback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
-          ctx_mapping[ctx.get_ulong(0)].set_value(doubleval)
+        @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t ]) do |ctx, stringval, stringlen|
+          s = stringval.slice(0,stringlen)
+          s.force_encoding('UTF-8') if defined? Encoding
+          # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
+          v = ( s =~ /\./ ) ? s.to_f : s.to_i
+          ctx_mapping[ctx.get_ulong(0)].set_value(v)
           1
         end
-        @number_callback = ::FFI::Function.new(:int, [:pointer, :pointer, :size_t]) do |ctx, numberval, numberlen|
-          raise "NumberCallback: not implemented"
+        @double_callback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
+          ctx_mapping[ctx.get_ulong(0)].set_value(doubleval)
           1
         end
         @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
@@ -101,7 +105,7 @@ module FFI_Yajl
         callbacks[:yajl_boolean] = @boolean_callback
         callbacks[:yajl_integer] = @integer_callback
         callbacks[:yajl_double] = @double_callback
-        callbacks[:yajl_number] = nil #NumberCallback
+        callbacks[:yajl_number] = @number_callback
         callbacks[:yajl_string] = @string_callback
         callbacks[:yajl_start_map] = @start_map_callback
         callbacks[:yajl_map_key] = @map_key_callback

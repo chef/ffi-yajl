@@ -213,8 +213,15 @@ describe "JSON Gem Compat API" do
       expect(0x7f.chr.to_json).to eq( %Q{"#{0x7f.chr}"} )
     end
 
+    context "when dealing with bignums" do
+      let(:ruby) { [ 12345678901234567890 ] }
+      let(:json) { "[12345678901234567890]" }
 
-    context"when dealing with common UTF-8 symbols" do
+      it_behaves_like "handles encoding and parsing correctly"
+    end
+
+
+    context "when dealing with common UTF-8 symbols" do
       let(:ruby) { [ "© ≠ €! \01" ] }
       let(:json) { "[\"© ≠ €! \\u0001\"]" }
 
