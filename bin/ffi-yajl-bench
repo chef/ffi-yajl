@@ -30,7 +30,7 @@ ENV['FORCE_FFI_YAJL'] = 'ffi' if opts[:ffi]
 ENV['FORCE_FFI_YAJL'] = 'ext' if opts[:ext]
 
 if opts[:profile]
-  FFI_Yajl::Benchmark::EncodeProfile.new().run()
+  FFI_Yajl::Benchmark::ParseProfileRubyProf.new().run()
 else
-  FFI_Yajl::Benchmark::Encode.new().run()
+  FFI_Yajl::Benchmark::Parse.new().run()
 end
