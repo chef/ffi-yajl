@@ -1,106 +1,12 @@
 require 'rubygems'
 require 'ffi'
 
+require 'ffi_yajl/encoder'
+require 'ffi_yajl/parser'
+
 module FFI_Yajl
   class ParseError < StandardError; end
   class EncodeError < StandardError; end
-
-  class Encoder
-    attr_accessor :opts
-
-    def encode(obj)
-      # initialization that we can do in pure ruby
-      yajl_gen_opts = {}
-
-      yajl_gen_opts[:yajl_gen_validate_utf8] = true
-      yajl_gen_opts[:yajl_gen_beautify] = false
-      yajl_gen_opts[:yajl_gen_indent_string] = " "
-
-      if opts[:pretty]
-        yajl_gen_opts[:yajl_gen_beautify] = true
-        yajl_gen_opts[:yajl_gen_indent_string] = opts[:indent] ? opts[:indent] : "  "
-      end
-
-      # call either the ext or ffi hook
-      str = do_yajl_encode(obj, yajl_gen_opts)
-      str.force_encoding('UTF-8') if defined? Encoding
-    end
-
-    def self.encode(obj, *args)
-      new(*args).encode(obj)
-    end
-
-    def initialize(opts = {})
-      @opts = opts
-    end
-
-    def self.raise_error_for_status(status)
-      case status
-      when 1 # yajl_gen_keys_must_be_strings
-        raise FFI_Yajl::EncodeError, "YAJL internal error: attempted use of non-string object as key"
-      when 2 # yajl_max_depth_exceeded
-        raise FFI_Yajl::EncodeError, "Max nesting depth exceeded"
-      when 3 # yajl_gen_in_error_state
-        raise FFI_Yajl::EncodeError, "YAJL internal error: a generator function (yajl_gen_XXX) was called while in an error state"
-      when 4 # yajl_gen_generation_complete
-        raise FFI_Yajl::EncodeError, "YAJL internal error: attempted to encode to an already-complete document"
-      when 5 # yajl_gen_invalid_number
-        raise FFI_Yajl::EncodeError, "Invalid number: cannot encode Infinity, -Infinity, or NaN"
-      when 6 # yajl_gen_no_buf
-        raise FFI_Yajl::EncodeError, "YAJL internal error: yajl_gen_get_buf was called, but a print callback was specified, so no internal buffer is available"
-      else
-        raise FFI_Yajl::EncodeError, "Unknown YAJL Error, please report this as a bug"
-      end
-    end
-
-    if ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
-      # on Linux yajl-ruby and non-FFI ffi_yajl conflict
-      require 'ffi_yajl/ffi'
-      include FFI_Yajl::FFI::Encoder
-    else
-      begin
-        require 'ffi_yajl/ext'
-        include FFI_Yajl::Ext::Encoder
-      rescue LoadError
-        require 'ffi_yajl/ffi'
-        include FFI_Yajl::FFI::Encoder
-      end
-    end
-  end
-
-  class Parser
-    attr_accessor :opts
-
-    def self.parse(obj, *args)
-      new(*args).parse(obj)
-    end
-
-    def initialize(opts = {})
-      @opts = opts
-    end
-
-    def parse(str)
-      # initialization that we can do in pure ruby
-      yajl_opts = {}
-
-      # call either the ext or ffi hook
-      do_yajl_parse(str, yajl_opts)
-    end
-
-    if ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
-      # on Linux yajl-ruby and non-FFI ffi_yajl conflict
-      require 'ffi_yajl/ffi'
-      include FFI_Yajl::FFI::Parser
-    else
-      begin
-        require 'ffi_yajl/ext'
-        include FFI_Yajl::Ext::Parser
-      rescue LoadError
-        require 'ffi_yajl/ffi'
-        include FFI_Yajl::FFI::Parser
-      end
-    end
-  end
 end
 
 module FFI_Yajl
