@@ -2,6 +2,9 @@ require 'rubygems'
 require 'ffi'
 
 module FFI_Yajl
+  class ParseError < StandardError; end
+  class EncodeError < StandardError; end
+
   class Encoder
     attr_accessor :opts
 
@@ -70,6 +73,46 @@ module FFI_Yajl
       end
     end
   end
+
+  class Parser
+    attr_accessor :opts
+
+    def self.parse(obj, *args)
+      new(*args).parse(obj)
+    end
+
+    def initialize(opts = {})
+      @opts = opts
+    end
+
+    def parse(str)
+      # initialization that we can do in pure ruby
+      yajl_opts = {}
+
+      # call either the ext or ffi hook
+      do_yajl_parse(str, yajl_opts)
+    end
+
+    if ENV['FORCE_FFI_YAJL'] == "ext"
+      require 'ffi_yajl/ext'
+      include FFI_Yajl::Ext::Parser
+    elsif ENV['FORCE_FFI_YAJL'] == "ffi"
+      require 'ffi_yajl/ffi'
+      include FFI_Yajl::FFI::Parser
+    elsif defined?(Yajl)
+      # on Linux yajl-ruby and non-FFI ffi_yajl conflict
+      require 'ffi_yajl/ffi'
+      include FFI_Yajl::FFI::Parser
+    else
+      begin
+        require 'ffi_yajl/ext'
+        include FFI_Yajl::Ext::Parser
+      rescue LoadError
+        require 'ffi_yajl/ffi'
+        include FFI_Yajl::FFI::Parser
+      end
+    end
+  end
 end
 
 module FFI_Yajl
@@ -106,6 +149,7 @@ module FFI_Yajl
     :yajl_status_error,
   ]
 
+# FFI::Enums are slow, should remove the rest
 #  enum :yajl_gen_status, [
 #    :yajl_gen_status_ok,
 #    :yajl_gen_keys_must_be_strings,
@@ -165,11 +209,10 @@ module FFI_Yajl
   # void  yajl_gen_free (yajl_gen handle)
   attach_function :yajl_gen_free, [:yajl_gen], :void
 
-  # FFI::Enums are slower than :ints
   attach_function :yajl_gen_integer, [:yajl_gen, :long_long], :int
   attach_function :yajl_gen_double, [:yajl_gen, :double], :int
   attach_function :yajl_gen_number, [:yajl_gen, :ustring, :int], :int
-  attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :int  # XXX: FFI Enums are slow?
+  attach_function :yajl_gen_string, [:yajl_gen, :ustring, :int], :int
   attach_function :yajl_gen_null, [:yajl_gen], :int
   attach_function :yajl_gen_bool, [:yajl_gen, :int], :int
   attach_function :yajl_gen_map_open, [:yajl_gen], :int
@@ -181,129 +224,6 @@ module FFI_Yajl
   # void yajl_gen_clear (yajl_gen hand)
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 
-  class ParseError < StandardError; end
-  class EncodeError < StandardError; end
 
-  class Parser
-    class State
-      attr_accessor :stack, :key_stack, :key
-
-      def initialize
-        @stack = Array.new
-        @key_stack = Array.new
-      end
-
-      def save_key
-        key_stack.push(key)
-      end
-
-      def restore_key
-        @key = key_stack.pop()
-      end
-
-      def set_value(val)
-        case stack.last
-        when Hash
-          raise if key.nil?
-          stack.last[key] = val
-        when Array
-          stack.last.push(val)
-        else
-          raise
-        end
-      end
-    end
-
-    NullCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(nil)
-      1
-    end
-    BooleanCallback = ::FFI::Function.new(:int, [:pointer, :int]) do |ctx, boolval|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(boolval == 1 ? true : false)
-      1
-    end
-    IntegerCallback = ::FFI::Function.new(:int, [:pointer, :long_long]) do |ctx, intval|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(intval)
-      1
-    end
-    DoubleCallback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(doubleval)
-      1
-    end
-    NumberCallback = ::FFI::Function.new(:int, [:pointer, :pointer, :size_t]) do |ctx, numberval, numberlen|
-      raise "NumberCallback: not implemented"
-      1
-    end
-    StringCallback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
-      s = stringval.slice(0,stringlen)
-      s.force_encoding('UTF-8') if defined? Encoding
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value(s)
-      1
-    end
-    StartMapCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-      state = @@CTX_MAPPING[ctx.get_ulong(0)]
-      state.save_key
-      state.stack.push(Hash.new)
-      1
-    end
-    MapKeyCallback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
-      @@CTX_MAPPING[ctx.get_ulong(0)].key = key.slice(0,keylen)
-      1
-    end
-    EndMapCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-      state = @@CTX_MAPPING[ctx.get_ulong(0)]
-      state.restore_key
-      state.set_value( state.stack.pop ) if state.stack.length > 1
-      1
-    end
-    StartArrayCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-      state = @@CTX_MAPPING[ctx.get_ulong(0)]
-      state.save_key
-      state.stack.push(Array.new)
-      1
-    end
-    EndArrayCallback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-      state = @@CTX_MAPPING[ctx.get_ulong(0)]
-      state.restore_key
-      @@CTX_MAPPING[ctx.get_ulong(0)].set_value( @@CTX_MAPPING[ctx.get_ulong(0)].stack.pop ) if @@CTX_MAPPING[ctx.get_ulong(0)].stack.length > 1
-      1
-    end
-
-    def self.parse(str, opts = {})
-      @@CTX_MAPPING ||= Hash.new
-      rb_ctx = FFI_Yajl::Parser::State.new()
-      @@CTX_MAPPING[rb_ctx.object_id] = rb_ctx
-      ctx = ::FFI::MemoryPointer.new(:long)
-      ctx.write_long( rb_ctx.object_id )
-      callback_ptr = ::FFI::MemoryPointer.new(FFI_Yajl::YajlCallbacks)
-      callbacks = FFI_Yajl::YajlCallbacks.new(callback_ptr)
-      callbacks[:yajl_null] = NullCallback
-      callbacks[:yajl_boolean] = BooleanCallback
-      callbacks[:yajl_integer] = IntegerCallback
-      callbacks[:yajl_double] = DoubleCallback
-      callbacks[:yajl_number] = nil #NumberCallback
-      callbacks[:yajl_string] = StringCallback
-      callbacks[:yajl_start_map] = StartMapCallback
-      callbacks[:yajl_map_key] = MapKeyCallback
-      callbacks[:yajl_end_map] = EndMapCallback
-      callbacks[:yajl_start_array] = StartArrayCallback
-      callbacks[:yajl_end_array] = EndArrayCallback
-      yajl_handle = FFI_Yajl.yajl_alloc(callback_ptr, nil, ctx)
-      if ( stat = FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
-        # FIXME: dup the error and call yajl_free_error?
-        error = FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
-        raise FFI_Yajl::ParseError.new(error)
-      end
-      if ( stat = FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
-        # FIXME: dup the error and call yajl_free_error?
-        error = FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
-        raise FFI_Yajl::ParseError.new(error)
-      end
-      rb_ctx.stack.pop
-    ensure
-      FFI_Yajl.yajl_free(yajl_handle) if yajl_handle
-      @@CTX_MAPPING.delete(rb_ctx.object_id) if rb_ctx && rb_ctx.object_id
-    end
-  end
 end
 
