@@ -53,13 +53,7 @@ module FFI_Yajl
       end
     end
 
-    if ENV['FORCE_FFI_YAJL'] == "ext"
-      require 'ffi_yajl/ext'
-      include FFI_Yajl::Ext::Encoder
-    elsif ENV['FORCE_FFI_YAJL'] == "ffi"
-      require 'ffi_yajl/ffi'
-      include FFI_Yajl::FFI::Encoder
-    elsif defined?(Yajl)
+    if ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
       # on Linux yajl-ruby and non-FFI ffi_yajl conflict
       require 'ffi_yajl/ffi'
       include FFI_Yajl::FFI::Encoder
@@ -93,13 +87,7 @@ module FFI_Yajl
       do_yajl_parse(str, yajl_opts)
     end
 
-    if ENV['FORCE_FFI_YAJL'] == "ext"
-      require 'ffi_yajl/ext'
-      include FFI_Yajl::Ext::Parser
-    elsif ENV['FORCE_FFI_YAJL'] == "ffi"
-      require 'ffi_yajl/ffi'
-      include FFI_Yajl::FFI::Parser
-    elsif defined?(Yajl)
+    if ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
       # on Linux yajl-ruby and non-FFI ffi_yajl conflict
       require 'ffi_yajl/ffi'
       include FFI_Yajl::FFI::Parser
