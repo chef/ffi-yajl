@@ -132,10 +132,11 @@ static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   ID sym_to_s = rb_intern("to_s");
   VALUE str = rb_funcall(self, sym_to_s, 0);
   char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
   if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
-  rb_raise( rb_eNotImpError, "Bignum#ffi_yajl not implemented");
+  yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
   return Qnil;
 }
 
@@ -143,10 +144,11 @@ static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   ID sym_to_s = rb_intern("to_s");
   VALUE str = rb_funcall(self, sym_to_s, 0);
   char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
   if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
-  yajl_gen_double((struct yajl_gen_t *) yajl_gen, NUM2DBL(self));
+  yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
   return Qnil;
 }
 

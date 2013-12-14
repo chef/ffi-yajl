@@ -128,7 +128,8 @@ end
 
 class Float
   def ffi_yajl(yajl_gen, state)
-    if ( status = FFI_Yajl.yajl_gen_double(yajl_gen, self) ) != 0
+    str = self.to_s
+    if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status)
     end
   end
