@@ -136,7 +136,11 @@ static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
-  yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
+  if ( ((ffi_state_t *)state)->processing_key ) {
+    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len);
+  } else {
+    yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
+  }
   return Qnil;
 }
 
@@ -148,7 +152,11 @@ static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
-  yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
+  if ( ((ffi_state_t *)state)->processing_key ) {
+    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len);
+  } else {
+    yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
+  }
   return Qnil;
 }
 

@@ -120,8 +120,14 @@ end
 class Bignum
   def ffi_yajl(yajl_gen, state)
     str = self.to_s
-    if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
-      FFI_Yajl::Encoder.raise_error_for_status(status)
+    if state[:processing_key]
+      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status)
+      end
+    else
+      if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status)
+      end
     end
   end
 end
@@ -129,8 +135,14 @@ end
 class Float
   def ffi_yajl(yajl_gen, state)
     str = self.to_s
-    if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
-      FFI_Yajl::Encoder.raise_error_for_status(status)
+    if state[:processing_key]
+      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status)
+      end
+    else
+      if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status)
+      end
     end
   end
 end
