@@ -145,12 +145,6 @@ end
 
 # I feel dirty
 class Object
-  unless defined?(ActiveSupport)
-    def to_json(*args, &block)
-      "\"#{to_s}\""
-    end
-  end
-
   def ffi_yajl(yajl_gen, state)
     json = self.to_json(state[:json_opts])
     if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, json, json.bytesize) ) != 0

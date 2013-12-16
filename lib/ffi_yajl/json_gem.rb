@@ -111,3 +111,11 @@ module ::Kernel
   end
 end
 
+class Object
+  unless defined?(ActiveSupport)
+    def to_json(*args, &block)
+      "\"#{to_s}\""
+    end
+  end
+end
+
