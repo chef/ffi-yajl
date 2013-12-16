@@ -31,7 +31,7 @@ module JSON
 
   def self.dump(obj, io=nil, *args)
     FFI_Yajl::Encoder.encode(obj, io)
-  rescue FII_Yajl::EncodeError => e
+  rescue FFI_Yajl::EncodeError => e
     raise JSON::GeneratorError, e.message
   end
 
