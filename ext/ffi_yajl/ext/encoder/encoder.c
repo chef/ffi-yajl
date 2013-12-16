@@ -157,16 +157,6 @@ static VALUE rb_cString_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   return Qnil;
 }
 
-static VALUE rb_cObject_to_json(VALUE self, VALUE args) {
-  // FIXME: probably a bit too honeybadger about ignoring the arity of this function completely
-  ID sym_to_s = rb_intern("to_s");
-  VALUE str;
-
-  str = rb_funcall(self, sym_to_s, 0);
-  str = rb_str_concat(rb_str_concat(rb_str_new2("\""), str), rb_str_new2("\""));
-  return str;
-}
-
 static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   ID sym_to_json = rb_intern("to_json");
   VALUE str;
@@ -193,7 +183,5 @@ void Init_encoder() {
   rb_define_method(rb_cFloat, "ffi_yajl", rb_cFloat_ffi_yajl, 2);
   rb_define_method(rb_cString, "ffi_yajl", rb_cString_ffi_yajl, 2);
   rb_define_method(rb_cObject, "ffi_yajl", rb_cObject_ffi_yajl, 2);
-// FIXME: make this conditional on ActiveSupport not being defined:
-  rb_define_method(rb_cObject, "to_json", rb_cObject_to_json, -2);
 }
 
