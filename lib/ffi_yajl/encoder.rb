@@ -48,18 +48,22 @@ module FFI_Yajl
       end
     end
 
-    if ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
+    if ENV['FORCE_FFI_YAJL'] == "ext"
+      require 'ffi_yajl/ext/encoder'
+      include FFI_Yajl::Ext::Encoder
+    elsif ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
       # on Linux yajl-ruby and non-FFI ffi_yajl conflict
-      require 'ffi_yajl/ffi'
+      require 'ffi_yajl/ffi/encoder'
       include FFI_Yajl::FFI::Encoder
     else
       begin
-        require 'ffi_yajl/ext'
+        require 'ffi_yajl/ext/encoder'
         include FFI_Yajl::Ext::Encoder
       rescue LoadError
-        require 'ffi_yajl/ffi'
+        require 'ffi_yajl/ffi/encoder'
         include FFI_Yajl::FFI::Encoder
       end
     end
+
   end
 end

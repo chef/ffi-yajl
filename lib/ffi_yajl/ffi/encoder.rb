@@ -1,6 +1,5 @@
 
-require 'ffi'
-# FIXME: should require the lower level ffi stuff here instead of having this included higher up
+require 'ffi_yajl/ffi'
 
 module FFI_Yajl
   module FFI

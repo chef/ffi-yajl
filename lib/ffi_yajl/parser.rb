@@ -19,16 +19,19 @@ module FFI_Yajl
       do_yajl_parse(str, yajl_opts)
     end
 
-    if ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
+    if ENV['FORCE_FFI_YAJL'] == "ext"
+      require 'ffi_yajl/ext/parser'
+      include FFI_Yajl::Ext::Parser
+    elsif ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
       # on Linux yajl-ruby and non-FFI ffi_yajl conflict
-      require 'ffi_yajl/ffi'
+      require 'ffi_yajl/ffi/parser'
       include FFI_Yajl::FFI::Parser
     else
       begin
-        require 'ffi_yajl/ext'
+        require 'ffi_yajl/ext/parser'
         include FFI_Yajl::Ext::Parser
       rescue LoadError
-        require 'ffi_yajl/ffi'
+        require 'ffi_yajl/ffi/parser'
         include FFI_Yajl::FFI::Parser
       end
     end
