@@ -147,7 +147,6 @@ describe "JSON Gem Compat API" do
       end
 
       it "and DateTime's are really ISO8601s" do
-        pending "not all rubies implement DT#iso861"
         dt = DateTime.new
         expect(dt.to_json).to eq( %Q{"#{dt.iso8601}"} )
       end
@@ -176,7 +175,6 @@ describe "JSON Gem Compat API" do
         expect{ JSON.generate(1.0/0.0) }.to raise_error(JSON::GeneratorError)
       end
       it "should raise JSON::GeneratorError on encoding a partial UTF-8 character" do
-        pending("fix half-UTF8 character encoding issue")
         expect{ JSON.generate(["\xea"]) }.to raise_error(JSON::GeneratorError)
       end
     end
