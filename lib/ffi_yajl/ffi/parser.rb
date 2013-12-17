@@ -4,47 +4,62 @@ require 'ffi_yajl/ffi'
 module FFI_Yajl
   module FFI
     module Parser
-        attr_accessor :stack, :key_stack, :key
+        attr_accessor :stack, :key_stack, :key, :finished
 
+        #
+        # stack used to build up our complex object
+        #
         def stack
           @stack ||= Array.new
-        end
-
-        def key_stack
-          @key_stack ||= Array.new
-        end
-
-        def save_key
-          key_stack.push(key)
-        end
-
-        def restore_key
-          @key = key_stack.pop()
         end
 
         def set_value(val)
           case stack.last
           when Hash
-            raise if key.nil?
+            raise FFI_Yajl::ParseError.new("internal error: missing key in parse") if key.nil?
             stack.last[key] = val
           when Array
             stack.last.push(val)
           else
-            raise
+            raise FFI_Yajl::ParseError.new("internal error: object not a hash or array")
           end
         end
 
+        def stack_pop
+          if stack.length > 1
+            set_value( stack.pop )
+          else
+            @finished = stack.pop
+          end
+        end
+
+        #
+        # stack to keep track of keys as we create nested hashes
+        #
+        def key_stack
+          @key_stack ||= Array.new
+        end
+
+        def key_push
+          key_stack.push(key)
+        end
+
+        def key_pop
+          @key = key_stack.pop()
+        end
+
+
       def setup_callbacks
         @null_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-          self.set_value(nil)
+          set_value(nil)
           1
         end
         @boolean_callback = ::FFI::Function.new(:int, [:pointer, :int]) do |ctx, boolval|
-          self.set_value(boolval == 1 ? true : false)
+          set_value(boolval == 1 ? true : false)
           1
         end
         @integer_callback = ::FFI::Function.new(:int, [:pointer, :long_long]) do |ctx, intval|
-          self.set_value(intval)
+          set_value(intval)
           1
         end
         @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t ]) do |ctx, stringval, stringlen|
@@ -52,22 +67,22 @@ module FFI_Yajl
           s.force_encoding('UTF-8') if defined? Encoding
           # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
           v = ( s =~ /\./ ) ? s.to_f : s.to_i
-          self.set_value(v)
+          set_value(v)
           1
         end
         @double_callback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
-          self.set_value(doubleval)
+          set_value(doubleval)
           1
         end
         @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
           s = stringval.slice(0,stringlen)
           s.force_encoding('UTF-8') if defined? Encoding
-          self.set_value(s)
+          set_value(s)
           1
         end
         @start_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-          self.save_key
-          self.stack.push(Hash.new)
+          key_push  # for key => { } case, save the key
+          stack.push(Hash.new)
           1
         end
         @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
@@ -75,18 +90,18 @@ module FFI_Yajl
           1
         end
         @end_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-          self.restore_key
-          self.set_value( self.stack.pop ) if self.stack.length > 1
+          key_pop
+          stack_pop
           1
         end
         @start_array_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-          self.save_key
-          self.stack.push(Array.new)
+          key_push  # for key => [ ] case, save the key
+          stack.push(Array.new)
           1
         end
         @end_array_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
-          self.restore_key
-          self.set_value( self.stack.pop ) if self.stack.length > 1
+          key_pop
+          stack_pop
           1
         end
       end
@@ -118,7 +133,7 @@ module FFI_Yajl
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
           raise ::FFI_Yajl::ParseError.new(error)
         end
-        stack.pop
+        finished
       ensure
         ::FFI_Yajl.yajl_free(yajl_handle) if yajl_handle
       end
