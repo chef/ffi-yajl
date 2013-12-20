@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email            = "lamont@scriptkiddie.org"
   s.homepage         = "http://github.com/lamont-granquist/ffi-yajl"
 
-  s.extensions       = %w{ ext/libyajl2/extconf.rb ext/ffi_yajl/ext/encoder/extconf.rb }
+  s.extensions       = %w{ ext/libyajl2/extconf.rb ext/ffi_yajl/ext/encoder/extconf.rb ext/ffi_yajl/ext/parser/extconf.rb }
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec", "~> 2.14"
