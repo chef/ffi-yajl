@@ -66,7 +66,13 @@ describe "FFI_Yajl::Parser" do
       json = '{"foo": 1.0973731568539e7 }'
       expect(parser.parse(json)).to eql({"foo" => 1.0973731568539e+7 })
     end
+  end
 
+  context "when parsing unicode in hash keys" do
+    it "handles heavy metal umlauts in keys" do
+      json = '{"München": "Bayern"}'
+      expect(parser.parse(json)).to eql({"München" => "Bayern"})
+    end
   end
 end
 

@@ -86,7 +86,9 @@ module FFI_Yajl
           1
         end
         @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
-          self.key = key.slice(0,keylen)
+          s = key.slice(0,keylen)
+          s.force_encoding('UTF-8') if defined? Encoding
+          self.key = s
           1
         end
         @end_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
@@ -125,12 +127,12 @@ module FFI_Yajl
         yajl_handle = ::FFI_Yajl.yajl_alloc(callback_ptr, nil, nil)
         if ( stat = ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
-          error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
+          error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError.new(error)
         end
         if ( stat = FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
-          error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.length)
+          error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError.new(error)
         end
         finished
