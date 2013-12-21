@@ -68,7 +68,7 @@ int rb_cHash_ffi_yajl_callback(VALUE key, VALUE val, VALUE extra) {
   extra_p->state->processing_key = 0;
   rb_funcall(val, sym_ffi_yajl, 2, extra_p->yajl_gen, extra_p->state);
 
-  return ST_CONTINUE;
+  return 0;
 }
 
 static VALUE rb_cHash_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
