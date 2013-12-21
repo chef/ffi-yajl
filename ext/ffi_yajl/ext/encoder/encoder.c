@@ -1,9 +1,12 @@
 #include <ruby.h>
 #include <yajl/yajl_gen.h>
 
-static VALUE mFFI_Yajl, mExt, mEncoder, cEncodeError;
+static VALUE mFFI_Yajl, mExt, mEncoder, mEncoder2, cEncodeError;
 
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
+
+#define CHECK_STATUS(call) \
+      if ((status = (call)) != yajl_gen_status_ok) { rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 1, status); }
 
 typedef struct {
   VALUE json_opts;
@@ -69,49 +72,69 @@ int rb_cHash_ffi_yajl_callback(VALUE key, VALUE val, VALUE extra) {
 }
 
 static VALUE rb_cHash_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
   ffs_extra_t extra;
 
   extra.yajl_gen = yajl_gen;
   extra.state = (ffi_state_t *)state;
 
-  yajl_gen_map_open((struct yajl_gen_t *) yajl_gen);
+  CHECK_STATUS(
+    yajl_gen_map_open((struct yajl_gen_t *) yajl_gen)
+  );
   rb_hash_foreach(self, rb_cHash_ffi_yajl_callback, (VALUE) &extra);
-  yajl_gen_map_close((struct yajl_gen_t *) yajl_gen);
+  CHECK_STATUS(
+    yajl_gen_map_close((struct yajl_gen_t *) yajl_gen)
+  );
 
   return Qnil;
 }
 
 static VALUE rb_cArray_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
   ID sym_ffi_yajl = rb_intern("ffi_yajl");
   long i;
   VALUE val;
 
-  yajl_gen_array_open((struct yajl_gen_t *) yajl_gen);
+  CHECK_STATUS(
+    yajl_gen_array_open((struct yajl_gen_t *) yajl_gen)
+  );
   for(i=0; i<RARRAY_LEN(self); i++) {
     val = rb_ary_entry(self, i);
     rb_funcall(val, sym_ffi_yajl, 2, yajl_gen, state);
   }
-  yajl_gen_array_close((struct yajl_gen_t *) yajl_gen);
+  CHECK_STATUS(
+    yajl_gen_array_close((struct yajl_gen_t *) yajl_gen)
+  );
 
   return Qnil;
 }
 
 static VALUE rb_cNilClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
-  yajl_gen_null((struct yajl_gen_t *) yajl_gen);
+  yajl_gen_status status;
+  CHECK_STATUS(
+    yajl_gen_null((struct yajl_gen_t *) yajl_gen)
+  );
   return Qnil;
 }
 
 static VALUE rb_cTrueClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
-  yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 1);
+  yajl_gen_status status;
+  CHECK_STATUS(
+    yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 1)
+  );
   return Qnil;
 }
 
 static VALUE rb_cFalseClass_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
-  yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 0);
+  yajl_gen_status status;
+  CHECK_STATUS(
+    yajl_gen_bool((struct yajl_gen_t *) yajl_gen, 0)
+  );
   return Qnil;
 }
 
 static VALUE rb_cFixnum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
   ID sym_to_s = rb_intern("to_s");
   VALUE str = rb_funcall(self, sym_to_s, 0);
   char *cptr = RSTRING_PTR(str);
@@ -121,14 +144,19 @@ static VALUE rb_cFixnum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
   if ( ((ffi_state_t *)state)->processing_key ) {
-    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len);
+    CHECK_STATUS(
+      yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len)
+    );
   } else {
-    yajl_gen_integer((struct yajl_gen_t *) yajl_gen, NUM2INT(self));
+    CHECK_STATUS(
+      yajl_gen_integer((struct yajl_gen_t *) yajl_gen, NUM2INT(self))
+    );
   }
   return Qnil;
 }
 
 static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
   ID sym_to_s = rb_intern("to_s");
   VALUE str = rb_funcall(self, sym_to_s, 0);
   char *cptr = RSTRING_PTR(str);
@@ -137,14 +165,19 @@ static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
   if ( ((ffi_state_t *)state)->processing_key ) {
-    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len);
+    CHECK_STATUS(
+      yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len)
+    );
   } else {
-    yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
+    CHECK_STATUS(
+      yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len)
+    );
   }
   return Qnil;
 }
 
 static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
   ID sym_to_s = rb_intern("to_s");
   VALUE str = rb_funcall(self, sym_to_s, 0);
   char *cptr = RSTRING_PTR(str);
@@ -153,29 +186,41 @@ static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
   if ( ((ffi_state_t *)state)->processing_key ) {
-    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len);
+    CHECK_STATUS(
+      yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len)
+    );
   } else {
-    yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len);
+    CHECK_STATUS(
+      yajl_gen_number((struct yajl_gen_t *) yajl_gen, cptr, len)
+    );
   }
   return Qnil;
 }
 
+
 static VALUE rb_cString_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
-  yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)RSTRING_PTR(self), RSTRING_LEN(self));
+  yajl_gen_status status;
+  CHECK_STATUS(
+    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)RSTRING_PTR(self), RSTRING_LEN(self))
+  );
   return Qnil;
 }
 
 static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
   ID sym_to_json = rb_intern("to_json");
   VALUE str;
 
   str = rb_funcall(self, sym_to_json, 1, ((ffi_state_t *)state)->json_opts);
-  yajl_gen_number((struct yajl_gen_t *) yajl_gen, (char *)RSTRING_PTR(str), RSTRING_LEN(str));
+  CHECK_STATUS(
+    yajl_gen_number((struct yajl_gen_t *) yajl_gen, (char *)RSTRING_PTR(str), RSTRING_LEN(str))
+  );
   return Qnil;
 }
 
 void Init_encoder() {
   mFFI_Yajl = rb_define_module("FFI_Yajl");
+  mEncoder2 = rb_define_class_under(mFFI_Yajl, "Encoder", rb_cObject);
   cEncodeError = rb_define_class_under(mFFI_Yajl, "EncodeError", rb_eStandardError);
   mExt = rb_define_module_under(mFFI_Yajl, "Ext");
   mEncoder = rb_define_module_under(mExt, "Encoder");
