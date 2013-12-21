@@ -1,6 +1,11 @@
 #include <ruby.h>
 #include <yajl/yajl_parse.h>
 
+#ifdef HAVE_RUBY_ENCODING_H
+#include <ruby/encoding.h>
+static rb_encoding *utf8Encoding;
+#endif
+
 static VALUE mFFI_Yajl, mExt, mParser, cParseError;
 
 typedef struct {
@@ -79,9 +84,22 @@ int number_callback(void *ctx, const char *numberVal, size_t numberLen) {
 
 int string_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
   char buf[stringLen+1];
+  VALUE str;
+#ifdef HAVE_RUBY_ENCODING_H
+  rb_encoding *default_internal_enc;
+#endif
+
   buf[stringLen] = 0;
   memcpy(buf, stringVal, stringLen);
-  set_value(ctx,rb_str_new2(buf));
+  str = rb_str_new2(buf);
+#ifdef HAVE_RUBY_ENCODING_H
+  default_internal_enc = rb_default_internal_encoding();
+  rb_enc_associate(str, utf8Encoding);
+  if (default_internal_enc) {
+    str = rb_str_export_to_enc(str, default_internal_enc);
+  }
+#endif
+  set_value(ctx,str);
   return 1;
 }
 
@@ -92,9 +110,22 @@ int start_map_callback(void *ctx) {
 
 int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
   char buf[stringLen+1];
+  VALUE str;
+#ifdef HAVE_RUBY_ENCODING_H
+  rb_encoding *default_internal_enc;
+#endif
+
   buf[stringLen] = 0;
   memcpy(buf, stringVal, stringLen);
-  set_key(ctx,rb_str_new2(buf));
+  str = rb_str_new2(buf);
+#ifdef HAVE_RUBY_ENCODING_H
+  default_internal_enc = rb_default_internal_encoding();
+  rb_enc_associate(str, utf8Encoding);
+  if (default_internal_enc) {
+    str = rb_str_export_to_enc(str, default_internal_enc);
+  }
+#endif
+  set_key(ctx,str);
   return 1;
 }
 
@@ -161,5 +192,8 @@ void Init_parser() {
   mExt = rb_define_module_under(mFFI_Yajl, "Ext");
   mParser = rb_define_module_under(mExt, "Parser");
   rb_define_method(mParser, "do_yajl_parse", mParser_do_yajl_parse, 2);
+#ifdef HAVE_RUBY_ENCODING_H
+  utf8Encoding = rb_utf8_encoding();
+#endif
 }
 
