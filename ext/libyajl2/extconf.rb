@@ -8,13 +8,15 @@ cc = ENV['CC']
 
 # use the CC that ruby was compiled with by default
 cc ||= RbConfig::MAKEFILE_CONFIG['CC']
+cflags ||= ""
+ldflags ||= ""
 
 # then ultimately default back to gcc
 cc ||= "gcc"
 
 # FIXME: add more compilers with default options
 if cc =~ /gcc|clang/
-  cflags << " -O3" unless cflags[/-O\d/]
+  cflags << " -O3" unless cflags =~ /-O\d/
   cflags << " -Wall"
 end
 
