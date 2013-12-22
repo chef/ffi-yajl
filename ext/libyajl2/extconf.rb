@@ -1,21 +1,25 @@
 #!/usr/bin/env ruby
 
+require 'rbconfig'
+
+cflags = ENV['CFLAGS']
+ldflags = ENV['LDFLAGS']
+cc = ENV['CC']
+
+# use the CC that ruby was compiled with by default
+cc ||= RbConfig::MAKEFILE_CONFIG['CC']
+
+# then ultimately default back to gcc
+cc ||= "gcc"
+
+# FIXME: add more compilers with default options
+if cc =~ /gcc|clang/
+  cflags << " -O3" unless cflags[/-O\d/]
+  cflags << " -Wall"
+end
+
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   require 'mkmf'
-  require 'rbconfig'
-
-  # the customer is always right, ruby is always compiled to be stupid
-  $CFLAGS = ENV['CFLAGS'] if ENV['CFLAGS']
-  $LDFLAGS = ENV['LDFLAGS'] if ENV['LDFLAGS']
-  RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
-
-  # except if you're doing an unoptimized gcc install we're going to help you out a bit
-  if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
-    $CFLAGS << " -O3" unless $CFLAGS[/-O\d/]
-    # how many people realize that -Wall is a compiler-specific flag???
-    # apparently not many based on reading lots of shitty extconf.rb's out there
-    $CFLAGS << " -Wall"
-  end
 
   # yajl_complete_parse is only in >= 2.0
   libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
@@ -28,9 +32,9 @@ end
 prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
 unless libyajl2_ok
-  ENV['CFLAGS'] = RbConfig::expand "$(CFLAGS)"
-  ENV['LDFLAGS'] = RbConfig::expand "$(LDFLAGS)"
-  ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
+  ENV['CFLAGS'] = cflags
+  ENV['LDFLAGS'] = ldflags
+  ENV['CC'] = cc
   puts "CFLAGS = #{ENV['CFLAGS']}"
   puts "LDFLAGS = #{ENV['LDFLAGS']}"
   puts "CC = #{ENV['CC']}"
