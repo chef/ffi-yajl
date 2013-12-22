@@ -31,6 +31,9 @@ unless libyajl2_ok
   ENV['CFLAGS'] = RbConfig::expand "$(CFLAGS)"
   ENV['LDFLAGS'] = RbConfig::expand "$(LDFLAGS)"
   ENV['CC'] = RbConfig::MAKEFILE_CONFIG['CC']
+  puts "CFLAGS = #{ENV['CFLAGS']}"
+  puts "LDFLAGS = #{ENV['LDFLAGS']}"
+  puts "CC = #{ENV['CC']}"
   system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1" or raise "wget failed"
   system "tar xvf yajl-2.0.1.tar.gz" or raise "tar xvf failed"
   Dir.chdir "lloyd-yajl-f4b2b1a" or raise "chdir failed"
