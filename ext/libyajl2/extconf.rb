@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rbconfig'
-require 'mkmf'
 
 cflags = ENV['CFLAGS']
 ldflags = ENV['LDFLAGS']
@@ -22,6 +21,7 @@ if cc =~ /gcc|clang/
 end
 
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
+  require 'mkmf'
 
   # yajl_complete_parse is only in >= 2.0
   libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
@@ -48,7 +48,7 @@ unless libyajl2_ok
   Dir.chdir ".."
 end
 
-dir_config 'libyajl2'
+#dir_config 'libyajl2'
 
 File.open("Makefile", "w") do |mf|
   mf.puts "# Dummy makefile for non-mri rubies"
