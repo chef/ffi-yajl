@@ -19,6 +19,7 @@ module FFI_Yajl
       # call either the ext or ffi hook
       str = do_yajl_encode(obj, yajl_gen_opts)
       str.force_encoding('UTF-8') if defined? Encoding
+      str
     end
 
     def self.encode(obj, *args)

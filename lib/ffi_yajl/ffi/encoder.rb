@@ -121,6 +121,7 @@ end
 
 class Bignum
   def ffi_yajl(yajl_gen, state)
+    puts "ENCODING BIGNUM"
     str = self.to_s
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
       raise ::FFI_Yajl::EncodeError.new("'#{str}' is an invalid number")
