@@ -27,10 +27,7 @@ unix_gemspec = eval(File.read("ffi-yajl.gemspec"))
 
 desc "install the gem locally"
 task :install => [:package] do
-  puts "RUBY_ENGINE: #{RUBY_ENGINE}"
-  puts "RUBY_VERSION: #{RUBY_VERSION}"
-  puts "RUBY_PLATFORM: #{RUBY_PLATFORM}"
-  if defined?(RUBY_ENGINE) && RUBY_ENGINE == "java"
+  if defined?(RUBY_ENGINE) && RUBY_ENGINE == "jruby"
     sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}-x86-java.gem}
   else
     sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}.gem}
