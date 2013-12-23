@@ -1,5 +1,6 @@
 require 'rspec/core/rake_task'
 require 'rubygems/package_task'
+require 'rake/extensiontask'
 
 Dir[File.expand_path("../*gemspec", __FILE__)].reverse.each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
@@ -26,7 +27,11 @@ unix_gemspec = eval(File.read("ffi-yajl.gemspec"))
 
 desc "install the gem locally"
 task :install => [:package] do
-  sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}.gem}
+  if defined?(RUBY_ENGINE) && RUBY_ENGINE == "java"
+    sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}-x86-java.gem}
+  else
+    sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}.gem}
+  end
 end
 
 desc "remove build files"
@@ -36,14 +41,26 @@ end
 
 spec = Gem::Specification.load('ffi-yajl.gemspec')
 
-desc "compile extensions"
-task :compile do
-  sh %Q{ cd ext/libyajl2 && ruby extconf.rb }
-  # FIXME: please, please, fix me...
-  sh %Q{ cd ext/ffi_yajl/ext/encoder && ruby extconf.rb && make && cp encoder.* ../../../../lib/ffi_yajl/ext }
-  sh %Q{ rm -f lib/ffi_yajl/ext/encoder.{c,o}  }
-  sh %Q{ cd ext/ffi_yajl/ext/parser && ruby extconf.rb && make && cp parser.* ../../../../lib/ffi_yajl/ext }
-  sh %Q{ rm -f lib/ffi_yajl/ext/parser.{c,o}  }
+Rake::ExtensionTask.new do |ext|
+  ext.name = 'encoder'
+  ext.lib_dir = 'lib/ffi_yajl/ext'
+  ext.ext_dir = 'ext/ffi_yajl/ext/encoder'
+  ext.gem_spec = spec
 end
+
+Rake::ExtensionTask.new do |ext|
+  ext.name = 'parser'
+  ext.lib_dir = 'lib/ffi_yajl/ext'
+  ext.ext_dir = 'ext/ffi_yajl/ext/parser'
+  ext.gem_spec = spec
+end
+
+Rake::ExtensionTask.new do |ext|
+  ext.name = 'libyajl2'
+  ext.ext_dir = 'ext/libyajl2'
+  ext.gem_spec = spec
+end
+
+#task :compile_encoder => :compile_libyajl2
 
 task :default => :spec

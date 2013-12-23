@@ -4,7 +4,7 @@ require 'ffi_yajl/version'
 Gem::Specification.new do |s|
   s.name             = 'ffi-yajl'
   s.version          = FFI_Yajl::VERSION
-  s.platform         = Gem::Platform::RUBY
+  s.platform         = "x86-java"
   s.extra_rdoc_files = ["README.md", "LICENSE" ]
   s.summary          = "Ruby FFI wrapper around YAJL 2.x"
   s.description      = s.summary
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email            = "lamont@scriptkiddie.org"
   s.homepage         = "http://github.com/lamont-granquist/ffi-yajl"
 
-  s.extensions       = %w{ ext/libyajl2/extconf.rb ext/ffi_yajl/ext/encoder/extconf.rb ext/ffi_yajl/ext/parser/extconf.rb }
+  s.extensions       = %w{ ext/libyajl2/extconf.rb }
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec", "~> 2.14"
