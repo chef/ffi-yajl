@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/lamont-granquist/ffi-yajl.png)](https://travis-ci.org/lamont-granquist/ffi-yajl)  [![Code Climate](https://codeclimate.com/github/lamont-granquist/ffi-yajl.png)](https://codeclimate.com/github/lamont-granquist/ffi-yajl) [![Coverage Status](https://coveralls.io/repos/lamont-granquist/ffi-yajl/badge.png)](https://coveralls.io/r/lamont-granquist/ffi-yajl)
+[![Build Status](https://travis-ci.org/lamont-granquist/ffi-yajl.png)](https://travis-ci.org/lamont-granquist/ffi-yajl)  [![Code Climate](https://codeclimate.com/github/lamont-granquist/ffi-yajl.png)](https://codeclimate.com/github/lamont-granquist/ffi-yajl)
 
 TODO:
 
