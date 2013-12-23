@@ -4,7 +4,7 @@ require 'ffi_yajl/version'
 Gem::Specification.new do |s|
   s.name             = 'ffi-yajl'
   s.version          = FFI_Yajl::VERSION
-  s.platform         = "x86-java"
+  s.platform         = "universal-java"
   s.extra_rdoc_files = ["README.md", "LICENSE" ]
   s.summary          = "Ruby FFI wrapper around YAJL 2.x"
   s.description      = s.summary
