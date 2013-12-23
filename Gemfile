@@ -6,5 +6,3 @@ platforms :rbx do
   gem 'rubysl', '~> 2.0'
 end
 
-gem 'coveralls', require: false
-
