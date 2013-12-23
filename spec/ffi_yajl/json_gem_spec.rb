@@ -145,11 +145,6 @@ describe "JSON Gem Compat API" do
         dt = DateTime.new
         expect(dt.to_json).to eq( %Q{"#{dt.to_s}"} )
       end
-
-      it "and DateTime's are really ISO8601s", :ruby_gte_19 => true do
-        dt = DateTime.new
-        expect(dt.to_json).to eq( %Q{"#{dt.iso8601}"} )
-      end
     end
 
     context "JSON exception classes" do
