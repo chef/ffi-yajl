@@ -1,12 +1,13 @@
 
 [![Build Status](https://travis-ci.org/lamont-granquist/ffi-yajl.png)](https://travis-ci.org/lamont-granquist/ffi-yajl)  [![Code Climate](https://codeclimate.com/github/lamont-granquist/ffi-yajl.png)](https://codeclimate.com/github/lamont-granquist/ffi-yajl) [![Coverage Status](https://coveralls.io/repos/lamont-granquist/ffi-yajl/badge.png)](https://coveralls.io/r/lamont-granquist/ffi-yajl)
 
-nothing yet...
+TODO:
 
-
-FIXME:
-  * curl'ing yajl2 sources down is certainly going to offend someone
-    (starting to think i don't really care though)
+- switching from curling yajl2 sources to using git submodule
+- fix rake compile blowing up on libyajl2
+- block ruby 1.8.7 from using c extension (segfault)
+- switch from `FORCE_FFI_YAJL` ENV var to requiring `ffi_yajl` (magic) vs `ffi_yajl/ffi` vs `ffi_yajl/ext`
+- test both ffi and ext on platforms that support both (MRI, rbx)
 
 BUILD NOTES:
   - building libyajl2 requires 'apt-get install cmake' on ubuntu, but note
