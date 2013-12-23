@@ -13,5 +13,5 @@ RSpec.configure do |c|
     c.syntax = :expect
   end
 
-  c.filter_run_excluding :ruby_gte_19 => true if RUBY_VERSION.to_f >= 1.9
+  c.filter_run_excluding :ruby_gte_19 => true unless RUBY_VERSION.to_f >= 1.9
 end
