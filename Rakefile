@@ -34,11 +34,6 @@ task :install => [:package] do
   end
 end
 
-desc "remove build files"
-task :clean do
-  sh %Q{ rm -f pkg/*.gem }
-end
-
 spec = Gem::Specification.load('ffi-yajl.gemspec')
 
 Rake::ExtensionTask.new do |ext|
