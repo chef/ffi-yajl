@@ -1,5 +1,6 @@
 
 module FFI_Yajl
+  class EncodeError < StandardError; end
   class Encoder
     attr_accessor :opts
 
@@ -48,23 +49,5 @@ module FFI_Yajl
         raise FFI_Yajl::EncodeError, "Unknown YAJL Error, please report this as a bug"
       end
     end
-
-    if ENV['FORCE_FFI_YAJL'] == "ext"
-      require 'ffi_yajl/ext/encoder'
-      include FFI_Yajl::Ext::Encoder
-    elsif ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
-      # on Linux yajl-ruby and non-FFI ffi_yajl conflict
-      require 'ffi_yajl/ffi/encoder'
-      include FFI_Yajl::FFI::Encoder
-    else
-      begin
-        require 'ffi_yajl/ext/encoder'
-        include FFI_Yajl::Ext::Encoder
-      rescue LoadError
-        require 'ffi_yajl/ffi/encoder'
-        include FFI_Yajl::FFI::Encoder
-      end
-    end
-
   end
 end

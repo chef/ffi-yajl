@@ -1,5 +1,6 @@
 
 module FFI_Yajl
+  class ParseError < StandardError; end
   class Parser
     attr_accessor :opts
 
@@ -17,23 +18,6 @@ module FFI_Yajl
 
       # call either the ext or ffi hook
       do_yajl_parse(str, yajl_opts)
-    end
-
-    if ENV['FORCE_FFI_YAJL'] == "ext"
-      require 'ffi_yajl/ext/parser'
-      include FFI_Yajl::Ext::Parser
-    elsif ENV['FORCE_FFI_YAJL'] == "ffi" || defined?(Yajl)
-      # on Linux yajl-ruby and non-FFI ffi_yajl conflict
-      require 'ffi_yajl/ffi/parser'
-      include FFI_Yajl::FFI::Parser
-    else
-      begin
-        require 'ffi_yajl/ext/parser'
-        include FFI_Yajl::Ext::Parser
-      rescue LoadError
-        require 'ffi_yajl/ffi/parser'
-        include FFI_Yajl::FFI::Parser
-      end
     end
   end
 end

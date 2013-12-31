@@ -1,8 +1,7 @@
-
+require 'rubygems'
 
 require 'ffi'
 
-# FIXME move to FFI_Yajl::FFI
 module FFI_Yajl
   extend ::FFI::Library
 
@@ -112,6 +111,19 @@ module FFI_Yajl
   # void yajl_gen_clear (yajl_gen hand)
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 
-
 end
 
+require 'ffi_yajl/encoder'
+require 'ffi_yajl/parser'
+
+module FFI_Yajl
+  class Parser
+    require 'ffi_yajl/ffi/parser'
+    include FFI_Yajl::FFI::Parser
+  end
+
+  class Encoder
+    require 'ffi_yajl/ffi/encoder'
+    include FFI_Yajl::FFI::Encoder
+  end
+end
