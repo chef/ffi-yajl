@@ -20,5 +20,20 @@ describe "FFI_Yajl::Encoder" do
     ruby = {12345678901234567890 => 2}
     expect(encoder.encode(ruby)).to eq('{"12345678901234567890":2}')
   end
+
+  # XXX: 127 == YAJL_MAX_DEPTH hardcodedness, zero control for us, it isn't even a twiddleable #define
+  it "raises an exception for deeply nested arrays" do
+    root = []
+    a = root
+    127.times { |_| a << []; a = a[0] }
+    expect{ encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
+  end
+
+  it "raises an exception for deeply nested hashes" do
+    root = {}
+    a = root
+    127.times {|_| a["a"] = {}; a = a["a"] }
+    expect{ encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
+  end
 end
 
