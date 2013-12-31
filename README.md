@@ -6,7 +6,6 @@ TODO:
 - switching from curling yajl2 sources to using git submodule
 - fix rake compile blowing up on libyajl2
 - block ruby 1.8.7 from using c extension (segfault)
-- switch from `FORCE_FFI_YAJL` ENV var to requiring `ffi_yajl` (magic) vs `ffi_yajl/ffi` vs `ffi_yajl/ext`
 - test both ffi and ext on platforms that support both (MRI, rbx)
 
 BUILD NOTES:
