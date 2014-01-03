@@ -24,7 +24,7 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
   require 'mkmf'
 
   # yajl_complete_parse is only in >= 2.0
-  libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ])
+  libyajl2_ok = have_library("yajl", "yajl_complete_parse", [ "yajl/yajl_parse.h" ]) && have_func("yajl_complete_parse")
 else
   # always install libyajl2 on Jruby
   # FIXME: get the conditional mkmf stuff to work on Jruby
