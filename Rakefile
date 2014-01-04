@@ -25,6 +25,10 @@ end
 
 unix_gemspec = eval(File.read("ffi-yajl.gemspec"))
 
+task :clean do
+  sh "rm -rf pkg/* lib/ffi_yajl/ext/*"
+end
+
 desc "install the gem locally"
 task :install => [:package] do
   if defined?(RUBY_ENGINE) && RUBY_ENGINE == "jruby"
@@ -35,6 +39,13 @@ task :install => [:package] do
 end
 
 spec = Gem::Specification.load('ffi-yajl.gemspec')
+
+Rake::ExtensionTask.new do |ext|
+  ext.name = 'libyajl2'
+  ext.lib_dir = 'lib'
+  ext.ext_dir = 'ext/libyajl2'
+  ext.gem_spec = spec
+end
 
 Rake::ExtensionTask.new do |ext|
   ext.name = 'encoder'
@@ -49,13 +60,3 @@ Rake::ExtensionTask.new do |ext|
   ext.ext_dir = 'ext/ffi_yajl/ext/parser'
   ext.gem_spec = spec
 end
-
-Rake::ExtensionTask.new do |ext|
-  ext.name = 'libyajl2'
-  ext.ext_dir = 'ext/libyajl2'
-  ext.gem_spec = spec
-end
-
-#task :compile_encoder => :compile_libyajl2
-
-task :default => :spec
