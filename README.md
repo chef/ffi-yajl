@@ -3,7 +3,6 @@
 
 ## TODO
 
-- switching from curling yajl2 sources to using git submodule
 - test both ffi and ext on platforms that support both (MRI, rbx)
 
 ## BUILD NOTES
