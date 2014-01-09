@@ -4,8 +4,6 @@
 ## TODO
 
 - switching from curling yajl2 sources to using git submodule
-- fix rake compile blowing up on libyajl2
-- block ruby 1.8.7 from using c extension (segfault)
 - test both ffi and ext on platforms that support both (MRI, rbx)
 
 ## BUILD NOTES
@@ -15,5 +13,5 @@
 
 ## KNOWN BUGS
 
+- 'rake compile' broken on mac, only tested to work on linux (ubuntu)
 - C Extension segfaults on ruby 1.8.7, so the ffi mode is forced for RUBY_VERSION < 1.9
-
