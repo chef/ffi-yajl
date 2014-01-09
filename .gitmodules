@@ -1,0 +1,3 @@
+[submodule "ext/libyajl2/vendored"]
+	path = ext/libyajl2/vendored
+	url = https://github.com/lloyd/yajl
