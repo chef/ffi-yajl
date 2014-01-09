@@ -41,7 +41,7 @@ end
 spec = Gem::Specification.load('ffi-yajl.gemspec')
 
 Rake::ExtensionTask.new do |ext|
-  ext.name = 'libyajl2'
+  ext.name = 'libyajl'
   ext.lib_dir = 'lib'
   ext.ext_dir = 'ext/libyajl2'
   ext.gem_spec = spec

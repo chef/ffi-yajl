@@ -53,5 +53,6 @@ end
 File.open("Makefile", "w") do |mf|
   mf.puts "# Dummy makefile for non-mri rubies"
   mf.puts "all install::\n"
+  mf.puts "\tcp -f lloyd-yajl-f4b2b1a/build/yajl-2.0.1/lib/libyajl.so ."
 end
 
