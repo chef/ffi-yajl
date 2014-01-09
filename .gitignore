@@ -28,11 +28,12 @@ doc/
 erl_crash.dump
 include
 lib/bundler/man
+lib/libyajl*
 mkmf.log
 pkg
 rdoc
+share
 spec/reports
 test/tmp
 test/version_tmp
 tmp
-lib/libyajl*
