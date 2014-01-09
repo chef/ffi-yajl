@@ -33,26 +33,28 @@ end
 
 prefix=File.expand_path(File.join(File.dirname(__FILE__), "..", ".."))
 
-unless libyajl2_ok
+#dir_config 'libyajl2'
+
+if libyajl2_ok
+  File.open("Makefile", "w") do |mf|
+    mf.puts "# Dummy makefile when we don't build the library"
+    mf.puts "all install::\n"
+  end
+else
   ENV['CFLAGS'] = cflags
   ENV['LDFLAGS'] = ldflags
   ENV['CC'] = cc
-  puts "CFLAGS = #{ENV['CFLAGS']}"
-  puts "LDFLAGS = #{ENV['LDFLAGS']}"
-  puts "CC = #{ENV['CC']}"
-  system "wget -O yajl-2.0.1.tar.gz http://github.com/lloyd/yajl/tarball/2.0.1" or raise "wget failed"
-  system "tar xvf yajl-2.0.1.tar.gz" or raise "tar xvf failed"
-  Dir.chdir "lloyd-yajl-f4b2b1a" or raise "chdir failed"
-  system "./configure --prefix=#{prefix} > /tmp/libyajl.out" or raise "configure failed"
-  system "make install >> /tmp/libyajl.out" or raise "make install failed"
-  Dir.chdir ".."
-end
+  system("cp -rf #{File.expand_path(File.join(File.dirname(__FILE__), "vendored"))} .") unless File.exists?("vendored")
 
-#dir_config 'libyajl2'
-
-File.open("Makefile", "w") do |mf|
-  mf.puts "# Dummy makefile for non-mri rubies"
-  mf.puts "all install::\n"
-  mf.puts "\tcp -f lloyd-yajl-f4b2b1a/build/yajl-2.0.1/lib/libyajl.so ."
+  File.open("Makefile", "w") do |mf|
+    mf.puts "# Makefile for building vendored libyajl2"
+    mf.puts "CFLAGS = #{ENV['CFLAGS']}"
+    mf.puts "LDFLAGS = #{ENV['LDFLAGS']}"
+    mf.puts "CC = #{ENV['CC']}\n"
+    mf.puts "all install::"
+    mf.puts "\tcd vendored && ./configure --prefix=#{prefix}"
+    mf.puts "\tcd vendored && make install"
+    mf.puts "\tcp -f vendored/build/yajl-2.0.5/lib/libyajl.so .\n"
+  end
 end
 
