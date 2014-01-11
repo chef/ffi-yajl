@@ -197,11 +197,22 @@ static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   return Qnil;
 }
 
-
 static VALUE rb_cString_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
   yajl_gen_status status;
   CHECK_STATUS(
     yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)RSTRING_PTR(self), RSTRING_LEN(self))
+  );
+  return Qnil;
+}
+
+static VALUE rb_cSymbol_ffi_yajl(VALUE self, VALUE yajl_gen, VALUE state) {
+  yajl_gen_status status;
+  ID sym_to_s = rb_intern("to_s");
+  VALUE str = rb_funcall(self, sym_to_s, 0);
+  char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
+  CHECK_STATUS(
+    yajl_gen_string((struct yajl_gen_t *) yajl_gen, (unsigned char *)cptr, len)
   );
   return Qnil;
 }
@@ -235,6 +246,7 @@ void Init_encoder() {
   rb_define_method(rb_cBignum, "ffi_yajl", rb_cBignum_ffi_yajl, 2);
   rb_define_method(rb_cFloat, "ffi_yajl", rb_cFloat_ffi_yajl, 2);
   rb_define_method(rb_cString, "ffi_yajl", rb_cString_ffi_yajl, 2);
+  rb_define_method(rb_cSymbol, "ffi_yajl", rb_cSymbol_ffi_yajl, 2);
   rb_define_method(rb_cObject, "ffi_yajl", rb_cObject_ffi_yajl, 2);
 }
 

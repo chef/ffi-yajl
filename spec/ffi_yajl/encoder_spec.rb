@@ -35,5 +35,15 @@ describe "FFI_Yajl::Encoder" do
     127.times {|_| a["a"] = {}; a = a["a"] }
     expect{ encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
   end
+
+  it "encodes symbols in keys as strings" do
+    ruby = {:thing => 1}
+    expect(encoder.encode(ruby)).to eq('{"thing":1}')
+  end
+
+  it "encodes symbols in values as strings" do
+    ruby = {"thing" => :one}
+    expect(encoder.encode(ruby)).to eq('{"thing":"one"}')
+  end
 end
 

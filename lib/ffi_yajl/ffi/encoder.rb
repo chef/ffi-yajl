@@ -155,6 +155,15 @@ class Float
   end
 end
 
+class Symbol
+  def ffi_yajl(yajl_gen, state)
+    str = self.to_s
+    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
+  end
+end
+
 class String
   def ffi_yajl(yajl_gen, state)
     if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, self, self.bytesize) ) != 0
