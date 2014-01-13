@@ -7,7 +7,7 @@ static VALUE cYajl_Gen;
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
 
 #define CHECK_STATUS(call) \
-      if ((status = (call)) != yajl_gen_status_ok) { rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 1, status); }
+      if ((status = (call)) != yajl_gen_status_ok) { rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 1, INT2FIX(status)); }
 
 static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts) {
   ID sym_ffi_yajl = rb_intern("ffi_yajl");
