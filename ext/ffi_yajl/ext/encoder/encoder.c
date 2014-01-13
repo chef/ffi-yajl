@@ -163,7 +163,7 @@ static VALUE rb_cFixnum_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
     );
   } else {
     CHECK_STATUS(
-      yajl_gen_integer(yajl_gen, NUM2INT(self))
+      yajl_gen_number(yajl_gen, cptr, len)
     );
   }
   return Qnil;
