@@ -45,5 +45,11 @@ describe "FFI_Yajl::Encoder" do
     ruby = {"thing" => :one}
     expect(encoder.encode(ruby)).to eq('{"thing":"one"}')
   end
+
+  it "can encode 32-bit unsigned ints" do
+    ruby = {"gid"=>4294967294}
+    expect(encoder.encode(ruby)).to eq('{"gid":4294967294}')
+  end
+
 end
 
