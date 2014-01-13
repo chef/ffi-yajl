@@ -4,7 +4,6 @@
 ## TODO
 
 - fix int conversion issue in chef specs in c extension
-- fix c extension on rubinius
 
 ## BUILD NOTES
 
@@ -14,4 +13,3 @@
 ## KNOWN BUGS
 
 - 'rake compile' broken on mac, only tested to work on linux (ubuntu)
-- C Extension segfaults on ruby 1.8.7, so the ffi mode is forced for RUBY_VERSION < 1.9
