@@ -3,7 +3,8 @@
 
 ## TODO
 
-- test both ffi and ext on platforms that support both (MRI, rbx)
+- fix int conversion issue in chef specs in c extension
+- fix c extension on rubinius
 
 ## BUILD NOTES
 

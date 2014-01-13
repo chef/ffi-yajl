@@ -9,9 +9,25 @@ end
 
 require 'ffi_yajl/version'
 
-desc "Run all specs in spec directory"
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = FileList['spec/**/*_spec.rb']
+desc "Run all specs against both extensions"
+task :spec do
+  Rake::Task["spec:ffi"].invoke
+  Rake::Task["spec:ext"].invoke
+end
+
+namespace :spec do
+  desc "Run all specs against ffi extension"
+  RSpec::Core::RakeTask.new(:ffi) do |t|
+    ENV['FORCE_FFI_YAJL'] = "ffi"
+    t.pattern = FileList['spec/**/*_spec.rb']
+  end
+  if RUBY_VERSION.to_f >= 1.9 && RUBY_ENGINE !~ /jruby/
+    desc "Run all specs again c extension"
+    RSpec::Core::RakeTask.new(:ext) do |t|
+      ENV['FORCE_FFI_YAJL'] = "ext"
+      t.pattern = FileList['spec/**/*_spec.rb']
+    end
+  end
 end
 
 desc "Build it and ship it"
