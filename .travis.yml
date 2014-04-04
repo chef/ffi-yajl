@@ -90,6 +90,5 @@ matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: rbx-2.0
-    - rvm: rbx-2.2
 env:
   - JRUBY_OPTS="-Xcext.enabled=true"
