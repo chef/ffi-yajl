@@ -9,7 +9,7 @@ RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
 
 # pick up the vendored libyajl2 out of the libyajl2 gem
 $CFLAGS = "-I#{Libyajl2.include_path} -L#{Libyajl2.opt_path} #{$CFLAGS}"
-$LDFLAGS = "-L#{Libyajl2.opt_path} #{$CFLAGS}"
+$LDFLAGS = "-L#{Libyajl2.opt_path} #{$LDFLAGS}"
 
 puts $CFLAGS
 puts $LDFLAGS
