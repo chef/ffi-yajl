@@ -57,13 +57,6 @@ end
 spec = Gem::Specification.load('ffi-yajl.gemspec')
 
 Rake::ExtensionTask.new do |ext|
-  ext.name = 'libyajl'
-  ext.lib_dir = 'lib'
-  ext.ext_dir = 'ext/libyajl2'
-  ext.gem_spec = spec
-end
-
-Rake::ExtensionTask.new do |ext|
   ext.name = 'encoder'
   ext.lib_dir = 'lib/ffi_yajl/ext'
   ext.ext_dir = 'ext/ffi_yajl/ext/encoder'

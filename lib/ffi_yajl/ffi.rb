@@ -1,12 +1,13 @@
 require 'rubygems'
 
+require 'libyajl2'
 require 'ffi'
 
 module FFI_Yajl
   extend ::FFI::Library
 
   libname = ::FFI.map_library_name("yajl")
-  libpath = File.expand_path(File.join(File.dirname(__FILE__), "..", libname))
+  libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
 
   if File.file?(libpath)
     # use our vendored version of libyajl2 if we find it installed

@@ -1,16 +1,15 @@
 require 'mkmf'
+require 'libyajl2'
 
 # the customer is always right, ruby is always compiled to be stupid
 $CFLAGS = ENV['CFLAGS'] if ENV['CFLAGS']
 $LDFLAGS = ENV['LDFLAGS'] if ENV['LDFLAGS']
 RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
 
-# search our gem root first to pick up libyajl2 that we vendored
-gem_root = File.expand_path(File.join(File.dirname(__FILE__), "../../../.."))
-$CFLAGS = "-I#{gem_root}/include -L#{gem_root}/lib #{$CFLAGS}"
-$LDFLAGS = "-L#{gem_root}/lib #{$CFLAGS}"
+# pick up the vendored libyajl2 out of the libyajl2 gem
+$CFLAGS = "-I#{Libyajl2.include_path} -L#{Libyajl2.opt_path} #{$CFLAGS}"
+$LDFLAGS = "-L#{Libyajl2.opt_path} #{$CFLAGS}"
 
-puts gem_root
 puts $CFLAGS
 puts $LDFLAGS
 
