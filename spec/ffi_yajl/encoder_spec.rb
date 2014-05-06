@@ -7,17 +7,17 @@ describe "FFI_Yajl::Encoder" do
   let(:encoder) { FFI_Yajl::Encoder.new }
 
   it "encodes fixnums in keys as strings" do
-    ruby = {1 => 2}
+    ruby = { 1 => 2 }
     expect(encoder.encode(ruby)).to eq('{"1":2}')
   end
 
   it "encodes floats in keys as strings" do
-    ruby = {1.1 => 2}
+    ruby = { 1.1 => 2 }
     expect(encoder.encode(ruby)).to eq('{"1.1":2}')
   end
 
   it "encodes bignums in keys as strings" do
-    ruby = {12345678901234567890 => 2}
+    ruby = { 12345678901234567890 => 2 }
     expect(encoder.encode(ruby)).to eq('{"12345678901234567890":2}')
   end
 
@@ -37,17 +37,17 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "encodes symbols in keys as strings" do
-    ruby = {:thing => 1}
+    ruby = { :thing => 1 }
     expect(encoder.encode(ruby)).to eq('{"thing":1}')
   end
 
   it "encodes symbols in values as strings" do
-    ruby = {"thing" => :one}
+    ruby = { "thing" => :one }
     expect(encoder.encode(ruby)).to eq('{"thing":"one"}')
   end
 
   it "can encode 32-bit unsigned ints" do
-    ruby = {"gid"=>4294967294}
+    ruby = { "gid"=>4294967294 }
     expect(encoder.encode(ruby)).to eq('{"gid":4294967294}')
   end
 

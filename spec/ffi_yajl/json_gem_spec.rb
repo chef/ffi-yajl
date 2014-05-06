@@ -39,7 +39,7 @@ describe "JSON Gem Compat API" do
     end
 
     it "should not mixin #to_json on a hash" do
-      expect({:foo => "bar"}.respond_to?(:to_json)).to be_false
+      expect({ :foo => "bar" }.respond_to?(:to_json)).to be_false
     end
 
     it "should not mixin #to_json on a trueclass" do
@@ -90,13 +90,13 @@ describe "JSON Gem Compat API" do
       after(:all) { JSON.default_options[:symbolize_keys] = @saved_default }
 
       it "the default behavior should be to not symbolize keys" do
-        expect(JSON.parse('{"foo": 1234}')).to eq({"foo" => 1234})
+        expect(JSON.parse('{"foo": 1234}')).to eq({ "foo" => 1234 })
       end
 
       it "changing the default_options should change the behavior to true" do
         pending("implement symbolize keys")
         JSON.default_options[:symbolize_keys] = true
-        expect(JSON.parse('{"foo": 1234}')).to eq({:foo => 1234})
+        expect(JSON.parse('{"foo": 1234}')).to eq({ :foo => 1234 })
       end
     end
 
@@ -105,24 +105,24 @@ describe "JSON Gem Compat API" do
       after(:all) { JSON.default_options[:symbolize_names] = @saved_default }
 
       it "the default behavior should be to not symbolize keys" do
-        expect(JSON.parse('{"foo": 1234}')).to eq({"foo" => 1234})
+        expect(JSON.parse('{"foo": 1234}')).to eq({ "foo" => 1234 })
       end
 
       it "changing the default_options should change the behavior to true" do
         pending("implement symbolize keys")
         JSON.default_options[:symbolize_names] = true
-        expect(JSON.parse('{"foo": 1234}')).to eq({:foo => 1234})
+        expect(JSON.parse('{"foo": 1234}')).to eq({ :foo => 1234 })
       end
     end
 
     it "should support passing symbolize_names to JSON.parse" do
       pending("implement symbolize keys")
-      expect(JSON.parse('{"foo": 1234}', :symbolize_names => true)).to eq({:foo => 1234})
+      expect(JSON.parse('{"foo": 1234}', :symbolize_names => true)).to eq({ :foo => 1234 })
     end
 
     it "should support passing symbolize_keys to JSON.parse" do
       pending("implement symbolize keys")
-      expect(JSON.parse('{"foo": 1234}', :symbolize_keys => true)).to eq({:foo => 1234})
+      expect(JSON.parse('{"foo": 1234}', :symbolize_keys => true)).to eq({ :foo => 1234 })
     end
 
     context "when encode arbitrary classes via their default to_json method" do
@@ -267,7 +267,7 @@ describe "JSON Gem Compat API" do
       end
 
       it "Hash#to_json should work" do
-        expect({"a"=>"b"}.to_json).to eq(%Q{{"a":"b"}})
+        expect({ "a"=>"b" }.to_json).to eq(%Q{{"a":"b"}})
       end
 
       it "Fixnum#to_json should work" do
@@ -329,10 +329,10 @@ describe "JSON Gem Compat API" do
         expect(JSON.parse(@json2)).to eq(JSON.parse(json))
         parsed_json = JSON.parse(json)
         expect(@hash).to eq(parsed_json)
-        json = JSON.generate({1=>2})
+        json = JSON.generate({ 1=>2 })
         expect('{"1":2}').to eql(json)
         parsed_json = JSON.parse(json)
-        expect({"1"=>2}).to eq(parsed_json)
+        expect({ "1"=>2 }).to eq(parsed_json)
       end
 
       it "should be able to unparse pretty" do
@@ -340,11 +340,11 @@ describe "JSON Gem Compat API" do
         expect(JSON.parse(@json3)).to eq(JSON.parse(json))
         parsed_json = JSON.parse(json)
         expect(@hash).to eq(parsed_json)
-        json = JSON.pretty_generate({1=>2})
+        json = JSON.pretty_generate({ 1=>2 })
         test = "{\n  \"1\": 2\n}".chomp
         expect(test).to eq(json)
         parsed_json = JSON.parse(json)
-        expect({"1"=>2}).to eq(parsed_json)
+        expect({ "1"=>2 }).to eq(parsed_json)
       end
 
       it "JSON.generate should handle nil second argument" do
