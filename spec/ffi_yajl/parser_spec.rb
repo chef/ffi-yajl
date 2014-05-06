@@ -6,6 +6,11 @@ describe "FFI_Yajl::Parser" do
 
   let(:parser) { FFI_Yajl::Parser.new }
 
+  it "returns nil for an empty string (compatibility with yajl-ruby)" do
+    json = ''
+    expect { parser.parse(json) }.to be_nil
+  end
+
   it "throws an exception when trailing braces are missing" do
      json = '{{"foo": 1234}'
      expect { parser.parse(json) }.to raise_error(FFI_Yajl::ParseError)
