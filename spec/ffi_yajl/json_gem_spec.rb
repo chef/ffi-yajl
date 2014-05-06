@@ -305,7 +305,7 @@ describe "JSON Gem Compat API" do
           'e' => { 'foo' => 'bar' },
           'g' => "blah",
           'h' => 1000.0,
-          'i' => 0.001
+          'i' => 0.001,
         }
 
         @json2 = '{"a":2,"b":3.141,"c":"c","d":[1,"b",3.14],"e":{"foo":"bar"},"g":"blah","h":1000.0,"i":0.001}'
@@ -319,7 +319,7 @@ describe "JSON Gem Compat API" do
           "e": {"foo": "bar"},
           "g": "blah",
           "h": 1000.0,
-          "i": 0.001
+          "i": 0.001,
         }
         }.chomp
       end
