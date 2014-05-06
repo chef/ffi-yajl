@@ -1,4 +1,5 @@
 require 'mkmf'
+require 'rubygems'
 require 'libyajl2'
 
 # the customer is always right, ruby is always compiled to be stupid
