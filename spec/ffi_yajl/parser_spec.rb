@@ -8,7 +8,7 @@ describe "FFI_Yajl::Parser" do
 
   it "returns nil for an empty string (compatibility with yajl-ruby)" do
     json = ''
-    expect { parser.parse(json) }.to be_nil
+    expect( parser.parse(json) ).to be_nil
   end
 
   it "throws an exception when trailing braces are missing" do

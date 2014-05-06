@@ -16,6 +16,9 @@ module FFI_Yajl
       # initialization that we can do in pure ruby
       yajl_opts = {}
 
+      # XXX: bug-compat with ruby-yajl
+      return nil if str == ""
+
       # call either the ext or ffi hook
       do_yajl_parse(str, yajl_opts)
     end
