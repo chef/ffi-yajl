@@ -1,3 +1,5 @@
+$: << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
+
 require 'rspec/core/rake_task'
 require 'rubygems/package_task'
 require 'rake/extensiontask'
