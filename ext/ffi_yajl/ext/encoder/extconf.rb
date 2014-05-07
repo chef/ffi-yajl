@@ -22,7 +22,7 @@ if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
   $CFLAGS << " -Wall"
 end
 
-$LDFLAGS << " -lyajl"
+#$LDFLAGS << " -lyajl"
 
 dir_config 'encoder'
 
