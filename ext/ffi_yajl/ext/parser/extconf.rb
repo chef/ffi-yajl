@@ -2,13 +2,10 @@ require 'mkmf'
 require 'rubygems'
 require 'libyajl2'
 
-# the customer is always right, ruby is always compiled to be stupid
-$CFLAGS = ENV['CFLAGS'] if ENV['CFLAGS']
-$LDFLAGS = ENV['LDFLAGS'] if ENV['LDFLAGS']
 RbConfig::MAKEFILE_CONFIG['CC'] = ENV['CC'] if ENV['CC']
 
 # pick up the vendored libyajl2 out of the libyajl2 gem
-$CFLAGS = "-I#{Libyajl2.include_path} -L#{Libyajl2.opt_path} #{$CFLAGS}"
+$CFLAGS = "-I#{Libyajl2.include_path} #{$CFLAGS}"
 $LDFLAGS = "-L#{Libyajl2.opt_path} #{$LDFLAGS}"
 
 puts $CFLAGS
@@ -22,7 +19,14 @@ if RbConfig::MAKEFILE_CONFIG['CC'] =~ /gcc|clang/
   $CFLAGS << " -Wall"
 end
 
-#$LDFLAGS << " -lyajl"
+def windows?
+  !!(RUBY_PLATFORM =~ /mswin|mingw|windows/)
+end
+
+if windows?
+  # include our libyajldll.a definitions on windows in the libyajl2 gem
+  $libs = "#{$libs} -lyajldll"
+end
 
 dir_config 'parser'
 
