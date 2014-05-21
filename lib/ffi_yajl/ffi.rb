@@ -8,6 +8,7 @@ module FFI_Yajl
 
   libname = ::FFI.map_library_name("yajl")
   libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
+  libpath.gsub!(/dylib/, 'bundle')
 
   if File.file?(libpath)
     # use our vendored version of libyajl2 if we find it installed

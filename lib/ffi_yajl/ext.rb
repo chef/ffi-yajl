@@ -12,6 +12,7 @@ module FFI_Yajl
     # FIXME: DRY with ffi_yajl/ffi.rb
     libname = ::FFI.map_library_name("yajl")
     libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
+    libpath.gsub!(/dylib/, 'bundle')
     ::DL.dlopen(libpath)
     require 'ffi_yajl/ext/parser'
     include FFI_Yajl::Ext::Parser
@@ -21,6 +22,7 @@ module FFI_Yajl
     # FIXME: DRY with ffi_yajl/ffi.rb
     libname = ::FFI.map_library_name("yajl")
     libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
+    libpath.gsub!(/dylib/, 'bundle')
     ::DL.dlopen(libpath)
     require 'ffi_yajl/ext/encoder'
     include FFI_Yajl::Ext::Encoder
