@@ -15,6 +15,7 @@
 .bundle
 .config
 .idea
+.kitchen
 .rvmrc
 .yardoc
 Gemfile.lock
