@@ -94,7 +94,7 @@ describe "JSON Gem Compat API" do
       end
 
       it "changing the default_options should change the behavior to true" do
-        pending("implement symbolize keys")
+        skip("implement symbolize keys")
         JSON.default_options[:symbolize_keys] = true
         expect(JSON.parse('{"foo": 1234}')).to eq( :foo => 1234 )
       end
@@ -109,19 +109,19 @@ describe "JSON Gem Compat API" do
       end
 
       it "changing the default_options should change the behavior to true" do
-        pending("implement symbolize keys")
+        skip("implement symbolize keys")
         JSON.default_options[:symbolize_names] = true
         expect(JSON.parse('{"foo": 1234}')).to eq( :foo => 1234 )
       end
     end
 
     it "should support passing symbolize_names to JSON.parse" do
-      pending("implement symbolize keys")
+      skip("implement symbolize keys")
       expect(JSON.parse('{"foo": 1234}', :symbolize_names => true)).to eq( :foo => 1234 )
     end
 
     it "should support passing symbolize_keys to JSON.parse" do
-      pending("implement symbolize keys")
+      skip("implement symbolize keys")
       expect(JSON.parse('{"foo": 1234}', :symbolize_keys => true)).to eq( :foo => 1234 )
     end
 
