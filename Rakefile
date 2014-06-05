@@ -57,7 +57,9 @@ end
 desc "Run all specs against both extensions"
 task :spec do
   Rake::Task["spec:ffi"].invoke
-  Rake::Task["spec:ext"].invoke
+  if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
+    Rake::Task["spec:ext"].invoke
+  end
 end
 
 namespace :spec do
