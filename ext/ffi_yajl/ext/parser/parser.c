@@ -170,6 +170,8 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
   /* hack to avoid garbage collection */
   rb_ivar_set(self, rb_intern("stack"), ctx.stack);
   rb_ivar_set(self, rb_intern("key_stack"), ctx.key_stack);
+  rb_ivar_set(self, rb_intern("finished"), ctx.stack);
+  rb_ivar_set(self, rb_intern("key"), ctx.stack);
 
   hand = yajl_alloc(&callbacks, NULL, &ctx);
   if ((stat = yajl_parse(hand, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str))) != yajl_status_ok) {
