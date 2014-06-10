@@ -16,7 +16,7 @@ module FFI_Yajl
     libname = ::FFI.map_library_name("yajl")
     libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
     libpath.gsub!(/dylib/, 'bundle')
-    if defined?(Fiddle)
+    if defined?(Fiddle) && Fiddle.respond_to?(:dlopen)
       ::Fiddle.dlopen(libpath)
     else
       ::DL.dlopen(libpath)
@@ -30,7 +30,7 @@ module FFI_Yajl
     libname = ::FFI.map_library_name("yajl")
     libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
     libpath.gsub!(/dylib/, 'bundle')
-    if defined?(Fiddle)
+    if defined?(Fiddle) && Fiddle.respond_to?(:dlopen)
       ::Fiddle.dlopen(libpath)
     else
       ::DL.dlopen(libpath)
