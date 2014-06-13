@@ -167,14 +167,14 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
   yajl_handle hand;
   yajl_status stat;
   unsigned char *err;
-  CTX ctx;
+  volatile CTX ctx;
 
   rb_ivar_set(self, rb_intern("stack"), rb_ary_new());
   rb_ivar_set(self, rb_intern("key_stack"), rb_ary_new());
 
   ctx.self = self;
 
-  hand = yajl_alloc(&callbacks, NULL, &ctx);
+  hand = yajl_alloc(&callbacks, NULL, (void *)&ctx);
   if ((stat = yajl_parse(hand, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str))) != yajl_status_ok) {
     err = yajl_get_error(hand, 1, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str));
     goto raise;
