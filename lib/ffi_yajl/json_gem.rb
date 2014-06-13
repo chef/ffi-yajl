@@ -20,7 +20,8 @@ module JSON
     raise JSON::GeneratorError, e.message
   end
 
-  def self.pretty_generate(obj, opts={})
+  def self.pretty_generate(obj, opts=nil)
+    opts ||= {}
     options_map = {}
     options_map[:pretty] = true
     options_map[:indent] = opts[:indent] if opts.has_key?(:indent)
