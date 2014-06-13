@@ -4,14 +4,6 @@ require 'ffi_yajl/ffi'
 module FFI_Yajl
   module FFI
     module Parser
-        attr_accessor :stack, :key_stack, :key, :finished
-
-        #
-        # stack used to build up our complex object
-        #
-        def stack
-          @stack ||= Array.new
-        end
 
         def set_value(val)
           case stack.last
@@ -31,13 +23,6 @@ module FFI_Yajl
           else
             @finished = stack.pop
           end
-        end
-
-        #
-        # stack to keep track of keys as we create nested hashes
-        #
-        def key_stack
-          @key_stack ||= Array.new
         end
 
         def key_push

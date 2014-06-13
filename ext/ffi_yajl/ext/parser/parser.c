@@ -9,21 +9,20 @@ static rb_encoding *utf8Encoding;
 static VALUE mFFI_Yajl, mExt, mParser, cParseError;
 
 typedef struct {
-  VALUE finished;
-  VALUE stack;
-  VALUE key_stack;
-  VALUE key;
+  VALUE self;
 } CTX;
 
 void set_value(CTX *ctx, VALUE val) {
-  long len = RARRAY_LEN(ctx->stack);
-  VALUE last = rb_ary_entry(ctx->stack, len-1);
+  VALUE stack = rb_ivar_get(ctx->self, rb_intern("stack"));
+  VALUE key = rb_ivar_get(ctx->self, rb_intern("key"));
+  long len = RARRAY_LEN(stack);
+  VALUE last = rb_ary_entry(stack, len-1);
   switch (TYPE(last)) {
     case T_ARRAY:
       rb_ary_push(last, val);
       break;
     case T_HASH:
-      rb_hash_aset(last, ctx->key, val);
+      rb_hash_aset(last, key, val);
       break;
     default:
       break;
@@ -31,20 +30,26 @@ void set_value(CTX *ctx, VALUE val) {
 }
 
 void set_key(CTX *ctx, VALUE key) {
-  ctx->key = key;
+  rb_ivar_set(ctx->self, rb_intern("key"), key);
 }
 
 void start_object(CTX *ctx, VALUE obj) {
-  rb_ary_push(ctx->key_stack, ctx->key);
-  rb_ary_push(ctx->stack, obj);
+  VALUE key_stack = rb_ivar_get(ctx->self, rb_intern("key_stack"));
+  VALUE key       = rb_ivar_get(ctx->self, rb_intern("key"));
+  VALUE stack     = rb_ivar_get(ctx->self, rb_intern("stack"));
+
+  rb_ary_push(key_stack, key);
+  rb_ary_push(stack, obj);
 }
 
 void end_object(CTX *ctx) {
-  ctx->key = rb_ary_pop(ctx->key_stack);
-  if ( RARRAY_LEN(ctx->stack) > 1 ) {
-    set_value(ctx, rb_ary_pop(ctx->stack));
+  VALUE key_stack = rb_ivar_get(ctx->self, rb_intern("key_stack"));
+  VALUE stack = rb_ivar_get(ctx->self, rb_intern("stack"));
+  rb_ivar_set(ctx->self, rb_intern("key"), rb_ary_pop(key_stack));
+  if ( RARRAY_LEN(stack) > 1 ) {
+    set_value(ctx, rb_ary_pop(stack));
   } else {
-    ctx->finished = rb_ary_pop(ctx->stack);
+    rb_ivar_set(ctx->self, rb_intern("finished"), rb_ary_pop(stack));
   }
 }
 
@@ -164,14 +169,10 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
   unsigned char *err;
   CTX ctx;
 
-  /* hack to avoid garbage collection */
-  rb_ivar_set(self, rb_intern("stack"), ctx.stack);
-  rb_ivar_set(self, rb_intern("key_stack"), ctx.key_stack);
-  rb_ivar_set(self, rb_intern("finished"), ctx.stack);
-  rb_ivar_set(self, rb_intern("key"), ctx.stack);
+  rb_ivar_set(self, rb_intern("stack"), rb_ary_new());
+  rb_ivar_set(self, rb_intern("key_stack"), rb_ary_new());
 
-  ctx.stack = rb_ary_new();
-  ctx.key_stack = rb_ary_new();
+  ctx.self = self;
 
   hand = yajl_alloc(&callbacks, NULL, &ctx);
   if ((stat = yajl_parse(hand, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str))) != yajl_status_ok) {
@@ -183,7 +184,7 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
     goto raise;
   }
   yajl_free(hand);
-  return ctx.finished;
+  return rb_ivar_get(self, rb_intern("finished"));
 
 raise:
   if (hand) {

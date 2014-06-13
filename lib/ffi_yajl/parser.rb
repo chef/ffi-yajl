@@ -2,7 +2,23 @@
 module FFI_Yajl
   class ParseError < StandardError; end
   class Parser
+    attr_accessor :stack, :key_stack, :key, :finished
+
     attr_accessor :opts
+
+    #
+    # stack used to build up our complex object
+    #
+    def stack
+      @stack ||= Array.new
+    end
+
+    #
+    # stack to keep track of keys as we create nested hashes
+    #
+    def key_stack
+      @key_stack ||= Array.new
+    end
 
     def self.parse(obj, *args)
       new(*args).parse(obj)
