@@ -130,8 +130,13 @@ int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen
 #endif
 
   if ( get_symbolize_keys(ctx) == Qtrue ) {
+#ifdef HAVE_RUBY_ENCODING_H
     ID id = rb_intern3((const char *)stringVal, stringLen, utf8Encoding);
     key = ID2SYM(id);
+#else
+    VALUE str = rb_str_new((const char *)stringVal, stringLen);
+    key = rb_str_intern(str);
+#endif
   } else {
     key = rb_str_new((const char *)stringVal, stringLen);
 #ifdef HAVE_RUBY_ENCODING_H
