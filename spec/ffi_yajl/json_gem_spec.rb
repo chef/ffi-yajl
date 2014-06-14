@@ -11,7 +11,7 @@ describe "JSON Gem Compat API" do
 
   # Magic to make the before loading tests actually run before loading
   RSpec.configure do |config|
-    config.order_groups_and_examples do |list|
+    config.register_ordering(:global) do |list|
       list.sort_by { |item| item.description }
     end
   end
