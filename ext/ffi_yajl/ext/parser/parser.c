@@ -10,6 +10,7 @@ static VALUE mFFI_Yajl, mExt, mParser, cParseError;
 
 typedef struct {
   VALUE self;
+  int symbolizeKeys;
 } CTX;
 
 void set_value(CTX *ctx, VALUE val) {
@@ -115,21 +116,13 @@ int start_map_callback(void *ctx) {
   return 1;
 }
 
-VALUE get_symbolize_keys(CTX *ctx) {
-  VALUE opts = rb_iv_get(ctx->self, "@opts");
-  if (TYPE(opts) != T_HASH) {
-    rb_raise(rb_eTypeError, "opts is not a valid hash");
-  }
-  return rb_hash_aref(opts, ID2SYM(rb_intern("symbolize_keys")));
-}
-
 int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
   VALUE key;
 #ifdef HAVE_RUBY_ENCODING_H
   rb_encoding *default_internal_enc;
 #endif
 
-  if ( get_symbolize_keys(ctx) == Qtrue ) {
+  if ( ((CTX *)ctx)->symbolizeKeys ) {
 #ifdef HAVE_RUBY_ENCODING_H
     ID id = rb_intern3((const char *)stringVal, stringLen, utf8Encoding);
     key = ID2SYM(id);
@@ -180,6 +173,14 @@ static yajl_callbacks callbacks = {
   end_array_callback,
 };
 
+int get_symbolize_keys(VALUE self) {
+  VALUE opts = rb_iv_get(self, "@opts");
+  if (TYPE(opts) != T_HASH) {
+    rb_raise(rb_eTypeError, "opts is not a valid hash");
+  }
+  return rb_hash_aref(opts, ID2SYM(rb_intern("symbolize_keys"))) == Qtrue;
+}
+
 static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
   yajl_handle hand;
   yajl_status stat;
@@ -190,6 +191,7 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
   rb_ivar_set(self, rb_intern("key_stack"), rb_ary_new());
 
   ctx.self = self;
+  ctx.symbolizeKeys = get_symbolize_keys(self);
 
   hand = yajl_alloc(&callbacks, NULL, (void *)&ctx);
   if ((stat = yajl_parse(hand, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str))) != yajl_status_ok) {
