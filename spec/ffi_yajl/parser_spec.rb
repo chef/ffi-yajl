@@ -302,7 +302,7 @@ describe "FFI_Yajl::Parser" do
       end
     end
 
-    context "when parsing big floats" do
+    context "when parsing big floats", :ruby_gte_193 => true do
       let(:json) { '[0.' + '1' * 2**23 + ']' }
 
       it "parses" do
@@ -310,7 +310,7 @@ describe "FFI_Yajl::Parser" do
       end
     end
 
-    context "when parsing long hash keys with symbolize_keys option" do
+    context "when parsing long hash keys with symbolize_keys option", :ruby_gte_193 => true do
       let(:json) { '{"' + 'a' * 2**23 + '": 0}' }
       let(:options) { { :symbolize_keys => true } }
 
