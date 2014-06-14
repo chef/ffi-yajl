@@ -33,4 +33,5 @@ if opts[:profile]
   FFI_Yajl::Benchmark::ParseProfileRubyProf.new().run()
 else
   FFI_Yajl::Benchmark::Parse.new().run()
+  FFI_Yajl::Benchmark::Encode.new().run()
 end

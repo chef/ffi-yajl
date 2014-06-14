@@ -28,6 +28,10 @@ begin
   require 'active_support'
 rescue LoadError
 end
+begin
+  require 'oj'
+rescue LoadError
+end
 
 class FFI_Yajl::Benchmark::Parse
 
@@ -76,6 +80,15 @@ class FFI_Yajl::Benchmark::Parse
           times.times {
             json.rewind
             string_parser.parse(json_str)
+          }
+        }
+      end
+      if defined?(Oj)
+        x.report {
+          puts "Oj.load"
+          times.times {
+            json.rewind
+            Oj.load(json.read)
           }
         }
       end

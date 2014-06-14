@@ -120,13 +120,13 @@ module FFI_Yajl
               }
             end
           end
-          if defined?(ActiveSupport::JSON)
-            x.report("ActiveSupport::JSON.encode") {
-              times.times {
-                ActiveSupport::JSON.encode(hash)
-              }
-            }
-          end
+#          if defined?(ActiveSupport::JSON)
+#            x.report("ActiveSupport::JSON.encode") {
+#              times.times {
+#                ActiveSupport::JSON.encode(hash)
+#              }
+#            }
+#          end
         }
       end
     end
