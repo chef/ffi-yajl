@@ -34,6 +34,8 @@ module FFI_Yajl
       # initialization that we can do in pure ruby
       yajl_opts = {}
 
+      yajl_opts[:yajl_allow_comments] = @opts[:allow_comments]
+
       # XXX: bug-compat with ruby-yajl
       return nil if str == ""
 

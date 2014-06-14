@@ -22,7 +22,6 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :allow_comments => false } }
 
         it "should not parse" do
-          skip "implement :allow_comments"
           expect{parser}.to raise_error(FFI_Yajl::ParseError)
         end
       end
@@ -31,8 +30,7 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :allow_comments => true } }
 
         it "should parse" do
-          skip "implement :allow_comments"
-          expect(parser).to eq({})  # FIXME
+          expect(parser).to eq({"key"=>"value"})
         end
       end
     end

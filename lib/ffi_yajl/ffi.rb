@@ -87,7 +87,7 @@ module FFI_Yajl
   attach_function :yajl_free_error, [:yajl_handle, :ustring], :void
 
   #
-  attach_function :yajl_config, [:yajl_handle, :yajl_option, :int], :int
+  attach_function :yajl_config, [:yajl_handle, :yajl_option, :varargs], :int
 
   attach_function :yajl_gen_config, [:yajl_gen, :yajl_gen_option, :varargs], :int
 

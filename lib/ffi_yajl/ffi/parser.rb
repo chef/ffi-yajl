@@ -94,7 +94,7 @@ module FFI_Yajl
       end
 
 
-      def do_yajl_parse(str, opts = {})
+      def do_yajl_parse(str, yajl_opts = {})
         setup_callbacks
         callback_ptr = ::FFI::MemoryPointer.new(::FFI_Yajl::YajlCallbacks)
         callbacks = ::FFI_Yajl::YajlCallbacks.new(callback_ptr)
@@ -110,6 +110,12 @@ module FFI_Yajl
         callbacks[:yajl_start_array] = @start_array_callback
         callbacks[:yajl_end_array] = @end_array_callback
         yajl_handle = ::FFI_Yajl.yajl_alloc(callback_ptr, nil, nil)
+
+        # configure the yajl parser
+        if yajl_opts[:yajl_allow_comments]
+          ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_comments, :int, 1)
+        end
+
         if ( stat = ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
