@@ -164,15 +164,15 @@ static yajl_callbacks callbacks = {
   end_array_callback,
 };
 
-int get_symbolize_keys(VALUE self) {
+int get_opts_key(VALUE self, char *key) {
   VALUE opts = rb_iv_get(self, "@opts");
   if (TYPE(opts) != T_HASH) {
     rb_raise(rb_eTypeError, "opts is not a valid hash");
   }
-  return rb_hash_aref(opts, ID2SYM(rb_intern("symbolize_keys"))) == Qtrue;
+  return rb_hash_aref(opts, ID2SYM(rb_intern(key))) == Qtrue;
 }
 
-static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
+static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE yajl_opts) {
   yajl_handle hand;
   yajl_status stat;
   unsigned char *err;
@@ -182,9 +182,14 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE opts) {
   rb_ivar_set(self, rb_intern("key_stack"), rb_ary_new());
 
   ctx.self = self;
-  ctx.symbolizeKeys = get_symbolize_keys(self);
+  ctx.symbolizeKeys = get_opts_key(self, "symbolize_keys");
 
   hand = yajl_alloc(&callbacks, NULL, (void *)&ctx);
+
+  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_allow_comments")))) {
+    yajl_config(hand, yajl_allow_comments, 1);
+  }
+
   if ((stat = yajl_parse(hand, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str))) != yajl_status_ok) {
     err = yajl_get_error(hand, 1, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str));
     goto raise;
