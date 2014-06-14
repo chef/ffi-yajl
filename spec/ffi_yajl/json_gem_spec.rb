@@ -19,39 +19,39 @@ describe "JSON Gem Compat API" do
   context "A: before loading the compat library" do
     it "should not mixin #to_json on random objects" do
       d = Dummy.new
-      expect(d.respond_to?(:to_json)).to be_false
+      expect(d.respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json to a string" do
-      expect("".respond_to?(:to_json)).to be_false
+      expect("".respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json to a fixnum" do
-      expect(1.respond_to?(:to_json)).to be_false
+      expect(1.respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json on a float" do
-      expect("1.5".to_f.respond_to?(:to_json)).to be_false
+      expect("1.5".to_f.respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json on an array" do
-      expect([].respond_to?(:to_json)).to be_false
+      expect([].respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json on a hash" do
-      expect({ :foo => "bar" }.respond_to?(:to_json)).to be_false
+      expect({ :foo => "bar" }.respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json on a trueclass" do
-      expect(true.respond_to?(:to_json)).to be_false
+      expect(true.respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json on a falseclass" do
-      expect(false.respond_to?(:to_json)).to be_false
+      expect(false.respond_to?(:to_json)).to be false
     end
 
     it "should not mixin #to_json on a nilclass" do
-      expect(nil.respond_to?(:to_json)).to be_false
+      expect(nil.respond_to?(:to_json)).to be false
     end
   end
 
@@ -62,27 +62,27 @@ describe "JSON Gem Compat API" do
     end
 
     it "should define JSON class" do
-      expect(defined?(JSON)).to be_true
+      expect(defined?(JSON)).to be_truthy
     end
 
     it "should implement JSON#parse" do
-      expect(JSON.respond_to?(:parse)).to be_true
+      expect(JSON.respond_to?(:parse)).to be true
     end
 
     it "should implement JSON#generate" do
-      expect(JSON.respond_to?(:generate)).to be_true
+      expect(JSON.respond_to?(:generate)).to be true
     end
 
     it "should implement JSON#pretty_generate" do
-      expect(JSON.respond_to?(:pretty_generate)).to be_true
+      expect(JSON.respond_to?(:pretty_generate)).to be true
     end
 
     it "should implement JSON#load" do
-      expect(JSON.respond_to?(:load)).to be_true
+      expect(JSON.respond_to?(:load)).to be true
     end
 
     it "should implement JSON#dump" do
-      expect(JSON.respond_to?(:dump)).to be_true
+      expect(JSON.respond_to?(:dump)).to be true
     end
 
     context "when setting symbolize_keys via JSON.default_options" do
@@ -143,13 +143,13 @@ describe "JSON Gem Compat API" do
 
     context "JSON exception classes" do
       it "should define JSON::JSONError as a StandardError" do
-        expect(JSON::JSONError.new.is_a?(StandardError)).to be_true
+        expect(JSON::JSONError.new.is_a?(StandardError)).to be true
       end
       it "should define JSON::ParserError as a JSON::JSONError" do
-        expect(JSON::ParserError.new.is_a?(JSON::JSONError)).to be_true
+        expect(JSON::ParserError.new.is_a?(JSON::JSONError)).to be true
       end
       it "should define JSON::GeneratorError as a JSON::JSONError" do
-        expect(JSON::GeneratorError.new.is_a?(JSON::JSONError)).to be_true
+        expect(JSON::GeneratorError.new.is_a?(JSON::JSONError)).to be true
       end
       it "should raise JSON::ParserError on a bad parse" do
         expect{ JSON.parse("blah") }.to raise_error(JSON::ParserError)
