@@ -186,8 +186,20 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE yajl_opts) {
 
   hand = yajl_alloc(&callbacks, NULL, (void *)&ctx);
 
-  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_allow_comments")))) {
+  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_allow_comments"))) == Qtrue) {
     yajl_config(hand, yajl_allow_comments, 1);
+  }
+  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_dont_validate_strings"))) == Qtrue) {
+    yajl_config(hand, yajl_dont_validate_strings, 1);
+  }
+  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_allow_trailing_garbage"))) == Qtrue) {
+    yajl_config(hand, yajl_allow_trailing_garbage, 1);
+  }
+  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_allow_multiple_values"))) == Qtrue) {
+    yajl_config(hand, yajl_allow_multiple_values, 1);
+  }
+  if (rb_hash_aref(yajl_opts, ID2SYM(rb_intern("yajl_allow_partial_values"))) == Qtrue) {
+    yajl_config(hand, yajl_allow_partial_values, 1);
   }
 
   if ((stat = yajl_parse(hand, (unsigned char *)RSTRING_PTR(str), RSTRING_LEN(str))) != yajl_status_ok) {

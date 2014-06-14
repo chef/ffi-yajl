@@ -34,7 +34,18 @@ module FFI_Yajl
       # initialization that we can do in pure ruby
       yajl_opts = {}
 
-      yajl_opts[:yajl_allow_comments] = @opts[:allow_comments]
+      if @opts[:check_utf8] == false && @opts[:dont_validate_strings] == false
+        raise ArgumentError, "options check_utf8 and dont_validate_strings are both false which conflict"
+      end
+      if @opts[:check_utf8] == true && @opts[:dont_validate_strings] == true
+        raise ArgumentError, "options check_utf8 and dont_validate_strings are both true which conflict"
+      end
+
+      yajl_opts[:yajl_allow_comments]         = @opts[:allow_comments]
+      yajl_opts[:yajl_dont_validate_strings]  = (@opts[:check_utf8] == false || @opts[:dont_validate_strings])
+      yajl_opts[:yajl_allow_trailing_garbage] = @opts[:allow_trailing_garbage]
+      yajl_opts[:yajl_allow_multiple_values]  = @opts[:allow_multiple_values]
+      yajl_opts[:yajl_allow_partial_values]   = @opts[:allow_partial_values]
 
       # XXX: bug-compat with ruby-yajl
       return nil if str == ""

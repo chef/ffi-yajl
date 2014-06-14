@@ -115,6 +115,18 @@ module FFI_Yajl
         if yajl_opts[:yajl_allow_comments]
           ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_comments, :int, 1)
         end
+        if yajl_opts[:yajl_dont_validate_strings]
+          ::FFI_Yajl.yajl_config(yajl_handle, :yajl_dont_validate_strings, :int, 1)
+        end
+        if yajl_opts[:yajl_allow_trailing_garbage]
+          ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_trailing_garbage, :int, 1)
+        end
+        if yajl_opts[:yajl_allow_multiple_values]
+          ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_multiple_values, :int, 1)
+        end
+        if yajl_opts[:yajl_allow_partial_values]
+          ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_partial_values, :int, 1)
+        end
 
         if ( stat = ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?

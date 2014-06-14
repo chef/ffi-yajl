@@ -35,15 +35,90 @@ describe "FFI_Yajl::Parser" do
       end
     end
 
+    context "when json has multiline comments" do
+      let(:json) { %Q{{"key": \n/*\n this is a multiline comment \n*/\n "value"}} }
+
+      context "when allow_comments is false" do
+        let(:options) { { :allow_comments => false } }
+
+        it "should not parse" do
+          expect{parser}.to raise_error(FFI_Yajl::ParseError)
+        end
+      end
+
+      context "when allow_comments is true" do
+        let(:options) { { :allow_comments => true } }
+
+        it "should parse" do
+          expect(parser).to eq({"key"=>"value"})
+        end
+      end
+    end
+
+    context "when json has inline comments" do
+      let(:json) { %Q{{"key": \n// this is an inline comment\n "value"}} }
+
+      context "when allow_comments is false" do
+        let(:options) { { :allow_comments => false } }
+
+        it "should not parse" do
+          expect{parser}.to raise_error(FFI_Yajl::ParseError)
+        end
+      end
+
+      context "when allow_comments is true" do
+        let(:options) { { :allow_comments => true } }
+
+        it "should parse" do
+          expect(parser).to eq({"key"=>"value"})
+        end
+      end
+    end
+
     context "when json is invalid UTF8" do
       let(:json) { "[\"#{"\201\203"}\"]" }
+
+      it "should not parse by default" do
+        expect{parser}.to raise_error(FFI_Yajl::ParseError)
+      end
+
+      context "when :dont_validate_strings is set to true" do
+        let(:options) { { :dont_validate_strings => true } }
+
+        it "should parse" do
+          expect(parser).to eq(["\x81\x83"])
+        end
+      end
+
+      context "when :dont_validate_strings is set to false" do
+        let(:options) { { :dont_validate_strings => false } }
+
+        it "should not parse" do
+          expect{parser}.to raise_error(FFI_Yajl::ParseError)
+        end
+      end
 
       context "when :check_utf8 is set to true" do
         let(:options) { { :check_utf8 => true } }
 
         it "should not parse" do
-          skip "implement :check_utf8"
           expect{parser}.to raise_error(FFI_Yajl::ParseError)
+        end
+
+        context "when :dont_validate_strings is set to true" do
+          let(:options) { { :check_utf8 => true, :dont_validate_strings => true } }
+
+          it "should raise an ArgumentError" do
+            expect{parser}.to raise_error(ArgumentError)
+          end
+        end
+
+        context "when :dont_validate_strings is set to false" do
+          let(:options) { { :check_utf8 => true, :dont_validate_strings => false } }
+
+          it "should not parse" do
+            expect{parser}.to raise_error(FFI_Yajl::ParseError)
+          end
         end
       end
 
@@ -51,8 +126,23 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :check_utf8 => false } }
 
         it "should parse" do
-          skip "implement :check_utf8"
-          expect(parser).to eq({}) # FIXME
+          expect(parser).to eq(["\x81\x83"])
+        end
+
+        context "when :dont_validate_strings is set to true" do
+          let(:options) { { :check_utf8 => false, :dont_validate_strings => true } }
+
+          it "should parse" do
+            expect(parser).to eq(["\x81\x83"])
+          end
+        end
+
+        context "when :dont_validate_strings is set to false" do
+          let(:options) { { :check_utf8 => false, :dont_validate_strings => false } }
+
+          it "should raise an ArgumentError" do
+            expect{parser}.to raise_error(ArgumentError)
+          end
         end
       end
     end
@@ -194,7 +284,7 @@ describe "FFI_Yajl::Parser" do
     # NOTE: this fixes yajl-ruby being too permissive
     context "when dealing with too much or too little input" do
       context "when trailing braces are missing" do
-        let(:json) { '{{"foo": 1234}' }
+        let(:json) { '{"foo":{"foo": 1234}' }
 
         it "raises an exception" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
@@ -210,11 +300,19 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when an extra brace is present" do
-        let(:json) { '{{"foo": 1234}}}' }
+        let(:json) { '{"foo":{"foo": 1234}}}' }
 
         it "raises an exception" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
         end
+
+        context "with allow_trailing_garbage" do
+          let(:options) { { :allow_trailing_garbage => true } }
+          it "parses" do
+            expect(parser).to eq({"foo"=>{"foo"=>1234}})
+          end
+        end
+
       end
 
       context "when an extra bracket is present" do
