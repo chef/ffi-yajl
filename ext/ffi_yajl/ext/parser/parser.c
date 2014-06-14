@@ -115,21 +115,34 @@ int start_map_callback(void *ctx) {
   return 1;
 }
 
+VALUE get_symbolize_keys(CTX *ctx) {
+  VALUE opts = rb_iv_get(ctx->self, "@opts");
+  if (TYPE(opts) != T_HASH) {
+    rb_raise(rb_eTypeError, "opts is not a valid hash");
+  }
+  return rb_hash_aref(opts, ID2SYM(rb_intern("symbolize_keys")));
+}
+
 int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
-  VALUE str;
+  VALUE key;
 #ifdef HAVE_RUBY_ENCODING_H
   rb_encoding *default_internal_enc;
 #endif
 
-  str = rb_str_new((const char *)stringVal, stringLen);
+  if ( get_symbolize_keys(ctx) == Qtrue ) {
+    ID id = rb_intern3((const char *)stringVal, stringLen, utf8Encoding);
+    key = ID2SYM(id);
+  } else {
+    key = rb_str_new((const char *)stringVal, stringLen);
 #ifdef HAVE_RUBY_ENCODING_H
-  default_internal_enc = rb_default_internal_encoding();
-  rb_enc_associate(str, utf8Encoding);
-  if (default_internal_enc) {
-    str = rb_str_export_to_enc(str, default_internal_enc);
-  }
+    default_internal_enc = rb_default_internal_encoding();
+    rb_enc_associate(key, utf8Encoding);
+    if (default_internal_enc) {
+      key = rb_str_export_to_enc(key, default_internal_enc);
+    }
 #endif
-  set_key(ctx,str);
+  }
+  set_key(ctx, key);
   return 1;
 }
 
