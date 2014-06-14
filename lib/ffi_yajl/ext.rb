@@ -24,6 +24,7 @@ module FFI_Yajl
   elsif defined?(DL) && DL.respond_to?(:dlopen)
     ::DL.dlopen(libpath)
   else
+    extend ::FFI::Library
     ffi_lib libpath
   end
 
