@@ -37,8 +37,7 @@ module JSON
   end
 
   def self.default_options
-    #@default_options ||= {:symbolize_keys => false}
-    @default_options ||= {}
+    @default_options ||= {:symbolize_keys => false}
   end
 
   def self.parse(str, opts=JSON.default_options)

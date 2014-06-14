@@ -73,7 +73,7 @@ module FFI_Yajl
         @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
           s = key.slice(0,keylen)
           s.force_encoding('UTF-8') if defined? Encoding
-          self.key = s
+          self.key = @opts[:symbolize_keys] ? s.to_sym : s
           1
         end
         @end_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|

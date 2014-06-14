@@ -25,7 +25,9 @@ module FFI_Yajl
     end
 
     def initialize(opts = {})
-      @opts = opts
+      @opts = opts ? opts.dup : {}
+      # JSON gem uses 'symbolize_names' and ruby-yajl supports this as well
+      @opts[:symbolize_keys] = true if @opts[:symbolize_names]
     end
 
     def parse(str)

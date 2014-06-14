@@ -86,42 +86,36 @@ describe "JSON Gem Compat API" do
     end
 
     context "when setting symbolize_keys via JSON.default_options" do
-      before(:all) { @saved_default = JSON.default_options[:symbolize_keys] }
-      after(:all) { JSON.default_options[:symbolize_keys] = @saved_default }
+      after(:each) { JSON.default_options[:symbolize_keys] = false }
 
       it "the default behavior should be to not symbolize keys" do
         expect(JSON.parse('{"foo": 1234}')).to eq( "foo" => 1234 )
       end
 
       it "changing the default_options should change the behavior to true" do
-        skip("implement symbolize keys")
         JSON.default_options[:symbolize_keys] = true
         expect(JSON.parse('{"foo": 1234}')).to eq( :foo => 1234 )
       end
     end
 
     context "when setting symbolize_names via JSON.default_options" do
-      before(:all) { @saved_default = JSON.default_options[:symbolize_names] }
-      after(:all) { JSON.default_options[:symbolize_names] = @saved_default }
+      after { JSON.default_options.delete(:symbolize_names)}
 
       it "the default behavior should be to not symbolize keys" do
         expect(JSON.parse('{"foo": 1234}')).to eq( "foo" => 1234 )
       end
 
       it "changing the default_options should change the behavior to true" do
-        skip("implement symbolize keys")
         JSON.default_options[:symbolize_names] = true
         expect(JSON.parse('{"foo": 1234}')).to eq( :foo => 1234 )
       end
     end
 
     it "should support passing symbolize_names to JSON.parse" do
-      skip("implement symbolize keys")
       expect(JSON.parse('{"foo": 1234}', :symbolize_names => true)).to eq( :foo => 1234 )
     end
 
     it "should support passing symbolize_keys to JSON.parse" do
-      skip("implement symbolize keys")
       expect(JSON.parse('{"foo": 1234}', :symbolize_keys => true)).to eq( :foo => 1234 )
     end
 

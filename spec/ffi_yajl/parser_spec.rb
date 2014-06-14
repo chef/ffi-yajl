@@ -21,6 +21,7 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :allow_comments => false } }
 
         it "should not parse" do
+          skip "implement :allow_comments"
           expect{parser}.to raise_error(FFI_Yajl::ParseError)
         end
       end
@@ -29,6 +30,7 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :allow_comments => true } }
 
         it "should parse" do
+          skip "implement :allow_comments"
           expect(parser).to eq({})  # FIXME
         end
       end
@@ -41,6 +43,7 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :check_utf8 => true } }
 
         it "should not parse" do
+          skip "implement :check_utf8"
           expect{parser}.to raise_error(FFI_Yajl::ParseError)
         end
       end
@@ -49,6 +52,7 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { :check_utf8 => false } }
 
         it "should parse" do
+          skip "implement :check_utf8"
           expect(parser).to eq({}) # FIXME
         end
       end
@@ -58,6 +62,7 @@ describe "FFI_Yajl::Parser" do
       let(:json) { StringIO.new('{"key": 1234}') }
 
       it "should parse" do
+        skip "handle StringIOs"
         expect(parser).to eq({"key" => 1234})
       end
     end
@@ -79,6 +84,7 @@ describe "FFI_Yajl::Parser" do
 
       context "when passing a block" do
         it "should parse correctly" do
+          skip "handle blocks"
           output = nil
           parser do |obj|
             output = obj
@@ -86,6 +92,10 @@ describe "FFI_Yajl::Parser" do
           expect(output).to eq({"key" => 1234})
         end
       end
+    end
+
+    context "when parsing a JSON hash with only strings" do
+      let(:json) { '{"key": "value"}' }
 
       if RUBY_VERSION.to_f >= 1.9
         context "when Encoding.default_internal is nil" do
