@@ -74,7 +74,7 @@ int double_callback(void *ctx, double doubleVal) {
 }
 
 int number_callback(void *ctx, const char *numberVal, size_t numberLen) {
-  char buf[numberLen+1];
+  char *buf = (char *)malloc(numberLen+1);
   buf[numberLen] = 0;
   memcpy(buf, numberVal, numberLen);
   if (memchr(buf, '.', numberLen) ||
@@ -84,11 +84,12 @@ int number_callback(void *ctx, const char *numberVal, size_t numberLen) {
   } else {
     set_value(ctx, rb_cstr2inum(buf, 10));
   }
+  free(buf);
   return 1;
 }
 
 int string_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
-  char buf[stringLen+1];
+  char *buf = (char *)malloc(stringLen+1);
   VALUE str;
 #ifdef HAVE_RUBY_ENCODING_H
   rb_encoding *default_internal_enc;
@@ -105,6 +106,7 @@ int string_callback(void *ctx, const unsigned char *stringVal, size_t stringLen)
   }
 #endif
   set_value(ctx,str);
+  free(buf);
   return 1;
 }
 
@@ -114,7 +116,7 @@ int start_map_callback(void *ctx) {
 }
 
 int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
-  char buf[stringLen+1];
+  char *buf = (char *)malloc(stringLen+1);
   VALUE str;
 #ifdef HAVE_RUBY_ENCODING_H
   rb_encoding *default_internal_enc;
@@ -131,6 +133,7 @@ int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen
   }
 #endif
   set_key(ctx,str);
+  free(buf);
   return 1;
 }
 
