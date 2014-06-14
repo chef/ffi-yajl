@@ -116,15 +116,12 @@ int start_map_callback(void *ctx) {
 }
 
 int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
-  char *buf = (char *)malloc(stringLen+1);
   VALUE str;
 #ifdef HAVE_RUBY_ENCODING_H
   rb_encoding *default_internal_enc;
 #endif
 
-  buf[stringLen] = 0;
-  memcpy(buf, stringVal, stringLen);
-  str = rb_str_new2(buf);
+  str = rb_str_new((const char *)stringVal, stringLen);
 #ifdef HAVE_RUBY_ENCODING_H
   default_internal_enc = rb_default_internal_encoding();
   rb_enc_associate(str, utf8Encoding);
@@ -133,7 +130,6 @@ int map_key_callback(void *ctx, const unsigned char *stringVal, size_t stringLen
   }
 #endif
   set_key(ctx,str);
-  free(buf);
   return 1;
 }
 
