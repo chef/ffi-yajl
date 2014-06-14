@@ -90,24 +90,15 @@ int number_callback(void *ctx, const char *numberVal, size_t numberLen) {
 }
 
 int string_callback(void *ctx, const unsigned char *stringVal, size_t stringLen) {
-  char *buf = (char *)malloc(stringLen+1);
-  VALUE str;
+  VALUE str = rb_str_new((const char *)stringVal, stringLen);
 #ifdef HAVE_RUBY_ENCODING_H
-  rb_encoding *default_internal_enc;
-#endif
-
-  buf[stringLen] = 0;
-  memcpy(buf, stringVal, stringLen);
-  str = rb_str_new2(buf);
-#ifdef HAVE_RUBY_ENCODING_H
-  default_internal_enc = rb_default_internal_encoding();
+  rb_encoding *default_internal_enc = rb_default_internal_encoding();
   rb_enc_associate(str, utf8Encoding);
   if (default_internal_enc) {
     str = rb_str_export_to_enc(str, default_internal_enc);
   }
 #endif
   set_value(ctx,str);
-  free(buf);
   return 1;
 }
 
