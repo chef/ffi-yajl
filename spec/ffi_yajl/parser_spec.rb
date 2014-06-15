@@ -9,7 +9,6 @@ describe "FFI_Yajl::Parser" do
       let(:json) {  '{"key": 23456789012E666}' }
 
       it "should return infinity" do
-        skip "handle infinity properly"
         infinity = (1.0/0)
         expect(parser).to eq({"key" => infinity})
       end

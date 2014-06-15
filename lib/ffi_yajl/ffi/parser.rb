@@ -51,7 +51,7 @@ module FFI_Yajl
           s = stringval.slice(0,stringlen)
           s.force_encoding('UTF-8') if defined? Encoding
           # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
-          v = ( s =~ /\./ ) ? s.to_f : s.to_i
+          v = ( s =~ /[\.eE]/ ) ? s.to_f : s.to_i
           set_value(v)
           1
         end
