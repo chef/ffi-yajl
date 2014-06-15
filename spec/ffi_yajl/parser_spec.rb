@@ -150,7 +150,6 @@ describe "FFI_Yajl::Parser" do
       let(:json) { StringIO.new('{"key": 1234}') }
 
       it "should parse" do
-        skip "handle StringIOs"
         expect(parser).to eq({"key" => 1234})
       end
     end

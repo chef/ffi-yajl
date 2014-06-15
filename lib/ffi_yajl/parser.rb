@@ -50,6 +50,10 @@ module FFI_Yajl
       # XXX: bug-compat with ruby-yajl
       return nil if str == ""
 
+      if str.respond_to?(:read)
+        str = str.read()
+      end
+
       # call either the ext or ffi hook
       do_yajl_parse(str, yajl_opts)
     end
