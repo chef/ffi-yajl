@@ -101,6 +101,11 @@ module FFI_Yajl
                 JSON.generate(hash)
               }
             }
+            x.report("JSON.fast_generate") {
+              times.times {
+                JSON.fast_generate(hash)
+              }
+            }
           end
           if defined?(Psych)
             x.report("Psych.to_json") {
