@@ -3,13 +3,15 @@
 
 ## TODO
 
-- fix int conversion issue in chef specs in c extension
 
 ## BUILD NOTES
 
-- building libyajl2 requires 'apt-get install cmake' on ubuntu, but note
-  that 'apt-get install libyajl2' will be better
 
 ## KNOWN BUGS
 
-- 'rake compile' broken on mac, only tested to work on linux (ubuntu)
+
+## Thanks
+
+This was initially going to be a clean rewrite of an ffi ruby wrapper, but as it progressed more code was pulled in from brianmario's existing
+yajl-ruby gem, particularly all the c extension code, lots of specs and the benchmarks.
+
