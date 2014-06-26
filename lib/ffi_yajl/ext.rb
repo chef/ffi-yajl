@@ -8,10 +8,6 @@ begin
   require 'fiddle'
 rescue LoadError
 end
-begin
-  require 'dl'
-rescue LoadError
-end
 
 module FFI_Yajl
   # FIXME: DRY with ffi_yajl/ffi.rb
@@ -21,11 +17,15 @@ module FFI_Yajl
   libpath = ::FFI.map_library_name("yajl") unless File.exist?(libpath)
   if defined?(Fiddle) && Fiddle.respond_to?(:dlopen)
     ::Fiddle.dlopen(libpath)
-  elsif defined?(DL) && DL.respond_to?(:dlopen)
-    ::DL.dlopen(libpath)
   else
-    extend ::FFI::Library
-    ffi_lib libpath
+    # deliberately convoluted delayed require here to avoid deprecation
+    # warning from requiring dl
+    require 'dl'
+    if defined?(DL) && DL.respond_to?(:dlopen)
+      ::DL.dlopen(libpath)
+    else
+      raise "cannot find dlopen in either DL or Fiddle, cannot proceed"
+    end
   end
 
   class Parser
