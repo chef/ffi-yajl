@@ -27,6 +27,13 @@ jdk:
   - oraclejdk7
   - openjdk6
 matrix:
+  allow_failures:
+    - rvm: ruby-head
+      jdk: oraclejdk7
+    - rvm: jruby-head
+      jdk: oraclejdk7
+    - rvm: jruby-head
+      jdk: openjdk7
   exclude:
     - rvm: 2.1.2
       jdk: openjdk6
