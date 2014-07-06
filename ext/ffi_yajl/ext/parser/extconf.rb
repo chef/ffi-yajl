@@ -36,7 +36,6 @@ if !windows? && !found_libyajl2
   puts "libyajl2 not embedded in libyajl2-gem, searching for system libraries..."
 
   HEADER_DIRS = [
-    # FIXME: embedded version number in Homebrew path will change
     "/opt/local/include",                   # MacPorts
     "/usr/local/include",                   # /usr/local
     RbConfig::CONFIG['includedir'],         # Ruby
