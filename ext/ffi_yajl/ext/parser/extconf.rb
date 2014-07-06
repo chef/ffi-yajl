@@ -28,12 +28,10 @@ if windows?
   $libs = "#{$libs} -lyajldll"
 end
 
-def found_libyajl2
-  find_header('yajl/yajl_tree.h') && find_library('yajl', 'yajl_complete_parse')
-end
-
-if !windows? && !found_libyajl2
-  puts "libyajl2 not embedded in libyajl2-gem, searching for system libraries..."
+# NOTE: find_library has the side effect of adding -lyajl to the flags which we are deliberately
+# avoiding doing with the libyajl2-gem (allowing it to be lazily loaded with dlopen)
+if !windows? && !find_header('yajl/yajl_tree.h')
+  puts "libyajl2 headers not found in libyajl2-gem, searching for system libraries..."
 
   HEADER_DIRS = [
     "/opt/local/include",                   # MacPorts
@@ -52,7 +50,8 @@ if !windows? && !found_libyajl2
   # add --with-yajl-dir, --with-yajl-include, --with-yajl-lib
   dir_config('yajl', HEADER_DIRS, LIB_DIRS)
 
-  if !found_libyajl2
+  # here we use find_library in order to deliberately link with -lyajl as a useful side-effect
+  if !(find_header('yajl/yajl_tree.h') && find_library('yajl', 'yajl_complete_parse'))
     abort "libyajl2 is missing.  please install libyajl2"
   end
 end
