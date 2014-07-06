@@ -37,7 +37,6 @@ if !windows? && !found_libyajl2
 
   HEADER_DIRS = [
     # FIXME: embedded version number in Homebrew path will change
-    "/usr/local/Cellar/yajl/2.1.0/include", # Homebrew (yick)
     "/opt/local/include",                   # MacPorts
     "/usr/local/include",                   # /usr/local
     RbConfig::CONFIG['includedir'],         # Ruby
