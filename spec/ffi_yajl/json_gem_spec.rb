@@ -85,6 +85,18 @@ describe "JSON Gem Compat API" do
       expect(JSON.respond_to?(:dump)).to be true
     end
 
+    it "JSON#pretty_generate should work with an explicit nil for options" do
+      expect(JSON.pretty_generate({'foo' => 1234}, nil)).to eql("{\n  \"foo\": 1234\n}")
+    end
+
+    it "JSON#pretty_generate should work without options" do
+      expect(JSON.pretty_generate({'foo' => 1234})).to eql("{\n  \"foo\": 1234\n}")
+    end
+
+    it "JSON#pretty_generate should work with an empty options hash" do
+      expect(JSON.pretty_generate({'foo' => 1234}, {})).to eql("{\n  \"foo\": 1234\n}")
+    end
+
     context "when setting symbolize_keys via JSON.default_options" do
       after(:each) { JSON.default_options[:symbolize_keys] = false }
 
