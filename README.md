@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/lamont-granquist/ffi-yajl.png)](https://travis-ci.org/lamont-granquist/ffi-yajl)  [![Code Climate](https://codeclimate.com/github/lamont-granquist/ffi-yajl.png)](https://codeclimate.com/github/lamont-granquist/ffi-yajl)
+[![Build Status](https://travis-ci.org/opscode/ffi-yajl.png)](https://travis-ci.org/opscode/ffi-yajl)  [![Code Climate](https://codeclimate.com/github/opscode/ffi-yajl.png)](https://codeclimate.com/github/opscode/ffi-yajl)
 
 ## TODO
 
