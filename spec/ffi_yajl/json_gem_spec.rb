@@ -97,6 +97,17 @@ describe "JSON Gem Compat API" do
       expect(JSON.pretty_generate({'foo' => 1234}, {})).to eql("{\n  \"foo\": 1234\n}")
     end
 
+    class Foo
+      def to_json(*a)
+        {'foo' => 1234}.to_json(*a)
+      end
+    end
+
+    it "JSON#pretty_generate should work with an Object that implements #to_json" do
+      f = Foo.new
+      expect(JSON.pretty_generate(f)).to eql("{\n  \"foo\": 1234\n}\n")
+    end
+
     context "when setting symbolize_keys via JSON.default_options" do
       after(:each) { JSON.default_options[:symbolize_keys] = false }
 
