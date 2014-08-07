@@ -25,8 +25,6 @@ module JSON
     options_map = {}
     options_map[:pretty] = true
     options_map[:indent] = opts[:indent] if opts.has_key?(:indent)
-    require 'pp'
-    pp options_map
     FFI_Yajl::Encoder.encode(obj, options_map).chomp
   rescue FFI_Yajl::EncodeError => e
     raise JSON::GeneratorError, e.message
