@@ -32,6 +32,14 @@ describe "FFI_Yajl::Parser" do
           expect(parser).to eq({"key"=>"value"})
         end
       end
+
+      context "by default" do
+        let(:options) { }
+
+        it "should parse" do
+          expect(parser).to eq({"key"=>"value"})
+        end
+      end
     end
 
     context "when json has multiline comments" do
