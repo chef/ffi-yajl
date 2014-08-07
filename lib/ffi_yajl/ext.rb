@@ -1,8 +1,13 @@
 require 'rubygems'
+
 require 'ffi_yajl/encoder'
 require 'ffi_yajl/parser'
 require 'ffi'
 require 'libyajl2'
+begin
+  require 'fiddle'
+rescue LoadError
+end
 
 module FFI_Yajl
   # FIXME: DRY with ffi_yajl/ffi.rb
@@ -10,20 +15,16 @@ module FFI_Yajl
   libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
   libpath.gsub!(/dylib/, 'bundle')
   libpath = ::FFI.map_library_name("yajl") unless File.exist?(libpath)
-
-  begin
-    # deliberately delayed require
-    require 'fiddle'
+  if defined?(Fiddle) && Fiddle.respond_to?(:dlopen)
     ::Fiddle.dlopen(libpath)
-  rescue LoadError
-    begin
-      # deliberately delayed require
-      require 'dl'
+  else
+    # deliberately convoluted delayed require here to avoid deprecation
+    # warning from requiring dl
+    require 'dl'
+    if defined?(DL) && DL.respond_to?(:dlopen)
       ::DL.dlopen(libpath)
-    rescue LoadError
-      # deliberately delayed require
-      require 'ffi_yajl/dlopen'
-      FFI_Yajl::Dlopen.dlopen(libpath)
+    else
+      raise "cannot find dlopen in either DL or Fiddle, cannot proceed"
     end
   end
 
