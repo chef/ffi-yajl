@@ -9,7 +9,7 @@ static VALUE cYajl_Gen;
 #define CHECK_STATUS(call) \
       if ((status = (call)) != yajl_gen_status_ok) { rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 1, INT2FIX(status)); }
 
-static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts, VALUE json_opts) {
+static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts) {
   ID sym_ffi_yajl = rb_intern("ffi_yajl");
   VALUE sym_yajl_gen_beautify = ID2SYM(rb_intern("yajl_gen_beautify"));
   VALUE sym_yajl_gen_validate_utf8 = ID2SYM(rb_intern("yajl_gen_validate_utf8"));
@@ -41,8 +41,6 @@ static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts,
   state = rb_hash_new();
 
   rb_hash_aset(state, rb_str_new2("processing_key"), Qfalse);
-
-  rb_hash_aset(state, rb_str_new2("json_opts"), json_opts);
 
   rb_yajl_gen = Data_Wrap_Struct(cYajl_Gen, NULL, NULL, yajl_gen);
 
@@ -263,7 +261,7 @@ void Init_encoder() {
   mExt = rb_define_module_under(mFFI_Yajl, "Ext");
   mEncoder = rb_define_module_under(mExt, "Encoder");
   cYajl_Gen = rb_define_class_under(mEncoder, "YajlGen", rb_cObject);
-  rb_define_method(mEncoder, "do_yajl_encode", mEncoder_do_yajl_encode, 3);
+  rb_define_method(mEncoder, "do_yajl_encode", mEncoder_do_yajl_encode, 2);
 
   rb_define_method(rb_cHash, "ffi_yajl", rb_cHash_ffi_yajl, 2);
   rb_define_method(rb_cArray, "ffi_yajl", rb_cArray_ffi_yajl, 2);

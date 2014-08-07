@@ -25,8 +25,6 @@ module JSON
     options_map = {}
     options_map[:pretty] = true
     options_map[:indent] = opts[:indent] if opts.has_key?(:indent)
-    require 'pp'
-    pp options_map
     FFI_Yajl::Encoder.encode(obj, options_map).chomp
   rescue FFI_Yajl::EncodeError => e
     raise JSON::GeneratorError, e.message
@@ -57,49 +55,49 @@ end
 
 class Array
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class Hash
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class Fixnum
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class Float
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class String
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class TrueClass
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class FalseClass
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
 class NilClass
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self, *opts)
+    FFI_Yajl::Encoder.encode(self)
   end
 end
 
