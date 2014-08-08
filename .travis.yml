@@ -28,6 +28,8 @@ jdk:
   - openjdk6
 matrix:
   allow_failures:
+    - rvm: rbx-2.2
+      jdk: oraclejdk7
     - rvm: ruby-head
       jdk: oraclejdk7
     - rvm: jruby-head

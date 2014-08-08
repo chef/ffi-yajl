@@ -55,49 +55,49 @@ end
 
 class Array
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class Hash
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class Fixnum
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class Float
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class String
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class TrueClass
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class FalseClass
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 
 class NilClass
   def to_json(*opts, &block)
-    FFI_Yajl::Encoder.encode(self)
+    FFI_Yajl::Encoder.encode(self, *opts)
   end
 end
 

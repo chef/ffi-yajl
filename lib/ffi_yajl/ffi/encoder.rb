@@ -4,8 +4,7 @@ require 'ffi_yajl/ffi'
 module FFI_Yajl
   module FFI
     module Encoder
-      def do_yajl_encode(obj, yajl_gen_opts = {})
-
+      def do_yajl_encode(obj, yajl_gen_opts, opts)
         yajl_gen = FFI_Yajl.yajl_gen_alloc(nil);
 
         # configure the yajl encoder
