@@ -29,6 +29,7 @@ module FFI_Yajl
 
     def initialize(opts = {})
       @opts = opts
+      @opts ||= {}
     end
 
     def self.raise_error_for_status(status)

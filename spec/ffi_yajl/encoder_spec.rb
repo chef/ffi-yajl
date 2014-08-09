@@ -51,5 +51,13 @@ describe "FFI_Yajl::Encoder" do
     expect(encoder.encode(ruby)).to eq('{"gid":4294967294}')
   end
 
-end
+  context "when the encoder has nil passed in for options" do
+    let(:encoder) { FFI_Yajl::Encoder.new(nil) }
 
+    it "does not throw an exception" do
+      ruby = { "foo" => "bar" }
+      expect(encoder.encode(ruby)).to eq("{\"foo\":\"bar\"}")
+    end
+  end
+
+end
