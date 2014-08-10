@@ -8,6 +8,10 @@
 
 ### Bugs fixed
 
+## 1.0.2 (08/09/2014)
+
+### Bugs fixed
+
 * fixed opts chaining issue in the encoder that was breaking pretty printing in knife
 * changed default :allow_comments to true (considered a regression against yajl-ruby compatibility)
 
