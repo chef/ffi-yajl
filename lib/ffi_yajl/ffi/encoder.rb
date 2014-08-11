@@ -171,6 +171,33 @@ class String
   end
 end
 
+class Date
+  def ffi_yajl(yajl_gen, state)
+    str = self.to_s
+    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
+  end
+end
+
+class Time
+  def ffi_yajl(yajl_gen, state)
+    str = self.to_s
+    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
+  end
+end
+
+class DateTime
+  def ffi_yajl(yajl_gen, state)
+    str = self.to_s
+    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
+  end
+end
+
 # I feel dirty
 class Object
   def ffi_yajl(yajl_gen, state)
@@ -180,4 +207,3 @@ class Object
     end
   end
 end
-

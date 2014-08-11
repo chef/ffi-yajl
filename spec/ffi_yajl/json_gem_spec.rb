@@ -149,18 +149,18 @@ describe "JSON Gem Compat API" do
       end
 
       it "encodes Time values correctly" do
-        t = Time.new
-        expect(t.to_json).to eq( %Q{"#{t.to_s}"} )
+        t = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
+        expect(t.to_json).to eq( %Q{"2001-02-02 13:05:06 -0800"} )
       end
 
       it "encodes Date values correctly" do
-        da = Date.new
-        expect(da.to_json).to eq( %Q{"#{da.to_s}"} )
+        da = Date.parse('2001-02-03')
+        expect(da.to_json).to eq( %Q{"2001-02-03"} )
       end
 
       it "encodes DateTime values correctly" do
-        dt = DateTime.new
-        expect(dt.to_json).to eq( %Q{"#{dt.to_s}"} )
+        dt = DateTime.parse('2001-02-03T04:05:06.1+07:00')
+        expect(dt.to_json).to eq( %Q{"2001-02-03T04:05:06+07:00"} )
       end
     end
 
@@ -230,7 +230,6 @@ describe "JSON Gem Compat API" do
       it_behaves_like "handles encoding and parsing correctly"
     end
 
-
     context "when dealing with common UTF-8 symbols" do
       let(:ruby) { [ "© ≠ €! \01" ] }
       let(:json) { "[\"© ≠ €! \\u0001\"]" }
@@ -276,7 +275,6 @@ describe "JSON Gem Compat API" do
       it_behaves_like "handles encoding and parsing correctly"
     end
   end
-
 
     context "when encoding basic types with #to_json" do
       it "Array#to_json should work" do

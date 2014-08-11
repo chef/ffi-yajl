@@ -2,6 +2,7 @@
 #include <yajl/yajl_gen.h>
 
 static VALUE mFFI_Yajl, mExt, mEncoder, mEncoder2, cEncodeError;
+static VALUE cDate, cTime, cDateTime;
 static VALUE cYajl_Gen;
 
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
@@ -61,7 +62,6 @@ int rb_cHash_ffi_yajl_callback(VALUE key, VALUE val, VALUE extra) {
   ID sym_ffi_yajl = rb_intern("ffi_yajl");
   VALUE state = rb_hash_aref(extra, rb_str_new2("state"));
   VALUE rb_yajl_gen = rb_hash_aref(extra, rb_str_new2("yajl_gen"));
-
 
   rb_hash_aset(state, rb_str_new2("processing_key"), Qtrue);
   rb_funcall(key, sym_ffi_yajl, 2, rb_yajl_gen, state);
@@ -227,7 +227,8 @@ static VALUE rb_cString_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   return Qnil;
 }
 
-static VALUE rb_cSymbol_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+/* calls #to_s on an object to encode it */
+static VALUE object_to_s_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   yajl_gen_status status;
   ID sym_to_s = rb_intern("to_s");
   VALUE str = rb_funcall(self, sym_to_s, 0);
@@ -239,6 +240,22 @@ static VALUE rb_cSymbol_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
     yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
   );
   return Qnil;
+}
+
+static VALUE rb_cSymbol_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+}
+
+static VALUE rb_cDate_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+}
+
+static VALUE rb_cTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+}
+
+static VALUE rb_cDateTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
 }
 
 static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
@@ -265,6 +282,10 @@ void Init_encoder() {
   cYajl_Gen = rb_define_class_under(mEncoder, "YajlGen", rb_cObject);
   rb_define_method(mEncoder, "do_yajl_encode", mEncoder_do_yajl_encode, 3);
 
+  cDate = rb_define_class("Date", rb_cObject);
+  cTime = rb_define_class("Time", rb_cObject);
+  cDateTime = rb_define_class("DateTime", cDate);
+
   rb_define_method(rb_cHash, "ffi_yajl", rb_cHash_ffi_yajl, 2);
   rb_define_method(rb_cArray, "ffi_yajl", rb_cArray_ffi_yajl, 2);
   rb_define_method(rb_cNilClass, "ffi_yajl", rb_cNilClass_ffi_yajl, 2);
@@ -275,6 +296,8 @@ void Init_encoder() {
   rb_define_method(rb_cFloat, "ffi_yajl", rb_cFloat_ffi_yajl, 2);
   rb_define_method(rb_cString, "ffi_yajl", rb_cString_ffi_yajl, 2);
   rb_define_method(rb_cSymbol, "ffi_yajl", rb_cSymbol_ffi_yajl, 2);
+  rb_define_method(cDate, "ffi_yajl", rb_cDate_ffi_yajl, 2);
+  rb_define_method(cTime, "ffi_yajl", rb_cTime_ffi_yajl, 2);
+  rb_define_method(cDateTime, "ffi_yajl", rb_cDateTime_ffi_yajl, 2);
   rb_define_method(rb_cObject, "ffi_yajl", rb_cObject_ffi_yajl, 2);
 }
-

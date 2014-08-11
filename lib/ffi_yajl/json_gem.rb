@@ -101,6 +101,24 @@ class NilClass
   end
 end
 
+class Date
+  def to_json(*opts, &block)
+    FFI_Yajl::Encoder.encode(self, *opts)
+  end
+end
+
+class Time
+  def to_json(*opts, &block)
+    FFI_Yajl::Encoder.encode(self, *opts)
+  end
+end
+
+class DateTime
+  def to_json(*opts, &block)
+    FFI_Yajl::Encoder.encode(self, *opts)
+  end
+end
+
 module ::Kernel
   def JSON(object, opts = {})
     if object.respond_to? :to_s
@@ -118,4 +136,3 @@ class Object
     end
   end
 end
-

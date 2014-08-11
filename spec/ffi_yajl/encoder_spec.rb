@@ -60,4 +60,19 @@ describe "FFI_Yajl::Encoder" do
     end
   end
 
+  it "can encode Date objects" do
+    ruby = Date.parse('2001-02-03')
+    expect(encoder.encode(ruby)).to eq( %q{"2001-02-03"} )
+  end
+
+  it "can encode Time objects" do
+    ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
+    expect(encoder.encode(ruby)).to eq( %q{"2001-02-02 13:05:06 -0800"} )
+  end
+
+  it "can encode DateTime objects" do
+    ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00')
+    expect(encoder.encode(ruby)).to eq( %q{"2001-02-03T04:05:06+07:00"} )
+  end
+
 end
