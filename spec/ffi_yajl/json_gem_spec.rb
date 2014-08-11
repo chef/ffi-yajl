@@ -148,9 +148,20 @@ describe "JSON Gem Compat API" do
         expect(d.to_json).to eq( %Q{"#{d.to_s}"} )
       end
 
-      it "encodes Time values correctly" do
-        t = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
-        expect(t.to_json).to eq( %Q{"2001-02-02 13:05:06 -0800"} )
+      context "when encoding Time objects in UTC timezone" do
+        before do
+          @saved_tz = ENV['TZ']
+          ENV['TZ'] = 'UTC'
+        end
+
+        after do
+          ENV['TZ'] = @saved_tz
+        end
+
+        it "encodes Time values correctly" do
+          t = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
+          expect(t.to_json).to eq( %Q{"2001-02-02 21:05:06 +0000"} )
+        end
       end
 
       it "encodes Date values correctly" do

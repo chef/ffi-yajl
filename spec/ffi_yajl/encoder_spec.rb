@@ -65,9 +65,20 @@ describe "FFI_Yajl::Encoder" do
     expect(encoder.encode(ruby)).to eq( %q{"2001-02-03"} )
   end
 
-  it "can encode Time objects" do
-    ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
-    expect(encoder.encode(ruby)).to eq( %q{"2001-02-02 13:05:06 -0800"} )
+  context "when encoding Time objects in UTC timezone" do
+    before do
+      @saved_tz = ENV['TZ']
+      ENV['TZ'] = 'UTC'
+    end
+
+    after do
+      ENV['TZ'] = @saved_tz
+    end
+
+    it "encodes them correctly" do
+      ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
+      expect(encoder.encode(ruby)).to eq( %q{"2001-02-02 21:05:06 +0000"} )
+    end
   end
 
   it "can encode DateTime objects" do
