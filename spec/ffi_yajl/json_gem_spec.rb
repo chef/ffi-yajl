@@ -4,6 +4,7 @@
 # Kinda looks like they stole it from the JSON gem.  I updated the syntax a lot.
 
 require 'spec_helper'
+require 'date'
 
 class Dummy; end
 
@@ -159,7 +160,7 @@ describe "JSON Gem Compat API" do
         end
 
         it "encodes Time values correctly" do
-          t = DateTime.parse('2001-02-03T04:05:06.1+07:00').to_time
+          t = Time.local(2001, 02, 02, 21, 05, 06)
           expect(t.to_json).to eq( %Q{"2001-02-02 21:05:06 +0000"} )
         end
       end
