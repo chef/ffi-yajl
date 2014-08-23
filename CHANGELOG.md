@@ -4,6 +4,8 @@
 
 ### New features
 
+* Support encoding Date, Time and DateTime objects
+
 ### Changes
 
 ### Bugs fixed
