@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'spec_helper'
+require 'date'
 
 describe "FFI_Yajl::Encoder" do
 
@@ -58,6 +59,32 @@ describe "FFI_Yajl::Encoder" do
       ruby = { "foo" => "bar" }
       expect(encoder.encode(ruby)).to eq("{\"foo\":\"bar\"}")
     end
+  end
+
+  it "can encode Date objects" do
+    ruby = Date.parse('2001-02-03')
+    expect(encoder.encode(ruby)).to eq( %q{"2001-02-03"} )
+  end
+
+  context "when encoding Time objects in UTC timezone" do
+    before do
+      @saved_tz = ENV['TZ']
+      ENV['TZ'] = 'UTC'
+    end
+
+    after do
+      ENV['TZ'] = @saved_tz
+    end
+
+    it "encodes them correctly" do
+      ruby = Time.local(2001, 02, 02, 21, 05, 06)
+      expect(encoder.encode(ruby)).to eq( %q{"2001-02-02 21:05:06 +0000"} )
+    end
+  end
+
+  it "can encode DateTime objects" do
+    ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00')
+    expect(encoder.encode(ruby)).to eq( %q{"2001-02-03T04:05:06+07:00"} )
   end
 
 end

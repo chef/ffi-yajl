@@ -4,6 +4,7 @@
 # Kinda looks like they stole it from the JSON gem.  I updated the syntax a lot.
 
 require 'spec_helper'
+require 'date'
 
 class Dummy; end
 
@@ -148,19 +149,30 @@ describe "JSON Gem Compat API" do
         expect(d.to_json).to eq( %Q{"#{d.to_s}"} )
       end
 
-      it "encodes Time values correctly" do
-        t = Time.new
-        expect(t.to_json).to eq( %Q{"#{t.to_s}"} )
+      context "when encoding Time objects in UTC timezone" do
+        before do
+          @saved_tz = ENV['TZ']
+          ENV['TZ'] = 'UTC'
+        end
+
+        after do
+          ENV['TZ'] = @saved_tz
+        end
+
+        it "encodes Time values correctly" do
+          t = Time.local(2001, 02, 02, 21, 05, 06)
+          expect(t.to_json).to eq( %Q{"2001-02-02 21:05:06 +0000"} )
+        end
       end
 
       it "encodes Date values correctly" do
-        da = Date.new
-        expect(da.to_json).to eq( %Q{"#{da.to_s}"} )
+        da = Date.parse('2001-02-03')
+        expect(da.to_json).to eq( %Q{"2001-02-03"} )
       end
 
       it "encodes DateTime values correctly" do
-        dt = DateTime.new
-        expect(dt.to_json).to eq( %Q{"#{dt.to_s}"} )
+        dt = DateTime.parse('2001-02-03T04:05:06.1+07:00')
+        expect(dt.to_json).to eq( %Q{"2001-02-03T04:05:06+07:00"} )
       end
     end
 
@@ -230,7 +242,6 @@ describe "JSON Gem Compat API" do
       it_behaves_like "handles encoding and parsing correctly"
     end
 
-
     context "when dealing with common UTF-8 symbols" do
       let(:ruby) { [ "© ≠ €! \01" ] }
       let(:json) { "[\"© ≠ €! \\u0001\"]" }
@@ -276,7 +287,6 @@ describe "JSON Gem Compat API" do
       it_behaves_like "handles encoding and parsing correctly"
     end
   end
-
 
     context "when encoding basic types with #to_json" do
       it "Array#to_json should work" do
