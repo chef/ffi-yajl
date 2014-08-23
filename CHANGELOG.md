@@ -8,6 +8,9 @@
 
 ### Bugs fixed
 
+* [**Lennart Brinkmann**](https://github.com/lebrinkma):
+  remove `-Wl,--no-undefined` if ruby mkmf.rb adds it in the CFLAGS because we do not directly link against `-lyajl`
+
 ## 1.0.2 (08/09/2014)
 
 ### Bugs fixed
