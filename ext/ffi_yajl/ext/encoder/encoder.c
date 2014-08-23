@@ -251,7 +251,17 @@ static VALUE rb_cDate_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
 }
 
 static VALUE rb_cTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+  yajl_gen_status status;
+  ID sym_strftime = rb_intern("strftime");
+  VALUE str = rb_funcall(self, sym_strftime, 1, rb_str_new2("%Y-%m-%d %H:%M:%S %z"));
+  char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  CHECK_STATUS(
+    yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
+  );
+  return Qnil;
 }
 
 static VALUE rb_cDateTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
