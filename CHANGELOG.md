@@ -10,6 +10,7 @@
 
 ### Bugs fixed
 
+* Fixed Rubinious on at least Ubuntu 14.04 and Mac
 * [**Lennart Brinkmann**](https://github.com/lebrinkma):
   remove `-Wl,--no-undefined` if ruby mkmf.rb adds it in the CFLAGS because we do not directly link against `-lyajl`
 
