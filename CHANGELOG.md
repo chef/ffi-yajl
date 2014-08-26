@@ -4,13 +4,19 @@
 
 ### New features
 
-* Support encoding Date, Time and DateTime objects
-
 ### Changes
 
 ### Bugs fixed
 
-* Fixed Rubinious on at least Ubuntu 14.04 and Mac
+## 1.1.0 (08/26/2014)
+
+### New features
+
+* Support encoding Date, Time and DateTime objects
+
+### Bugs fixed
+
+* Fixed Rubinius on at least Ubuntu 14.04 and Mac
 * [**Lennart Brinkmann**](https://github.com/lebrinkma):
   remove `-Wl,--no-undefined` if ruby mkmf.rb adds it in the CFLAGS because we do not directly link against `-lyajl`
 
