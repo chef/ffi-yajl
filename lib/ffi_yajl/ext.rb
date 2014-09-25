@@ -48,7 +48,7 @@ module FFI_Yajl
     extend ::FFI::Library
     ffi_lib 'dl'
     attach_function 'dlopen', :dlopen, [:string, :int], :void
-    if  Config::CONFIG['host_os'] =~ /linux/i
+    if  RbConfig::CONFIG['host_os'] =~ /linux/i
       dlopen libpath, 0x102  # linux: RTLD_GLOBAL | RTLD_NOW
     else
       dlopen libpath, 0

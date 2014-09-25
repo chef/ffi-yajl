@@ -8,6 +8,8 @@
 
 ### Bugs fixed
 
+* Change Config to RbConfig for FFI-based dlopen for non-DL/non-Fiddle fallback.
+
 ## 1.1.0 (08/26/2014)
 
 ### New features
