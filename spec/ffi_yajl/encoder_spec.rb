@@ -87,4 +87,21 @@ describe "FFI_Yajl::Encoder" do
     expect(encoder.encode(ruby)).to eq( %q{"2001-02-03T04:05:06+07:00"} )
   end
 
+  describe "testing .to_json for Objects" do
+    class NoToJson; end
+    class HasToJson
+      def to_json(*args)
+        "{}"
+      end
+    end
+
+    it "calls .to_s for objects without .to_json" do
+      expect(encoder.encode(NoToJson.new)).to match(/#<NoToJson:\w+>/)
+    end
+
+    it "calls .to_json for objects wit .to_json" do
+      expect(encoder.encode(HasToJson.new)).to eq("{}")
+    end
+  end
+
 end
