@@ -6,6 +6,9 @@
 
 ### Changes
 
+* Encoding Object will no longer blindly call .to_json().  It will first check if the Object supports a .to_json() method
+and if it does not it will call .to_s().  This prevents NoSuchMethod errors when not using the JSON gem.  
+
 ### Bugs fixed
 
 * Change Config to RbConfig for FFI-based dlopen for non-DL/non-Fiddle fallback.
