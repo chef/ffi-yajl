@@ -204,7 +204,7 @@ class Object
     if self.respond_to?(:to_json)
       json = self.to_json(state[:json_opts])
     else
-      json = self.to_s
+      json = "\"#{to_s}\""
     end
     if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, json, json.bytesize) ) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status)

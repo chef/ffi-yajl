@@ -96,7 +96,7 @@ describe "FFI_Yajl::Encoder" do
     end
 
     it "calls .to_s for objects without .to_json" do
-      expect(encoder.encode(NoToJson.new)).to match(/#<NoToJson:\w+>/)
+      expect(encoder.encode(NoToJson.new)).to match(/^"#<NoToJson:\w+>"$/)
     end
 
     it "calls .to_json for objects wit .to_json" do

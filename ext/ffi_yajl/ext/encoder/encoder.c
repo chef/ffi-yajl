@@ -272,14 +272,20 @@ static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   yajl_gen_status status;
   ID sym_to_json = rb_intern("to_json");
   VALUE str;
-  VALUE json_opts =  rb_hash_aref(state, rb_str_new2("json_opts"));
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
 
-  str = rb_funcall(self, sym_to_json, 1, json_opts);
-  CHECK_STATUS(
-    yajl_gen_number(yajl_gen, (char *)RSTRING_PTR(str), RSTRING_LEN(str))
-  );
+  if ( rb_respond_to(self, sym_to_json) ) {
+    VALUE json_opts =  rb_hash_aref(state, rb_str_new2("json_opts"));
+    struct yajl_gen_t *yajl_gen;
+    Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+    str = rb_funcall(self, sym_to_json, 1, json_opts);
+    CHECK_STATUS(
+      yajl_gen_number(yajl_gen, (char *)RSTRING_PTR(str), RSTRING_LEN(str))
+    );
+  } else {
+    object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+  }
+
   return Qnil;
 }
 
