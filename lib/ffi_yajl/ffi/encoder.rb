@@ -201,8 +201,15 @@ end
 # I feel dirty
 class Object
   def ffi_yajl(yajl_gen, state)
-    json = self.to_json(state[:json_opts])
-    if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, json, json.bytesize) ) != 0
+    if self.respond_to?(:to_json)
+      json = self.to_json(state[:json_opts])
+      # #yajl_gen_number outputs a string without quotes around it
+      status = FFI_Yajl.yajl_gen_number(yajl_gen, json, json.bytesize)
+    else
+      str = self.to_s
+      status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)
+    end
+    if ( status ) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status)
     end
   end
