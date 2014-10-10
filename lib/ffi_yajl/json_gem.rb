@@ -3,6 +3,8 @@
 
 require 'ffi_yajl' unless defined?(FFI_Yajl::Parser)
 
+warn "ffi-yajl/json_gem is deprecated, these monkeypatches will be dropped shortly"
+
 module JSON
   class JSONError < StandardError; end unless defined?(JSON::JSONError)
   class GeneratorError < JSONError; end unless defined?(JSON::GeneratorError)
