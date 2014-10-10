@@ -7,6 +7,8 @@ module FFI_Yajl
   extend ::FFI::Library
 
   libname = ::FFI.map_library_name("yajl")
+  # XXX: need to replace ::FFI.map_library_name here as well
+  libname = "libyajl.so" if libname == "yajl.dll"
   libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
   libpath.gsub!(/dylib/, 'bundle')
 
