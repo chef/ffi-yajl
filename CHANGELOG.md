@@ -6,11 +6,19 @@
 
 ### Changes
 
+### Bugs fixed
+
+## 1.2.0 (10/09/2014)
+
+### Changes
+
 * Encoding Object will no longer blindly call .to_json().  It will first check if the Object supports a .to_json() method
 and if it does not it will call .to_s().  This prevents NoSuchMethod errors when not using the JSON gem.  
 
 ### Bugs fixed
 
+* C extension was broken on windows due to libyajl.so being renamed to yajl.dll which has been reverted in
+  libyajl2-gem.
 * Change Config to RbConfig for FFI-based dlopen for non-DL/non-Fiddle fallback.
 
 ## 1.1.0 (08/26/2014)
