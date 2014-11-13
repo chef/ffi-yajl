@@ -61,7 +61,7 @@ module FFI_Yajl
   end
 
   unless try_fiddle_dlopen(libpath) || try_dl_dlopen(libpath) || try_ffi_dlopen(libpath)
-    raise "cannot find dlopen vi Fiddle, DL or FFI, what am I supposed to do?"
+    raise "cannot find dlopen via Fiddle, DL or FFI, what am I supposed to do?"
   end
 
   class Parser
