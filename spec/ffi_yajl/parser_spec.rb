@@ -14,6 +14,55 @@ describe "FFI_Yajl::Parser" do
       end
     end
 
+    context "when parsing nil" do
+      let(:json) { nil }
+      it "should not coredump ruby" do
+        expect{ parser }.to raise_error(FFI_Yajl::ParseError)
+      end
+    end
+
+    context "when parsing bare int" do
+      let(:json) { "1" }
+      it "should parse to the int value" do
+        expect( parser ).to eq(1)
+      end
+    end
+
+    context "when parsing bare string" do
+      let(:json) { '"a"' }
+      it "should parse to the string value" do
+        expect( parser ).to eq("a")
+      end
+    end
+
+    context "when parsing bare true" do
+      let(:json) { "true" }
+      it "should parse to the true value" do
+        expect( parser ).to eq(true)
+      end
+    end
+
+    context "when parsing bare false" do
+      let(:json) { "false" }
+      it "should parse to the false value" do
+        expect( parser ).to eq(false)
+      end
+    end
+
+    context "when parsing bare null" do
+      let(:json) { "null" }
+      it "should parse to the nil value" do
+        expect( parser ).to eq(nil)
+      end
+    end
+
+    context "when parsing bare float" do
+      let(:json) { "1.1" }
+      it "should parse to the a float" do
+        expect( parser ).to eq(1.1)
+      end
+    end
+
     context "when json has comments" do
       let(:json) { '{"key": /* this is a comment */ "value"}' }
 
@@ -482,4 +531,3 @@ describe "FFI_Yajl::Parser" do
     end
   end
 end
-
