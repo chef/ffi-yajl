@@ -31,6 +31,8 @@ module FFI_Yajl
     end
 
     def parse(str)
+      raise FFI_Yajl::ParseError, "input must be a string or IO" unless str.is_a?(String) || str.respond_to?(:read)
+
       # initialization that we can do in pure ruby
       yajl_opts = {}
 
