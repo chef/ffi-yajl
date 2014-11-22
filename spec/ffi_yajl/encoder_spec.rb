@@ -7,12 +7,12 @@ describe "FFI_Yajl::Encoder" do
 
   let(:encoder) { FFI_Yajl::Encoder.new }
 
-  it "encodes hashes in keys as strings" do
+  it "encodes hashes in keys as strings", :ruby_gte_193 => true do
     ruby = { {'a' => 'b'} => 2 }
     expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
   end
 
-  it "encodes arrays in keys as strings" do
+  it "encodes arrays in keys as strings", :ruby_gte_193 => true do
     ruby = { [0,1] => 2 }
     expect(encoder.encode(ruby)).to eq('{"[0, 1]":2}')
   end
