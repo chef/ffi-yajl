@@ -11,6 +11,7 @@
 
 * warn on fallback to ffi when yajl-ruby is loaded (ffi-yajl and yajl-ruby use incompatible yajl c-libs)
 * warn when we don't use the c ext on MRI or RBX (ffi is currently much slower than the c-ext)
+* further bumped the libyajl2-gem pin to ~> 1.2 (required for the cygwin users)
 * fix minimum libyajl2-gem version to ~> 1.1 (ffi-yajl >= 1.2.0 with libyajl2-gem 1.0 fails on windows)
 * allow the c-ext to load on ruby 1.8.7
 
