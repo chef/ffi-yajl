@@ -13,15 +13,13 @@ module FFI_Yajl
           when Array
             stack.last.push(val)
           else
-            raise FFI_Yajl::ParseError.new("internal error: object not a hash or array")
+            stack.push(val)
           end
         end
 
         def stack_pop
           if stack.length > 1
             set_value( stack.pop )
-          else
-            @finished = stack.pop
           end
         end
 
@@ -138,11 +136,10 @@ module FFI_Yajl
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError.new(error)
         end
-        finished
+        stack.pop
       ensure
         ::FFI_Yajl.yajl_free(yajl_handle) if yajl_handle
       end
     end
   end
 end
-
