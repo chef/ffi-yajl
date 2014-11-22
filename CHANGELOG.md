@@ -17,6 +17,7 @@
 
 ### Bugs fixed
 
+* fixes using Arrays and Hashes (and true/false/nil) as Hash keys
 * fixes bare object parsing in issue #2 and #6
 * fixes parsing nil object to not coredump the MRI ruby VM (issue #15)
 
