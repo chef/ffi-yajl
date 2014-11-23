@@ -17,6 +17,9 @@
 
 ### Bugs fixed
 
+* fixes bare object parsing in issue #2 and #6
+* fixes parsing nil object to not coredump the MRI ruby VM (issue #15)
+
 ## 1.2.0 (10/09/2014)
 
 ### Changes

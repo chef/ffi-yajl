@@ -26,6 +26,7 @@ void set_value(CTX *ctx, VALUE val) {
       rb_hash_aset(last, key, val);
       break;
     default:
+      rb_ary_push(stack, val);
       break;
   }
 }
@@ -49,8 +50,6 @@ void end_object(CTX *ctx) {
   rb_ivar_set(ctx->self, rb_intern("key"), rb_ary_pop(key_stack));
   if ( RARRAY_LEN(stack) > 1 ) {
     set_value(ctx, rb_ary_pop(stack));
-  } else {
-    rb_ivar_set(ctx->self, rb_intern("finished"), rb_ary_pop(stack));
   }
 }
 
@@ -211,7 +210,7 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE yajl_opts) {
     goto raise;
   }
   yajl_free(hand);
-  return rb_ivar_get(self, rb_intern("finished"));
+  return rb_ary_pop(rb_ivar_get(self, rb_intern("stack")));
 
 raise:
   if (hand) {
@@ -230,4 +229,3 @@ void Init_parser() {
   utf8Encoding = rb_utf8_encoding();
 #endif
 }
-
