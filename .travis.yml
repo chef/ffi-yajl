@@ -34,7 +34,7 @@ matrix:
       jdk: oraclejdk7
     - rvm: jruby-head
       jdk: openjdk7
-    - rvm: rvx-2.2.10
+    - rvm: rbx-2.2.10
       jdk: oraclejdk7
   exclude:
     - rvm: 2.1.2
