@@ -236,7 +236,7 @@ end
 # I feel dirty
 class Object
   def ffi_yajl(yajl_gen, state)
-    if self.respond_to?(:to_json)
+    if !state[:processing_key] && self.respond_to?(:to_json)
       json = self.to_json(state[:json_opts])
       # #yajl_gen_number outputs a string without quotes around it
       status = FFI_Yajl.yajl_gen_number(yajl_gen, json, json.bytesize)
