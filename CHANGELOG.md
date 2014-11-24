@@ -3,6 +3,14 @@
 ## master (unreleased)
 
 ### New features
+### Changes
+### Bugs fixed
+
+* fixes using Objects as Hash keys
+
+## 1.3.0 (11/22/2014)
+
+### New features
 
 * [**Jason Potkanski**](https://github.com/electrawn):
   Cygwin detection
