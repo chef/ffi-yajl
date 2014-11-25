@@ -345,7 +345,7 @@ static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   ID sym_to_json = rb_intern("to_json");
   VALUE str;
 
-  if ( rb_respond_to(self, sym_to_json) ) {
+  if ( rb_hash_aref(state, rb_str_new2("processing_key")) != Qtrue && rb_respond_to(self, sym_to_json) ) {
     VALUE json_opts =  rb_hash_aref(state, rb_str_new2("json_opts"));
     struct yajl_gen_t *yajl_gen;
     Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);

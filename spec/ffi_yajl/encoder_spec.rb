@@ -47,6 +47,23 @@ describe "FFI_Yajl::Encoder" do
     expect(encoder.encode(ruby)).to eq('{"12345678901234567890":2}')
   end
 
+  it "encodes objects in keys as strings" do
+    o = Object.new
+    ruby = { o => 2 }
+    expect(encoder.encode(ruby)).to eq(%Q{{"#{o.to_s}":2}})
+  end
+
+  it "encodes an object in a key which has a #to_json method as strings" do
+    class Thing
+      def to_json(*a)
+        "{}"
+      end
+    end
+    o = Thing.new
+    ruby = { o => 2 }
+    expect(encoder.encode(ruby)).to eq(%Q{{"#{o.to_s}":2}})
+  end
+
   # XXX: 127 == YAJL_MAX_DEPTH hardcodedness, zero control for us, it isn't even a twiddleable #define
   it "raises an exception for deeply nested arrays" do
     root = []
