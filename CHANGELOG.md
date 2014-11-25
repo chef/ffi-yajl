@@ -6,6 +6,10 @@
 ### Changes
 ### Bugs fixed
 
+## 1.3.1 (11/24/2014)
+
+### Bugs fixed
+
 * fixes using Objects as Hash keys
 
 ## 1.3.0 (11/22/2014)
