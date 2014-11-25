@@ -22,7 +22,8 @@ end
 unix_gemspec = eval(File.read("ffi-yajl.gemspec"))
 
 task :clean do
-  sh "rm -rf pkg/* lib/ffi_yajl/ext/*"
+  sh "rm -f Gemfile.lock"
+  sh "rm -rf pkg/* tmp/* .bundle lib/ffi_yajl/ext/*"
 end
 
 desc "install the gem locally"
