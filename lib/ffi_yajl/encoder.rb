@@ -46,6 +46,8 @@ module FFI_Yajl
         raise FFI_Yajl::EncodeError, "Invalid number: cannot encode Infinity, -Infinity, or NaN"
       when 6 # yajl_gen_no_buf
         raise FFI_Yajl::EncodeError, "YAJL internal error: yajl_gen_get_buf was called, but a print callback was specified, so no internal buffer is available"
+      when 7 # yajl_gen_invalid_string
+        raise FFI_Yajl::EncodeError, "Invalid UTF-8 string: cannot encode to UTF-8"
       else
         raise FFI_Yajl::EncodeError, "Unknown YAJL Error (#{status}), please report this as a bug"
       end
