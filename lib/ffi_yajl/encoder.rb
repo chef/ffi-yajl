@@ -9,6 +9,7 @@ module FFI_Yajl
       yajl_gen_opts = {}
 
       yajl_gen_opts[:yajl_gen_validate_utf8] = true
+      yajl_gen_opts[:yajl_gen_validate_utf8] = @opts[:validate_utf8] == false ? false : true
       yajl_gen_opts[:yajl_gen_beautify] = false
       yajl_gen_opts[:yajl_gen_indent_string] = " "
 

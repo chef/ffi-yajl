@@ -5,7 +5,9 @@ require 'date'
 
 describe "FFI_Yajl::Encoder" do
 
-  let(:encoder) { FFI_Yajl::Encoder.new }
+  let(:options) { {} }
+
+  let(:encoder) { FFI_Yajl::Encoder.new(options) }
 
   it "encodes hashes in keys as strings", :ruby_gte_193 => true do
     ruby = { {'a' => 'b'} => 2 }
@@ -146,4 +148,28 @@ describe "FFI_Yajl::Encoder" do
     end
   end
 
+  context "when encoding invalid utf-8" do
+    ruby = {
+      "automatic"=>{
+        "etc"=>{
+          "passwd"=>{
+            "root"=>{"dir"=>"/root", "gid"=>0, "uid"=>0, "shell"=>"/bin/sh", "gecos"=>"Elan Ruusam\xc3\xa4e"},
+            "glen"=>{"dir"=>"/home/glen", "gid"=>500, "uid"=>500, "shell"=>"/bin/bash", "gecos"=>"Elan Ruusam\xE4e"},
+          }
+        },
+      },
+    }
+
+    it "raises and error on invalid json" do
+      expect{ encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, "Invalid UTF-8 string: cannot encode to UTF-8")
+    end
+
+    context "when validate_utf8 is off" do
+      let(:options) {  { :validate_utf8 => false } }
+
+      it "does not raise an error" do
+        expect{ encoder.encode(ruby) }.not_to raise_error
+      end
+    end
+  end
 end
