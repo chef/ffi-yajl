@@ -47,7 +47,7 @@ module FFI_Yajl
       when 6 # yajl_gen_no_buf
         raise FFI_Yajl::EncodeError, "YAJL internal error: yajl_gen_get_buf was called, but a print callback was specified, so no internal buffer is available"
       else
-        raise FFI_Yajl::EncodeError, "Unknown YAJL Error, please report this as a bug"
+        raise FFI_Yajl::EncodeError, "Unknown YAJL Error (#{status}), please report this as a bug"
       end
     end
   end
