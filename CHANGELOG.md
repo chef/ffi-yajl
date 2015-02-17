@@ -3,8 +3,16 @@
 ## master (unreleased)
 
 ### New features
+
 ### Changes
+
+* Implement :validate_utf8 (on by default) which can be set to false to suppress validation
+
 ### Bugs fixed
+
+* [**Elan Ruusamäe**](https://github.com/glensc):
+  include status code for Unknown Error
+* Correctly throw useful invalid UTF-8 error exception
 
 ## 1.3.1 (11/24/2014)
 
