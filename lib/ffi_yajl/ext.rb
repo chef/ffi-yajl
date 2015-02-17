@@ -4,14 +4,17 @@ require 'ffi_yajl/encoder'
 require 'ffi_yajl/parser'
 require 'ffi'
 require 'libyajl2'
+require 'ffi_yajl/platform'
 
 module FFI_Yajl
+  extend FFI_Yajl::Platform
+
   # FIXME: DRY with ffi_yajl/ffi.rb
   # FIXME: extract map_library_name from FFI and stop requiring it at the top level
   #        so that the C-library can be installed without FFI
   libname = ::FFI.map_library_name("yajl")
   # awful windows patch, but there is an open issue to entirely replace FFI.map_library_name already
-  libname = "libyajl.so" if libname == "yajl.dll"
+  libname = "libyajl.so" if windows?
   libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
   libpath.gsub!(/dylib/, 'bundle')
   libpath = ::FFI.map_library_name("yajl") unless File.exist?(libpath)
