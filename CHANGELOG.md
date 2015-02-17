@@ -12,6 +12,8 @@
 
 * [**Elan Ruusamäe**](https://github.com/glensc):
   include status code for Unknown Error
+* [**Tyler Vann-Campbell**](https://github.com/lrdcasimir)
+  Fix check for windows? on cygwin and get dll name right
 * Correctly throw useful invalid UTF-8 error exception
 
 ## 1.3.1 (11/24/2014)
