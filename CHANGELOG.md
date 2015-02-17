@@ -6,6 +6,12 @@
 
 ### Changes
 
+### Bugs fixed
+
+## 1.4.0 (02/17/2015)
+
+### New features
+
 * Implement :validate_utf8 (on by default) which can be set to false to suppress validation
 
 ### Bugs fixed
