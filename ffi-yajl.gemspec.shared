@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description      = s.summary
   s.author           = "Lamont Granquist"
   s.email            = "lamont@getchef.com"
-  s.homepage         = "http://github.com/opscode/ffi-yajl"
+  s.homepage         = "http://github.com/chef/ffi-yajl"
 
   s.add_development_dependency "rake", "~> 10.1"
   s.add_development_dependency "rspec", "~> 2.99"

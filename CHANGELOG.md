@@ -6,12 +6,20 @@
 
 ### Changes
 
+### Bugs fixed
+
+## 1.4.0 (02/17/2015)
+
+### New features
+
 * Implement :validate_utf8 (on by default) which can be set to false to suppress validation
 
 ### Bugs fixed
 
 * [**Elan Ruusamäe**](https://github.com/glensc):
   include status code for Unknown Error
+* [**Tyler Vann-Campbell**](https://github.com/lrdcasimir)
+  Fix check for windows? on cygwin and get dll name right
 * Correctly throw useful invalid UTF-8 error exception
 
 ## 1.3.1 (11/24/2014)
