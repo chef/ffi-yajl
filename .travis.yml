@@ -1,6 +1,5 @@
 sudo: false
 before_install: 
-  - sudo dpkg -P libyajl1 || true
 #  - gem update bundler
   - bundle --version
 #  - gem update --system
