@@ -8,6 +8,14 @@
 
 ### Bugs fixed
 
+## 2.0.0 (03/17/2015)
+
+### Changes
+
+* Dropped the `ffi-yajl/json_gem` monkeypatch compatibility layer completely.  The deprecation
+  warning has been in there for months now and all the work to remove it from chef and ohai
+  has been done in all the latest releases.
+
 ## 1.4.0 (02/17/2015)
 
 ### New features
