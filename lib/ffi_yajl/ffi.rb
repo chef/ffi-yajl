@@ -1,16 +1,23 @@
 require 'rubygems'
 
 require 'libyajl2'
-require 'ffi'
+begin
+  require 'ffi'
+rescue LoadError
+  puts "FATAL: to use the ffi extension instead of the compiled C extension, the ffi gem must be installed"
+  puts "       (it is optional, so you must include it in your bundle manually)"
+  exit 1
+end
+
+require 'ffi_yajl/map_library_name'
 
 module FFI_Yajl
   extend ::FFI::Library
 
-  libname = ::FFI.map_library_name("yajl")
-  # XXX: need to replace ::FFI.map_library_name here as well
-  libname = "libyajl.so" if libname == "yajl.dll"
+  extend FFI_Yajl::MapLibraryName
+
+  libname = map_library_name
   libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
-  libpath.gsub!(/dylib/, 'bundle')
 
   if File.file?(libpath)
     # use our vendored version of libyajl2 if we find it installed
