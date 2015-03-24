@@ -4,8 +4,8 @@ require 'libyajl2'
 begin
   require 'ffi'
 rescue LoadError
-  puts "FATAL: to use the ffi extension instead of the compiled C extension, the ffi gem must be installed"
-  puts "       (it is optional, so you must include it in your bundle manually)"
+  $stderr.puts "FATAL: to use the ffi extension instead of the compiled C extension, the ffi gem must be installed"
+  $stderr.puts "       (it is optional, so you must include it in your bundle manually)"
   exit 1
 end
 
