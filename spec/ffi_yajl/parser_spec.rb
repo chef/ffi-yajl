@@ -453,7 +453,7 @@ describe "FFI_Yajl::Parser" do
       end
     end
 
-    context "when parsing big floats", :ruby_gte_193 => true do
+    context "when parsing big floats", :ruby_gte_193 => true, :unix_only => true do
       let(:json) { '[0.' + '1' * 2**23 + ']' }
 
       it "parses" do
