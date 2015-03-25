@@ -6,5 +6,6 @@ gemspec.platform = "universal-java"
 # extensions so can we simplify the gemspecs now?
 #gemspec.extensions = %w{ ext/libyajl2/extconf.rb }
 
-gemspec
+gemspec.add_dependency "ffi", "~> 1.5"
 
+gemspec
