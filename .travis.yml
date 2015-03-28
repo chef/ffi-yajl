@@ -9,10 +9,8 @@ script:  rake compile; rake spec
 after_success: gem install yajl-ruby; gem install json; gem install psych; FORCE_FFI_YAJL="ext" ffi-yajl-bench
 language: ruby
 rvm:
-  - 2.2.0
-  - 2.1.2
-  - 2.1.1
-  - 2.1.0
+  - 2.2
+  - 2.1
   - 2.0.0
   - 1.9.3
   - 1.9.2
@@ -38,21 +36,13 @@ matrix:
     - rvm: rbx
       jdk: oraclejdk7
   exclude:
-    - rvm: 2.2.0
+    - rvm: 2.2
       jdk: openjdk6
-    - rvm: 2.2.0
+    - rvm: 2.2
       jdk: openjdk7
-    - rvm: 2.1.2
+    - rvm: 2.1
       jdk: openjdk6
-    - rvm: 2.1.2
-      jdk: openjdk7
-    - rvm: 2.1.1
-      jdk: openjdk6
-    - rvm: 2.1.1
-      jdk: openjdk7
-    - rvm: 2.1.0
-      jdk: openjdk6
-    - rvm: 2.1.0
+    - rvm: 2.1
       jdk: openjdk7
     - rvm: 2.0.0
       jdk: openjdk6
