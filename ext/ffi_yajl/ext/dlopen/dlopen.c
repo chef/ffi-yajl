@@ -26,7 +26,9 @@
 static VALUE mFFI_Yajl, mDlopen, mExt;
 
 static VALUE mDlopen_dlopen(VALUE self, VALUE file) {
-  dlopen(RSTRING_PTR(file), RTLD_NOW|RTLD_GLOBAL);
+  if (dlopen(RSTRING_PTR(file), RTLD_NOW|RTLD_GLOBAL) == NULL) {
+    rb_raise(rb_eArgError, "%s", dlerror());
+  }
   return Qnil;
 }
 

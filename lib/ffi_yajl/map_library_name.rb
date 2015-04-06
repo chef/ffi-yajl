@@ -1,37 +1,55 @@
-
+require 'libyajl2'
 require 'ffi_yajl/platform'
+require 'ffi_yajl/ext/dlopen'
 
 module FFI_Yajl
   module MapLibraryName
     include FFI_Yajl::Platform
-    def map_library_name
-      # this is the right answer for the internally built libyajl on windows
-      return "libyajl.so" if windows?
+    include FFI_Yajl::Ext::Dlopen
 
-      # this is largely copied from the FFI.map_library_name algorithm, we most likely need
-      # the windows code eventually to support not using the embedded libyajl2-gem
-      libprefix =
-        case RbConfig::CONFIG['host_os'].downcase
-        when /mingw|mswin/
-          ''
-        when /cygwin/
-          'cyg'
-        else
-          'lib'
+    def library_names
+      case RbConfig::CONFIG['host_os'].downcase
+      when /mingw|mswin/
+        [ "libyajl.so", "yajl.dll" ]
+      when /cygwin/
+        [ "libyajl.so", "cygyajl.dll" ]
+      when /darwin/
+        [ "libyajl.bundle", "libyajl.dylib" ]
+      else
+        [ "libyajl.so" ]
+      end
+    end
+
+    def expanded_library_names
+      library_names.map do |libname|
+        pathname = File.expand_path(File.join(Libyajl2.opt_path, libname))
+        pathname if File.file?(pathname)
+      end.compact
+    end
+
+    def dlopen_yajl_library
+      found = false
+      ( expanded_library_names + library_names ).each do |libname|
+        begin
+          dlopen(libname)
+          found = true
+          break
+        rescue ArgumentError
         end
-      libsuffix =
-        case RbConfig::CONFIG['host_os'].downcase
-        when /darwin/
-          'bundle'
-        when /linux|bsd|solaris|sunos/
-          'so'
-        when /mingw|mswin|cygwin/
-          'dll'
-        else
-          # Punt and just assume a sane unix (i.e. anything but AIX)
-          'so'
+      end
+      raise "cannot find yajl library for platform" unless found
+    end
+
+    def ffi_open_yajl_library
+      found = false
+      expanded_library_names.each do |libname|
+        begin
+          ffi_lib libname
+          found = true
+        rescue
         end
-      libprefix + "yajl" + ".#{libsuffix}"
+      end
+      ffi_lib 'yajl' unless found
     end
   end
 end
