@@ -19,10 +19,6 @@ elsif ENV['FORCE_FFI_YAJL'] == "ffi"
   require 'ffi_yajl/ffi'
 elsif RUBY_PLATFORM == "java"
   require 'ffi_yajl/ffi'
-#elsif defined?(Yajl)
-#  warn "the ffi-yajl and yajl-ruby gems have incompatible C libyajl libs and should not be loaded in the same Ruby VM"
-#  warn "falling back to ffi which might work (or might not, no promises)"
-#  require 'ffi_yajl/ffi'
 else
   begin
     require 'ffi_yajl/ext'
