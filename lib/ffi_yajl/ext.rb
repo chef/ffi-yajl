@@ -2,10 +2,12 @@ require 'rubygems'
 
 require 'ffi_yajl/encoder'
 require 'ffi_yajl/parser'
+require 'ffi_yajl/ext/dlopen'
 require 'ffi_yajl/map_library_name'
 
 module FFI_Yajl
   extend FFI_Yajl::MapLibraryName
+  extend FFI_Yajl::Ext::Dlopen
 
   dlopen_yajl_library
 

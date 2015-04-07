@@ -1,12 +1,7 @@
 require 'libyajl2'
-require 'ffi_yajl/platform'
-require 'ffi_yajl/ext/dlopen'
 
 module FFI_Yajl
   module MapLibraryName
-    include FFI_Yajl::Platform
-    include FFI_Yajl::Ext::Dlopen
-
     def library_names
       case RbConfig::CONFIG['host_os'].downcase
       when /mingw|mswin/
