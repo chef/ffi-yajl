@@ -1,5 +1,11 @@
 $: << File.expand_path(File.join(File.dirname( __FILE__ ), "../lib"))
 
+begin
+  require 'yajl'
+rescue LoadError
+  # yajl can't be installed on jruby
+end
+
 require 'ffi_yajl'
 
 RSpec.configure do |c|
