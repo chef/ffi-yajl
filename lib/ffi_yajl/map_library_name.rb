@@ -30,13 +30,23 @@ require 'libyajl2'
 module FFI_Yajl
   module MapLibraryName
 
+    private
+
+    # Stub for tests to override the host_os
+    #
+    # @api private
+    # @return Array<String> lower case ruby host_os string
+    def host_os
+      RbConfig::CONFIG['host_os'].downcase
+    end
+
     # Array of yajl library names on the platform.  Some platforms like Windows
     # and Mac may have different names/extensions.
     #
     # @api private
     # @return Array<String> Array of yajl library names for platform
     def library_names
-      case RbConfig::CONFIG['host_os'].downcase
+      case host_os
       when /mingw|mswin/
         [ "libyajl.so", "yajl.dll" ]
       when /cygwin/
@@ -91,7 +101,7 @@ module FFI_Yajl
         begin
           ffi_lib libname
           found = true
-        rescue
+        rescue LoadError
         end
       end
       ffi_lib 'yajl' unless found
