@@ -6,6 +6,11 @@ platforms :rbx do
   gem 'rubysl', '~> 2.0'
 end
 
+group :development do
+  # for testing loading concurrently with yajl-ruby, not on jruby
+  gem 'yajl-ruby', :platforms => [ :ruby, :mswin, :mingw ]
+end
+
 group :development_extras do
   gem 'rubocop', '= 0.21.0'
   gem 'reek', '= 1.3.7'

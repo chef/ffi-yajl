@@ -16,15 +16,7 @@ module FFI_Yajl
 
   extend FFI_Yajl::MapLibraryName
 
-  libname = map_library_name
-  libpath = File.expand_path(File.join(Libyajl2.opt_path, libname))
-
-  if File.file?(libpath)
-    # use our vendored version of libyajl2 if we find it installed
-    ffi_lib libpath
-  else
-    ffi_lib 'yajl'
-  end
+  ffi_open_yajl_library
 
   class YajlCallbacks < ::FFI::Struct
     layout :yajl_null, :pointer,
