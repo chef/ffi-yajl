@@ -2,7 +2,7 @@
 #include <yajl/yajl_gen.h>
 
 static VALUE mFFI_Yajl, mExt, mEncoder, mEncoder2, cEncodeError;
-static VALUE cDate, cTime, cDateTime;
+static VALUE cDate, cTime, cDateTime, cStringIO;
 static VALUE cYajl_Gen;
 
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
@@ -295,11 +295,8 @@ static VALUE rb_cString_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   return Qnil;
 }
 
-/* calls #to_s on an object to encode it */
-static VALUE object_to_s_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+static VALUE string_ffi_yajl(VALUE str, VALUE rb_yajl_gen, VALUE state) {
   yajl_gen_status status;
-  ID sym_to_s = rb_intern("to_s");
-  VALUE str = rb_funcall(self, sym_to_s, 0);
   char *cptr = RSTRING_PTR(str);
   int len = RSTRING_LEN(str);
   struct yajl_gen_t *yajl_gen;
@@ -310,6 +307,13 @@ static VALUE object_to_s_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   );
 
   return Qnil;
+}
+
+/* calls #to_s on an object to encode it */
+static VALUE object_to_s_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  ID sym_to_s = rb_intern("to_s");
+  VALUE str = rb_funcall(self, sym_to_s, 0);
+  return string_ffi_yajl(str, rb_yajl_gen, state);
 }
 
 static VALUE rb_cSymbol_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
@@ -321,19 +325,15 @@ static VALUE rb_cDate_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
 }
 
 static VALUE rb_cTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
   ID sym_strftime = rb_intern("strftime");
   VALUE str = rb_funcall(self, sym_strftime, 1, rb_str_new2("%Y-%m-%d %H:%M:%S %z"));
-  char *cptr = RSTRING_PTR(str);
-  int len = RSTRING_LEN(str);
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  return string_ffi_yajl(str, rb_yajl_gen, state);
+}
 
-  CHECK_STATUS(
-    yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-  );
-
-  return Qnil;
+static VALUE rb_cStringIO_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  ID sym_read = rb_intern("read");
+  VALUE str = rb_funcall(self, sym_read, 0);
+  return string_ffi_yajl(str, rb_yajl_gen, state);
 }
 
 static VALUE rb_cDateTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
@@ -373,6 +373,7 @@ void Init_encoder() {
   cDate = rb_define_class("Date", rb_cObject);
   cTime = rb_define_class("Time", rb_cObject);
   cDateTime = rb_define_class("DateTime", cDate);
+  cStringIO = rb_define_class("StringIO", rb_cData);
 
   rb_define_method(rb_cHash, "ffi_yajl", rb_cHash_ffi_yajl, 2);
   rb_define_method(rb_cArray, "ffi_yajl", rb_cArray_ffi_yajl, 2);
@@ -387,5 +388,6 @@ void Init_encoder() {
   rb_define_method(cDate, "ffi_yajl", rb_cDate_ffi_yajl, 2);
   rb_define_method(cTime, "ffi_yajl", rb_cTime_ffi_yajl, 2);
   rb_define_method(cDateTime, "ffi_yajl", rb_cDateTime_ffi_yajl, 2);
+  rb_define_method(cStringIO, "ffi_yajl", rb_cStringIO_ffi_yajl, 2);
   rb_define_method(rb_cObject, "ffi_yajl", rb_cObject_ffi_yajl, 2);
 }
