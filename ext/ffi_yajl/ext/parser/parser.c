@@ -11,6 +11,7 @@ static VALUE mFFI_Yajl, mExt, mParser, cParseError;
 typedef struct {
   VALUE self;
   int symbolizeKeys;
+  int uniqueKeyChecking;
 } CTX;
 
 void set_value(CTX *ctx, VALUE val) {
@@ -23,6 +24,12 @@ void set_value(CTX *ctx, VALUE val) {
       rb_ary_push(last, val);
       break;
     case T_HASH:
+      if ( ((CTX *)ctx)->uniqueKeyChecking ) {
+        ID sym_has_key = rb_intern("has_key?");
+        if ( rb_funcall(last, sym_has_key, 1, key) == Qtrue ) {
+          rb_raise(cParseError, "repeated key: %s", RSTRING_PTR(key));
+        }
+      }
       rb_hash_aset(last, key, val);
       break;
     default:
@@ -163,7 +170,7 @@ static yajl_callbacks callbacks = {
   end_array_callback,
 };
 
-int get_opts_key(VALUE self, char *key) {
+int get_opts_key(VALUE self, const char *key) {
   VALUE opts = rb_iv_get(self, "@opts");
   if (TYPE(opts) != T_HASH) {
     rb_raise(rb_eTypeError, "opts is not a valid hash");
@@ -182,6 +189,7 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE yajl_opts) {
 
   ctx.self = self;
   ctx.symbolizeKeys = get_opts_key(self, "symbolize_keys");
+  ctx.uniqueKeyChecking = get_opts_key(self, "unique_key_checking");
 
   hand = yajl_alloc(&callbacks, NULL, (void *)&ctx);
 
