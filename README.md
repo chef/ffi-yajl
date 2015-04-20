@@ -9,15 +9,102 @@ extension mechanisms, including both MRI native extensions and FFI in
 order to be compatible with as many Ruby implementations as possible
 while providing good performance where possible.
 
+## How to Install
+
+Install from the command-line:
+
+```
+gem install ffi-yajl
+```
+
+Or use a Gemfile:
+
+```
+gem 'ffi-yajl'
+```
+
+## Supported Ruby VMs:
+
+* Ruby MRI 1.8.7/1.9.3/2.0.0/2.1.x/2.2.x
+* rbx 2.2.x (possibly earlier)
+* Jruby 1.7.x (possibly earlier)
+
+## Supported Distros:
+
+* Ubuntu 10.04 through 14.10
+* Debian 7.x
+* RHEL/CentOS/Oracle 5.x/6.x/7.x
+* Solaris 9/10/11 (gcc, sun compiler untested)
+* AIX 6.x/7.x (gcc or xlc)
+* Windows 2008r2/2012 (and Win2k/2k3 and consumer versions should work)
+
 ## Basic Usage
+
+Start by requiring it:
 
 ```ruby
 require 'ffi-yajl'
-json_out = FFI_Yajl::Encoder.encode( { "foo" => [ "bar", "baz" ] } )
-# => "{\"foo\":[\"bar\",\"baz\"]}"
-data_in = FFI_Yajl::Parser.parse( json_out )
-# => {"foo"=>["bar", "baz"]}
 ```
+
+You can encode and parse with class objects:
+
+```ruby
+options_hash = {}
+json = FFI_Yajl::Encoder.encode( {"foo"=>["bar","baz"]} )
+hash = FFI_Yajl::Parser.parse( json )
+```
+
+Or you can be more object oriented:
+
+```ruby
+options_hash = {}
+encoder = FFI_Yajl::Encoder.new( options_hash )
+json = encoder.encode( {"foo"=>["bar","baz"]} )
+parser = FFI_Yajl::Parser.new( options_hash )
+hash = parser.parse( json )
+```
+
+## Parser Options
+
+* `:check_utf8`
+* `:dont_validate_strings`
+* `:symbolize_keys` (default = false):
+* `:symbolize_names` (default = false):  alias for `:symbolize_keys`
+* `:allow_trailing_garbage`
+* `:allow_multiple_values`
+* `:allow_partial_values`
+* `:unique_key_checking`
+
+## Encoder Options
+
+* `:pretty` (default = false):
+* `:validate_utf8`
+
+## Forcing FFI or C Extension
+
+You can set the environment variable `FORCE_FFI_YAJL` to `ext` or `ffi` to
+control if the C extension or FFI bindings are used.
+
+## Yajl Library Packaging
+
+This library prefers to use the embedded yajl 2.x C library packaged in the
+libyajl2 gem.  In order to use the operating system yajl library (which must be
+yajl 2.x) the environment variable `USE_SYSTEM_LIBYAJL2` can be set before
+installing or bundling libyajl2.  This will force the libyajl2 gem to skip
+compiling its embedded library and the ffi-yajl gem will fallback to using the
+system yajl library.
+
+## No JSON Gem Compatiblity layer
+
+This library does not offer a feature to patch `#to_json` methods into all
+the ruby classes similarly to the JSON gem or yajl-ruby's `yajl/json_gem`
+compatibility API.  The differences in encoding between the JSON gem and the
+Yajl C library can produce different output on different systems and makes
+testing brittle.  Such a feature will not be included.  It was removed in
+this pull request and could be easily extracted to its own gem (we have
+no interest in maintaining that gem):
+
+https://github.com/chef/ffi-yajl/pull/47/files
 
 ## Why This Instead of X?
 
@@ -35,15 +122,6 @@ wanted to be able to fallback to using FFI bindings to the C code (so we
 could support non-MRI rubies) and we also needed some bug fixes in
 yajl2, but the maintainer wasn't able to devote enough time to the
 project to make these updates in a timeframe that worked for us.
-
-## Yajl Library Packaging
-
-This library prefers to use the embedded yajl 2.x C library packaged in the
-libyajl2 gem.  In order to use the operating system yajl library (which must be
-yajl 2.x) the environment variable `USE_SYSTEM_LIBYAJL2` can be set before
-installing or bundling libyajl2.  This will force the libyajl2 gem to skip
-compiling its embedded library and the ffi-yajl gem will fallback to using the
-system yajl library.
 
 ## Thanks
 
