@@ -131,6 +131,11 @@ describe "FFI_Yajl::Encoder" do
     expect(encoder.encode(ruby)).to eq( %q{"2001-02-03"} )
   end
 
+  it "can encode StringIOs" do
+    ruby = { "foo" => StringIO.new('THING') }
+    expect(encoder.encode(ruby)).to eq("{\"foo\":\"THING\"}")
+  end
+
   context "when encoding Time objects in UTC timezone" do
     before do
       @saved_tz = ENV['TZ']

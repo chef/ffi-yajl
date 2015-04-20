@@ -227,6 +227,15 @@ class String
   end
 end
 
+class StringIO
+  def ffi_yajl(yajl_gen, state)
+    str = self.read
+    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      FFI_Yajl::Encoder.raise_error_for_status(status)
+    end
+  end
+end
+
 class Date
   def ffi_yajl(yajl_gen, state)
     str = self.to_s
