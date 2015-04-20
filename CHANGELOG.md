@@ -8,6 +8,19 @@
 
 ### Bugs fixed
 
+## 2.1.0 (04/20/2015)
+
+### New features
+
+* StringIOs are now encoded to strings
+* Added `:unique_key_checking` flag to parser that will raise on repeated hash keys
+  (commonly edit mistakes in long JSON documents).
+
+### Changes
+
+* Includes its own dlopen extension
+* C extension should operation without ffi
+
 ## 2.0.0 (03/17/2015)
 
 ### Changes
