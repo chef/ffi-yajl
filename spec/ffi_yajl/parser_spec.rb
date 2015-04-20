@@ -492,6 +492,21 @@ describe "FFI_Yajl::Parser" do
         expect{ parser }.not_to raise_error
       end
     end
+
+    context "should ignore repeated keys by default" do
+      let(:json) { '{"foo":"bar","foo":"baz"}' }
+      it "should replace the first hash key with the second" do
+        expect(parser).to eql( "foo" => "baz" )
+      end
+    end
+
+    context "should raise an exception for repeated keys" do
+      let(:json) { '{"foo":"bar","foo":"baz"}' }
+      let(:options) { { :unique_key_checking => true } }
+      it "should raise" do
+        expect{ parser }.to raise_error(FFI_Yajl::ParseError)
+      end
+    end
   end
 
   context "when options are set to empty hash" do

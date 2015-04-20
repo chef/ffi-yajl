@@ -30,6 +30,9 @@ module FFI_Yajl
           case stack.last
           when Hash
             raise FFI_Yajl::ParseError.new("internal error: missing key in parse") if key.nil?
+            if @opts[:unique_key_checking] && stack.last.has_key?(key)
+              raise FFI_Yajl::ParseError.new("repeated key: #{key}")
+            end
             stack.last[key] = val
           when Array
             stack.last.push(val)

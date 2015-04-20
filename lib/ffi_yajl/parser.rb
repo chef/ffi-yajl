@@ -75,6 +75,8 @@ module FFI_Yajl
       yajl_opts[:yajl_allow_multiple_values]  = @opts[:allow_multiple_values]
       yajl_opts[:yajl_allow_partial_values]   = @opts[:allow_partial_values]
 
+      yajl_opts[:unique_key_checking]         = @opts[:unique_key_checking]
+
       # XXX: bug-compat with ruby-yajl
       return nil if str == ""
 
