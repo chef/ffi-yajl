@@ -24,7 +24,7 @@ void set_value(CTX *ctx, VALUE val) {
       rb_ary_push(last, val);
       break;
     case T_HASH:
-      if ( ((CTX *)ctx)->uniqueKeyChecking ) {
+      if ( ctx->uniqueKeyChecking ) {
         ID sym_has_key = rb_intern("has_key?");
         if ( rb_funcall(last, sym_has_key, 1, key) == Qtrue ) {
           rb_raise(cParseError, "repeated key: %s", RSTRING_PTR(key));
