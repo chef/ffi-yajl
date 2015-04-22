@@ -14,12 +14,9 @@ rvm:
   - 2.0.0
   - 1.9.3
   - 1.9.2
-  - 1.8.7
   - ruby-head
-  - ree
   - rbx
   - jruby-19mode
-  - jruby-18mode
   - jruby-head
 jdk:
   - openjdk7
@@ -56,10 +53,6 @@ matrix:
       jdk: openjdk6
     - rvm: 1.9.2
       jdk: openjdk7
-    - rvm: 1.8.7
-      jdk: openjdk6
-    - rvm: 1.8.7
-      jdk: openjdk7
     - rvm: rbx
       jdk: openjdk6
     - rvm: rbx
@@ -68,11 +61,5 @@ matrix:
       jdk: openjdk6
     - rvm: ruby-head
       jdk: openjdk7
-    - rvm: ree
-      jdk: openjdk6
-    - rvm: ree
-      jdk: openjdk7
-    - rvm: jruby-18mode
-      jdk: openjdk6
     - rvm: jruby-head
       jdk: openjdk6
