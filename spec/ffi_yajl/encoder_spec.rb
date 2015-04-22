@@ -187,7 +187,7 @@ describe "FFI_Yajl::Encoder" do
     }
 
     it "raises an error on invalid json" do
-      expect{ encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, "Invalid UTF-8 string: cannot encode to UTF-8")
+      expect{ encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, /Invalid UTF-8 string 'Elan Ruusam.e': cannot encode to UTF-8/)
     end
 
     context "when validate_utf8 is off" do

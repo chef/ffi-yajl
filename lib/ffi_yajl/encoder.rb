@@ -53,7 +53,9 @@ module FFI_Yajl
       @opts ||= {}
     end
 
-    def self.raise_error_for_status(status)
+    def self.raise_error_for_status(status, token=nil)
+      # scrub token to valid utf-8 since we may be issuing an exception on an invalid utf-8 token
+      token.encode!("utf-8", "binary", :undef => :replace)
       case status
       when 1 # yajl_gen_keys_must_be_strings
         raise FFI_Yajl::EncodeError, "YAJL internal error: attempted use of non-string object as key"
@@ -68,7 +70,7 @@ module FFI_Yajl
       when 6 # yajl_gen_no_buf
         raise FFI_Yajl::EncodeError, "YAJL internal error: yajl_gen_get_buf was called, but a print callback was specified, so no internal buffer is available"
       when 7 # yajl_gen_invalid_string
-        raise FFI_Yajl::EncodeError, "Invalid UTF-8 string: cannot encode to UTF-8"
+        raise FFI_Yajl::EncodeError, "Invalid UTF-8 string '#{token}': cannot encode to UTF-8"
       else
         raise FFI_Yajl::EncodeError, "Unknown YAJL Error (#{status}), please report this as a bug"
       end

@@ -7,9 +7,6 @@ static VALUE cYajl_Gen;
 
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
 
-#define CHECK_STATUS(call) \
-      if ((status = (call)) != yajl_gen_status_ok) { rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 1, INT2FIX(status)); }
-
 static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts, VALUE json_opts) {
   ID sym_ffi_yajl = rb_intern("ffi_yajl");
   VALUE sym_yajl_gen_beautify = ID2SYM(rb_intern("yajl_gen_beautify"));
@@ -72,290 +69,285 @@ int rb_cHash_ffi_yajl_callback(VALUE key, VALUE val, VALUE extra) {
   return 0;
 }
 
-static VALUE rb_cHash_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+#define RB_FUNC0(call) rb_funcall(self, rb_intern(call), 0)
+
+/*
+ * wrappers around yajl_gen_* functions
+ */
+
+/* encode a c-string as a yajl string */
+VALUE gen_cstring(VALUE rb_yajl_gen, char *cptr, int len) {
   yajl_gen_status status;
-  VALUE extra;
   struct yajl_gen_t *yajl_gen;
   Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
 
-  if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    ID sym_to_s = rb_intern("to_s");
-    VALUE str = rb_funcall(self, sym_to_s, 0);
-    char *cptr = RSTRING_PTR(str);
-    int len = RSTRING_LEN(str);
+  if ((status = yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new(cptr, len));
+  }
 
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
+  return Qnil;
+}
+
+/* encode a ruby-sring as a yajl string */
+VALUE gen_string(VALUE rb_yajl_gen, VALUE str) {
+  char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
+
+  return gen_cstring(rb_yajl_gen, cptr, len);
+}
+
+/* calls #to_s on an object to encode it as a yajl string */
+static VALUE gen_string_to_s(VALUE rb_yajl_gen, VALUE self) {
+  return gen_string(rb_yajl_gen, RB_FUNC0("to_s"));
+}
+
+/* encode a ruby string as a yajl number (also used to embed already-rendered json from #to_json) */
+VALUE gen_number(VALUE rb_yajl_gen, VALUE str) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  char *cptr = RSTRING_PTR(str);
+  int len = RSTRING_LEN(str);
+
+  if ((status = yajl_gen_number(yajl_gen, cptr, len)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), str);
+  }
+
+  return Qnil;
+}
+
+/* encode hash open */
+VALUE gen_map_open(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_map_open(yajl_gen)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("{"));
+  }
+
+  return Qnil;
+}
+
+/* encode a hash close */
+VALUE gen_map_close(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_map_close(yajl_gen)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("}"));
+  }
+
+  return Qnil;
+}
+
+/* encode an array open */
+VALUE gen_array_open(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_array_open(yajl_gen)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("["));
+  }
+
+  return Qnil;
+}
+
+/* encode an array close */
+VALUE gen_array_close(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_array_close(yajl_gen)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("]"));
+  }
+
+  return Qnil;
+}
+
+/* encode a json null */
+VALUE gen_null(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_null(yajl_gen)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("null"));
+  }
+
+  return Qnil;
+}
+
+/* encode a true value */
+VALUE gen_true(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_bool(yajl_gen, 1)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("true"));
+  }
+
+  return Qnil;
+}
+
+/* encode a false value */
+VALUE gen_false(VALUE rb_yajl_gen) {
+  yajl_gen_status status;
+  struct yajl_gen_t *yajl_gen;
+  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+
+  if ((status = yajl_gen_bool(yajl_gen, 0)) != yajl_gen_status_ok) {
+    rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("false"));
+  }
+
+  return Qnil;
+}
+
+/*
+ * <Object>#to_ffi_yajl() method calls
+ */
+
+static VALUE rb_cHash_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
+  if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
+    gen_string(rb_yajl_gen, rb_funcall(self, rb_intern("to_s"), 0));
   } else {
-    extra = rb_hash_new();  /* FIXME: reduce garbage */
+
+    /* FIXME: i think this got refactored from something else and it is now pointless --
+       should just pass rb_yajl_gen directly instead of this 'extra' hash -- i don't
+       *think* this indirection is doing anything useful to mark memory against the GC */
+
+    VALUE extra = rb_hash_new();
 
     rb_hash_aset(extra, rb_str_new2("yajl_gen"), rb_yajl_gen);
 
     rb_hash_aset(extra, rb_str_new2("state"), state);
 
-    CHECK_STATUS(
-      yajl_gen_map_open(yajl_gen)
-    );
+    gen_map_open(rb_yajl_gen);
+
     rb_hash_foreach(self, rb_cHash_ffi_yajl_callback, extra);
-    CHECK_STATUS(
-      yajl_gen_map_close(yajl_gen)
-    );
+
+    gen_map_close(rb_yajl_gen);
   }
 
   return Qnil;
 }
 
 static VALUE rb_cArray_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  ID sym_ffi_yajl = rb_intern("ffi_yajl");
-  long i;
-  VALUE val;
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
   if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    ID sym_to_s = rb_intern("to_s");
-    VALUE str = rb_funcall(self, sym_to_s, 0);
-    char *cptr = RSTRING_PTR(str);
-    int len = RSTRING_LEN(str);
-
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
+    gen_string(rb_yajl_gen, rb_funcall(self, rb_intern("to_s"), 0));
   } else {
-    CHECK_STATUS(
-      yajl_gen_array_open(yajl_gen)
-    );
+    VALUE val;
+    long i;
+    ID sym_ffi_yajl = rb_intern("ffi_yajl");
+
+    gen_array_open(rb_yajl_gen);
+
     for(i=0; i<RARRAY_LEN(self); i++) {
       val = rb_ary_entry(self, i);
       rb_funcall(val, sym_ffi_yajl, 2, rb_yajl_gen, state);
     }
-    CHECK_STATUS(
-      yajl_gen_array_close(yajl_gen)
-    );
+
+    gen_array_close(rb_yajl_gen);
   }
 
   return Qnil;
 }
 
 static VALUE rb_cNilClass_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
   if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    ID sym_to_s = rb_intern("to_s");
-    VALUE str = rb_funcall(self, sym_to_s, 0);
-    char *cptr = RSTRING_PTR(str);
-    int len = RSTRING_LEN(str);
-
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
+    gen_cstring(rb_yajl_gen, "", sizeof("")-1);
   } else {
-    CHECK_STATUS(
-      yajl_gen_null(yajl_gen)
-    );
+    gen_null(rb_yajl_gen);
   }
 
   return Qnil;
 }
 
 static VALUE rb_cTrueClass_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
   if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    ID sym_to_s = rb_intern("to_s");
-    VALUE str = rb_funcall(self, sym_to_s, 0);
-    char *cptr = RSTRING_PTR(str);
-    int len = RSTRING_LEN(str);
-
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
+    gen_cstring(rb_yajl_gen, "true", sizeof("true")-1);
   } else {
-    CHECK_STATUS(
-      yajl_gen_bool(yajl_gen, 1)
-    );
+    gen_true(rb_yajl_gen);
   }
 
   return Qnil;
 }
 
 static VALUE rb_cFalseClass_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
   if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    ID sym_to_s = rb_intern("to_s");
-    VALUE str = rb_funcall(self, sym_to_s, 0);
-    char *cptr = RSTRING_PTR(str);
-    int len = RSTRING_LEN(str);
-
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
+    gen_cstring(rb_yajl_gen, "false", sizeof("false")-1);
   } else {
-    CHECK_STATUS(
-      yajl_gen_bool(yajl_gen, 0)
-    );
+    gen_false(rb_yajl_gen);
   }
 
   return Qnil;
 }
 
 static VALUE rb_cFixnum_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  ID sym_to_s = rb_intern("to_s");
-  VALUE str = rb_funcall(self, sym_to_s, 0);
+  VALUE str = rb_funcall(self, rb_intern("to_s"), 0);
   char *cptr = RSTRING_PTR(str);
-  int len = RSTRING_LEN(str);
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
 
-  if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
+  if (memcmp(cptr, "NaN", sizeof("NaN")) == 0 || memcmp(cptr, "Infinity", sizeof("Infinity")) == 0 || memcmp(cptr, "-Infinity", sizeof("-Infinity")) == 0) {
     rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
   }
+
   if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
+    gen_string(rb_yajl_gen, str);
   } else {
-    CHECK_STATUS(
-      yajl_gen_number(yajl_gen, cptr, len)
-    );
+    gen_number(rb_yajl_gen, str);
   }
 
   return Qnil;
 }
 
 static VALUE rb_cBignum_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  ID sym_to_s = rb_intern("to_s");
-  VALUE str = rb_funcall(self, sym_to_s, 0);
-  char *cptr = RSTRING_PTR(str);
-  int len = RSTRING_LEN(str);
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
-  if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
-    rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
-  }
-  if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
-  } else {
-    CHECK_STATUS(
-      yajl_gen_number(yajl_gen, cptr, len)
-    );
-  }
-
-  return Qnil;
+  return rb_cFixnum_ffi_yajl(self, rb_yajl_gen, state);
 }
 
 static VALUE rb_cFloat_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  ID sym_to_s = rb_intern("to_s");
-  VALUE str = rb_funcall(self, sym_to_s, 0);
-  char *cptr = RSTRING_PTR(str);
-  int len = RSTRING_LEN(str);
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
-  if (memcmp(cptr, "NaN", 3) == 0 || memcmp(cptr, "Infinity", 8) == 0 || memcmp(cptr, "-Infinity", 9) == 0) {
-    rb_raise(cEncodeError, "'%s' is an invalid number", cptr);
-  }
-  if ( rb_hash_aref(state, rb_str_new2("processing_key")) == Qtrue ) {
-    CHECK_STATUS(
-      yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-    );
-  } else {
-    CHECK_STATUS(
-      yajl_gen_number(yajl_gen, cptr, len)
-    );
-  }
-
-  return Qnil;
+  return rb_cFixnum_ffi_yajl(self, rb_yajl_gen, state);
 }
 
 static VALUE rb_cString_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
-  CHECK_STATUS(
-    yajl_gen_string(yajl_gen, (unsigned char *)RSTRING_PTR(self), RSTRING_LEN(self))
-  );
-
-  return Qnil;
-}
-
-static VALUE string_ffi_yajl(VALUE str, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
-  char *cptr = RSTRING_PTR(str);
-  int len = RSTRING_LEN(str);
-  struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
-
-  CHECK_STATUS(
-    yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)
-  );
-
-  return Qnil;
-}
-
-/* calls #to_s on an object to encode it */
-static VALUE object_to_s_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  ID sym_to_s = rb_intern("to_s");
-  VALUE str = rb_funcall(self, sym_to_s, 0);
-  return string_ffi_yajl(str, rb_yajl_gen, state);
+  return gen_string(rb_yajl_gen, self);
 }
 
 static VALUE rb_cSymbol_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+  return gen_string_to_s(rb_yajl_gen, self);
 }
 
 static VALUE rb_cDate_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+  return gen_string_to_s(rb_yajl_gen, self);
 }
 
 static VALUE rb_cTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
   ID sym_strftime = rb_intern("strftime");
   VALUE str = rb_funcall(self, sym_strftime, 1, rb_str_new2("%Y-%m-%d %H:%M:%S %z"));
-  return string_ffi_yajl(str, rb_yajl_gen, state);
+
+  return gen_string(rb_yajl_gen, str);
 }
 
 static VALUE rb_cStringIO_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  ID sym_read = rb_intern("read");
-  VALUE str = rb_funcall(self, sym_read, 0);
-  return string_ffi_yajl(str, rb_yajl_gen, state);
+  return gen_string(rb_yajl_gen, RB_FUNC0("read"));
 }
 
 static VALUE rb_cDateTime_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  return object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+  return gen_string_to_s(rb_yajl_gen, self);
 }
 
 static VALUE rb_cObject_ffi_yajl(VALUE self, VALUE rb_yajl_gen, VALUE state) {
-  yajl_gen_status status;
   ID sym_to_json = rb_intern("to_json");
-  VALUE str;
-
   if ( rb_hash_aref(state, rb_str_new2("processing_key")) != Qtrue && rb_respond_to(self, sym_to_json) ) {
-    VALUE json_opts =  rb_hash_aref(state, rb_str_new2("json_opts"));
-    struct yajl_gen_t *yajl_gen;
-    Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+    VALUE json_opts = rb_hash_aref(state, rb_str_new2("json_opts"));
+    VALUE str = rb_funcall(self, sym_to_json, 1, json_opts);
 
-    str = rb_funcall(self, sym_to_json, 1, json_opts);
-    CHECK_STATUS(
-      yajl_gen_number(yajl_gen, (char *)RSTRING_PTR(str), RSTRING_LEN(str))
-    );
+    gen_number(rb_yajl_gen, str);
   } else {
-    object_to_s_ffi_yajl(self, rb_yajl_gen, state);
+    gen_string_to_s(rb_yajl_gen, self);
   }
 
   return Qnil;
