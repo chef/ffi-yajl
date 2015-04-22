@@ -29,6 +29,8 @@ gem 'ffi-yajl'
 * rbx 2.2.x (possibly earlier)
 * Jruby 1.7.x (possibly earlier)
 
+Ruby 1.8.7 support was dropped in 2.2.0
+
 ## Supported Distros:
 
 * Ubuntu 10.04 through 14.10

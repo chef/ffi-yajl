@@ -12,6 +12,8 @@ Gem::Specification.new do |s|
   s.email            = "lamont@getchef.com"
   s.homepage         = "http://github.com/chef/ffi-yajl"
 
+  s.required_ruby_version = ">= 1.9.2"
+
   s.add_development_dependency "rake", "~> 10.1"
   s.add_development_dependency "rspec", "~> 2.99"
   s.add_development_dependency "pry", "~> 0.9"
