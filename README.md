@@ -82,7 +82,7 @@ hash = parser.parse( json )
 * `:pretty` (default = false):  Produces more human readable 'pretty' output.
 * `:validate_utf8` (default = true):  Will raise an exception when trying to
    encode strings that are invalid UTF-8.  When set to false this still will
-   procude valid UTF-8 JSON but will replace invalid characters.
+   produce valid UTF-8 JSON but will replace invalid characters.
 
 ## Forcing FFI or C Extension
 
