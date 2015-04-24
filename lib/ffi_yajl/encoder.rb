@@ -41,7 +41,7 @@ module FFI_Yajl
       # call either the ext or ffi hook
       str = do_yajl_encode(obj, yajl_gen_opts, opts)
       # we can skip cleaning the whole string for utf-8 issues if we have yajl validate as we go
-      str.encode("utf-8", "binary", :undef => :replace) unless yajl_gen_opts[:yajl_gen_validate_utf8]
+      str.encode!("utf-8", "binary", :undef => :replace) unless yajl_gen_opts[:yajl_gen_validate_utf8]
       str
     end
 
