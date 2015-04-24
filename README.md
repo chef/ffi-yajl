@@ -52,8 +52,8 @@ You can encode and parse with class objects:
 
 ```ruby
 options_hash = {}
-json = FFI_Yajl::Encoder.encode( {"foo"=>["bar","baz"]} )
-hash = FFI_Yajl::Parser.parse( json )
+json = FFI_Yajl::Encoder.encode( {"foo"=>["bar","baz"]}, options_hash )
+hash = FFI_Yajl::Parser.parse( json, options_hash )
 ```
 
 Or you can be more object oriented:
