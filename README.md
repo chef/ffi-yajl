@@ -70,12 +70,14 @@ hash = parser.parse( json )
 
 * `:check_utf8`
 * `:dont_validate_strings`
-* `:symbolize_keys` (default = false):
+* `:symbolize_keys` (default = false):  JSON keys are parsed into symbols instead of strings.
 * `:symbolize_names` (default = false):  Alias for `:symbolize_keys`.
 * `:allow_trailing_garbage`
 * `:allow_multiple_values`
 * `:allow_partial_values`
-* `:unique_key_checking`
+* `:unique_key_checking` (default = false):  Will raise an exception if keys
+   are repeated in hashes in the input JSON.  Without this, repeated keys will
+   silently replace the previous key.
 
 ## Encoder Options
 
