@@ -196,6 +196,10 @@ describe "FFI_Yajl::Encoder" do
       it "does not raise an error" do
         expect{ encoder.encode(ruby) }.not_to raise_error
       end
+
+      it "returns valid utf8" do
+        expect( encoder.encode(ruby).valid_encoding? ).to be true
+      end
     end
   end
 end

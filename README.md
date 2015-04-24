@@ -71,7 +71,7 @@ hash = parser.parse( json )
 * `:check_utf8`
 * `:dont_validate_strings`
 * `:symbolize_keys` (default = false):
-* `:symbolize_names` (default = false):  alias for `:symbolize_keys`
+* `:symbolize_names` (default = false):  Alias for `:symbolize_keys`.
 * `:allow_trailing_garbage`
 * `:allow_multiple_values`
 * `:allow_partial_values`
@@ -79,8 +79,10 @@ hash = parser.parse( json )
 
 ## Encoder Options
 
-* `:pretty` (default = false):
-* `:validate_utf8`
+* `:pretty` (default = false):  Produces more human readable 'pretty' output.
+* `:validate_utf8` (default = true):  Will raise an exception when trying to
+   encode strings that are invalid UTF-8.  When set to false this still will
+   produce valid UTF-8 JSON but will replace invalid characters.
 
 ## Forcing FFI or C Extension
 
