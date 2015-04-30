@@ -8,6 +8,17 @@
 
 ### Bugs fixed
 
+## 2.2.0 (04/30/2015)
+
+### New features
+
+* Bad UTF8 exceptions now display the invalid token
+* `validate_utf8: false` will sanitize output and produce valid UTF8-clean JSON
+
+### Changes
+
+* Ruby 1.8.7 support dropped.
+
 ## 2.1.0 (04/20/2015)
 
 ### New features
