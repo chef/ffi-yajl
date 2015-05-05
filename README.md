@@ -146,4 +146,3 @@ preserved and this source code has deliberately not been dual licensed under
 Chef's typical Apache License.  See the
 [LICENSE](https://github.com/chef/ffi-yajl/blob/master/LICENSE) file in this
 project.
-
