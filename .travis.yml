@@ -63,6 +63,6 @@ matrix:
       jdk: openjdk7
     - rvm: jruby-head
       jdk: openjdk6
- branches:
-   only:
-     - master
+branches:
+  only:
+    - master
