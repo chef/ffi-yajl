@@ -53,7 +53,6 @@ module FFI_Yajl
         if ( status = FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr) ) != 0
           FFI_Yajl::Encoder.raise_error_for_status(status)
         end
-        length = length_ptr.read_int
         string = string_ptr.get_pointer(0).read_string
 
         FFI_Yajl.yajl_gen_free(yajl_gen)
