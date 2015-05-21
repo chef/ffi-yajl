@@ -23,7 +23,8 @@
 module FFI_Yajl
   class ParseError < StandardError; end
   class Parser
-    attr_accessor :stack, :key_stack, :key, :finished
+    attr_writer :stack, :key_stack
+    attr_accessor :key, :finished
 
     attr_accessor :opts
 
