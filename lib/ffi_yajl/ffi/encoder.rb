@@ -20,6 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'date'
 require 'stringio'
 
 module FFI_Yajl
@@ -253,7 +254,7 @@ class Time
   end
 end
 
-class DateTime < Date
+class DateTime
   def ffi_yajl(yajl_gen, state)
     str = self.to_s
     if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
