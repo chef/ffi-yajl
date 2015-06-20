@@ -184,6 +184,7 @@ static VALUE mParser_do_yajl_parse(VALUE self, VALUE str, VALUE yajl_opts) {
   unsigned char *err;
   volatile CTX ctx;
 
+  rb_ivar_set(self, rb_intern("key"), Qnil);
   rb_ivar_set(self, rb_intern("stack"), rb_ary_new());
   rb_ivar_set(self, rb_intern("key_stack"), rb_ary_new());
 
