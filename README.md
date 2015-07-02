@@ -45,7 +45,7 @@ Ruby 1.8.7 support was dropped in 2.2.0
 Start by requiring it:
 
 ```ruby
-require 'ffi-yajl'
+require 'ffi_yajl'
 ```
 
 You can encode and parse with class objects:
