@@ -28,18 +28,18 @@ $LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "../lib"))
 begin
   require 'yajl'
 rescue LoadError
-  # yajl can't be installed on jruby
+  puts 'WARN: yajl cannot be loaded, expected if this is jruby'
 end
 
 require 'ffi_yajl'
 
-RSpec.configure do |c|
-  c.filter_run_excluding :unix_only => true unless RUBY_PLATFORM !~ /mswin|mingw|windows/
-  c.filter_run_excluding :ruby_gte_193 => true unless RUBY_VERSION.to_f >= 2.0 || RUBY_VERSION =~ /^1\.9\.3/
+RSpec.configure do |conf|
+  conf.filter_run_excluding :unix_only => true unless RUBY_PLATFORM !~ /mswin|mingw|windows/
+  conf.filter_run_excluding :ruby_gte_193 => true unless RUBY_VERSION.to_f >= 2.0 || RUBY_VERSION =~ /^1\.9\.3/
 
-  c.order = 'random'
+  conf.order = 'random'
 
-  c.expect_with :rspec do |c|
-    c.syntax = :expect
+  conf.expect_with :rspec do |rspec|
+    rspec.syntax = :expect
   end
 end

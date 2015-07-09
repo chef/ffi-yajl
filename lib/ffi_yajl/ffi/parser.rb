@@ -143,12 +143,12 @@ module FFI_Yajl
           ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_partial_values, :int, 1)
         end
 
-        if ( stat = ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
+        if ( ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError.new(error)
         end
-        if ( stat = FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
+        if ( ::FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError.new(error)

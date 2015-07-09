@@ -18,6 +18,9 @@ Encoding:
   Enabled: false
 Eval:
   Enabled: false
+Style/FileName:
+  Exclude:
+    - bin/ffi-yajl-bench
 FormatString:
   Enabled: false
 HashSyntax:
@@ -39,6 +42,8 @@ PercentLiteralDelimiters:
     '%W': '{}'
     '%x': '{}'
 RegexpLiteral:
+  Enabled: false
+Style/Semicolon:
   Enabled: false
 SignalException:
   Enabled: false

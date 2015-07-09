@@ -25,7 +25,7 @@ module FFI_Yajl
           ffi_string_encoder = FFI_Yajl::Encoder.new
           PerfTools::CpuProfiler.start("/tmp/ffi_yajl_encode_profile.out") do
             times.times {
-              output = ffi_string_encoder.encode(hash)
+              ffi_string_encoder.encode(hash)
             }
           end
           system("pprof.rb --text /tmp/ffi_yajl_encode_profile.out")

@@ -23,7 +23,7 @@ module FFI_Yajl
 
           result = RubyProf.profile do
             times.times {
-              output = FFI_Yajl::Parser.parse(json)
+              FFI_Yajl::Parser.parse(json)
             }
           end
 

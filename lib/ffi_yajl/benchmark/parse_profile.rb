@@ -24,7 +24,7 @@ module FFI_Yajl
 
           PerfTools::CpuProfiler.start("/tmp/ffi_yajl_encode_profile.out") do
             times.times {
-              output = FFI_Yajl::Parser.parse(json)
+              FFI_Yajl::Parser.parse(json)
             }
           end
           system("pprof.rb --text /tmp/ffi_yajl_encode_profile.out")

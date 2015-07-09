@@ -48,21 +48,21 @@ module FFI_Yajl
         ::Benchmark.bmbm { |x|
           x.report("FFI_Yajl::Encoder.encode (to a String)") {
             times.times {
-              output = FFI_Yajl::Encoder.encode(hash)
+              FFI_Yajl::Encoder.encode(hash)
             }
           }
 
           ffi_string_encoder = FFI_Yajl::Encoder.new
           x.report("FFI_Yajl::Encoder#encode (to a String)") {
             times.times {
-              output = ffi_string_encoder.encode(hash)
+              ffi_string_encoder.encode(hash)
             }
           }
 
           if defined?(Oj)
             x.report("Oj.dump (to a String)") {
               times.times {
-                output = Oj.dump(hash)
+                Oj.dump(hash)
               }
             }
           end
@@ -70,7 +70,7 @@ module FFI_Yajl
           if defined?(Yajl::Encoder)
             x.report("Yajl::Encoder.encode (to a String)") {
               times.times {
-                output = Yajl::Encoder.encode(hash)
+                Yajl::Encoder.encode(hash)
               }
             }
 
@@ -84,7 +84,7 @@ module FFI_Yajl
             string_encoder = Yajl::Encoder.new
             x.report("Yajl::Encoder#encode (to a String)") {
               times.times {
-                output = string_encoder.encode(hash)
+                string_encoder.encode(hash)
               }
             }
           end
