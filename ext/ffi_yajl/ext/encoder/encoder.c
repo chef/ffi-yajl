@@ -362,10 +362,13 @@ void Init_encoder() {
   cYajl_Gen = rb_define_class_under(mEncoder, "YajlGen", rb_cObject);
   rb_define_method(mEncoder, "do_yajl_encode", mEncoder_do_yajl_encode, 3);
 
-  cDate = rb_define_class("Date", rb_cObject);
-  cTime = rb_define_class("Time", rb_cObject);
-  cDateTime = rb_define_class("DateTime", cDate);
-
+  /* use rb_const_get instead of rb_define_class so that we don't get superclass mismatches */
+  ID sym_Date = rb_intern("Date");
+  cDate = rb_const_get(rb_cObject, sym_Date);
+  ID sym_Time = rb_intern("Time");
+  cTime = rb_const_get(rb_cObject, sym_Time);
+  ID sym_DateTime = rb_intern("DateTime");
+  cDateTime = rb_const_get(rb_cObject, sym_DateTime);
   ID sym_StringIO = rb_intern("StringIO");
   cStringIO = rb_const_get(rb_cObject, sym_StringIO);
 
