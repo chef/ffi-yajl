@@ -4,7 +4,7 @@ gemspec.platform = "universal-java"
 
 # XXX: after the libyajl2-gem, we don't need to fork the
 # extensions so can we simplify the gemspecs now?
-#gemspec.extensions = %w{ ext/libyajl2/extconf.rb }
+# gemspec.extensions = %w{ ext/libyajl2/extconf.rb }
 
 gemspec.add_runtime_dependency "ffi", "~> 1.5"
 

@@ -23,34 +23,32 @@
 module FFI_Yajl
   module FFI
     module Parser
-        def set_value(val)
-          case stack.last
-          when Hash
-            raise FFI_Yajl::ParseError.new("internal error: missing key in parse") if key.nil?
-            if @opts[:unique_key_checking] && stack.last.has_key?(key)
-              raise FFI_Yajl::ParseError.new("repeated key: #{key}")
-            end
-            stack.last[key] = val
-          when Array
-            stack.last.push(val)
-          else
-            stack.push(val)
+      def set_value(val)
+        case stack.last
+        when Hash
+          raise FFI_Yajl::ParseError.new("internal error: missing key in parse") if key.nil?
+          if @opts[:unique_key_checking] && stack.last.key?(key)
+            raise FFI_Yajl::ParseError.new("repeated key: #{key}")
           end
+          stack.last[key] = val
+        when Array
+          stack.last.push(val)
+        else
+          stack.push(val)
         end
+      end
 
-        def stack_pop
-          if stack.length > 1
-            set_value( stack.pop )
-          end
-        end
+      def stack_pop
+        set_value( stack.pop ) if stack.length > 1
+      end
 
-        def key_push
-          key_stack.push(key)
-        end
+      def key_push
+        key_stack.push(key)
+      end
 
-        def key_pop
-          @key = key_stack.pop
-        end
+      def key_pop
+        @key = key_stack.pop
+      end
 
       def setup_callbacks
         @null_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
@@ -85,7 +83,7 @@ module FFI_Yajl
         end
         @start_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
           key_push  # for key => { } case, save the key
-          stack.push(Hash.new)
+          stack.push({})
           1
         end
         @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
@@ -101,7 +99,7 @@ module FFI_Yajl
         end
         @start_array_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
           key_push  # for key => [ ] case, save the key
-          stack.push(Array.new)
+          stack.push([])
           1
         end
         @end_array_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|

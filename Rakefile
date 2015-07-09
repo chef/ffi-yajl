@@ -5,7 +5,7 @@ require 'rubygems/package_task'
 require 'rake/extensiontask'
 require 'ffi_yajl/version'
 
-Dir[File.expand_path("../*gemspec", __FILE__)].reverse.each do |gemspec_path|
+Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
   Gem::PackageTask.new(gemspec).define
 end
@@ -14,7 +14,7 @@ desc "Build it and ship it"
 task :ship => [:clean, :gem] do
   sh("git tag #{FFI_Yajl::VERSION}")
   sh("git push --tags")
-  Dir[File.expand_path("../pkg/*.gem", __FILE__)].reverse.each do |built_gem|
+  Dir[File.expand_path("../pkg/*.gem", __FILE__)].reverse_each do |built_gem|
     sh("gem push #{built_gem}")
   end
 end
@@ -138,7 +138,7 @@ if RUBY_VERSION.to_f >= 1.9
     else
       Reek::Rake::Task.new(:reek) do |t|
         t.fail_on_error = false
-#        t.config_files = '.reek.yml'
+        #        t.config_files = '.reek.yml'
       end
     end
   end
@@ -165,7 +165,7 @@ desc 'Run all style checks'
 task :style => ['style:rubocop', 'style:reek']
 
 desc 'Run style + spec tests by default on travis'
-task :travis => ['style', 'spec']
+task :travis => %w{style spec}
 
 desc 'Run style, spec and test kichen on travis'
 task :travis_all => ['style', 'spec', 'integration:cloud']

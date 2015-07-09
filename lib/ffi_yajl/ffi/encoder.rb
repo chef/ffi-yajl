@@ -27,7 +27,7 @@ module FFI_Yajl
   module FFI
     module Encoder
       def do_yajl_encode(obj, yajl_gen_opts, opts)
-        yajl_gen = FFI_Yajl.yajl_gen_alloc(nil);
+        yajl_gen = FFI_Yajl.yajl_gen_alloc(nil)
 
         # configure the yajl encoder
         if yajl_gen_opts[:yajl_gen_beautify]
@@ -58,7 +58,7 @@ module FFI_Yajl
 
         FFI_Yajl.yajl_gen_free(yajl_gen)
 
-        return string
+        string
       end
     end
   end
@@ -273,8 +273,6 @@ class Object
       str = to_s
       status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)
     end
-    if ( status ) != 0
-      FFI_Yajl::Encoder.raise_error_for_status(status, str)
-    end
+    FFI_Yajl::Encoder.raise_error_for_status(status, str) if ( status ) != 0
   end
 end

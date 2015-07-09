@@ -48,14 +48,14 @@ class FFI_Yajl::Benchmark::Parse
           FFI_Yajl::Parser.parse(json_str)
         }
       }
-#      ffi_parser = FFI_Yajl::Parser.new
-#      x.report {
-#        puts "FFI_Yajl::Parser#parse (from a String)"
-#        times.times {
-#          json.rewind
-#          ffi_parser.parse(json.read)
-#        }
-#      }
+      #      ffi_parser = FFI_Yajl::Parser.new
+      #      x.report {
+      #        puts "FFI_Yajl::Parser#parse (from a String)"
+      #        times.times {
+      #          json.rewind
+      #          ffi_parser.parse(json.read)
+      #        }
+      #      }
       if defined?(Yajl::Parser)
         x.report {
           puts "Yajl::Parser.parse (from a String)"
@@ -139,6 +139,5 @@ class FFI_Yajl::Benchmark::Parse
       end
     }
     json.close
-
   end
 end

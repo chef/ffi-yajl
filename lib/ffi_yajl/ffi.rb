@@ -61,16 +61,16 @@ module FFI_Yajl
     :yajl_status_error,
   ]
 
-# FFI::Enums are slow, should remove the rest
-#  enum :yajl_gen_status, [
-#    :yajl_gen_status_ok,
-#    :yajl_gen_keys_must_be_strings,
-#    :yajl_max_depth_exceeded,
-#    :yajl_gen_in_error_state,
-#    :yajl_gen_generation_complete,
-#    :yajl_gen_invalid_number,
-#    :yajl_gen_no_buf,
-#  ]
+  # FFI::Enums are slow, should remove the rest
+  #  enum :yajl_gen_status, [
+  #    :yajl_gen_status_ok,
+  #    :yajl_gen_keys_must_be_strings,
+  #    :yajl_max_depth_exceeded,
+  #    :yajl_gen_in_error_state,
+  #    :yajl_gen_generation_complete,
+  #    :yajl_gen_invalid_number,
+  #    :yajl_gen_no_buf,
+  #  ]
 
   enum :yajl_option, [
     :yajl_allow_comments, 0x01,
@@ -132,7 +132,7 @@ module FFI_Yajl
   attach_function :yajl_gen_array_open, [:yajl_gen], :int
   attach_function :yajl_gen_array_close, [:yajl_gen], :int
   # yajl_gen_status yajl_gen_get_buf (yajl_gen hand, const unsigned char **buf, unsigned int *len)
-  attach_function :yajl_gen_get_buf, [:yajl_gen, :pointer , :pointer], :int
+  attach_function :yajl_gen_get_buf, [:yajl_gen, :pointer, :pointer], :int
   # void yajl_gen_clear (yajl_gen hand)
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 end

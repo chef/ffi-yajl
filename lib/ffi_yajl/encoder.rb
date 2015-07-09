@@ -54,7 +54,7 @@ module FFI_Yajl
       @opts ||= {}
     end
 
-    def self.raise_error_for_status(status, token=nil)
+    def self.raise_error_for_status(status, token = nil)
       # scrub token to valid utf-8 since we may be issuing an exception on an invalid utf-8 token
       token = token.to_s.encode("utf-8", "binary", :undef => :replace)
       case status

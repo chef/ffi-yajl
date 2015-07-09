@@ -31,7 +31,13 @@ ModuleLength:
 PerceivedComplexity:
   Enabled: false
 PercentLiteralDelimiters:
-  Enabled: false
+  PreferredDelimiters:
+    '%':  '{}'
+    '%q': '{}'
+    '%Q': '{}'
+    '%w': '{}'
+    '%W': '{}'
+    '%x': '{}'
 RegexpLiteral:
   Enabled: false
 SignalException:
