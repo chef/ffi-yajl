@@ -365,7 +365,9 @@ void Init_encoder() {
   cDate = rb_define_class("Date", rb_cObject);
   cTime = rb_define_class("Time", rb_cObject);
   cDateTime = rb_define_class("DateTime", cDate);
-  cStringIO = rb_define_class("StringIO", rb_cData);
+
+  ID sym_StringIO = rb_intern("StringIO");
+  cStringIO = rb_const_get(rb_cObject, sym_StringIO);
 
   rb_define_method(rb_cHash, "ffi_yajl", rb_cHash_ffi_yajl, 2);
   rb_define_method(rb_cArray, "ffi_yajl", rb_cArray_ffi_yajl, 2);
