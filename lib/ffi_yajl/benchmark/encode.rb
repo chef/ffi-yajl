@@ -5,14 +5,10 @@ require 'rubygems'
 require 'benchmark'
 require 'stringio'
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
-  if ENV['FORCE_FFI_YAJL'] != 'ext'
-    begin
-      require 'yajl'
-    rescue Exception
-      puts "INFO: yajl-ruby not installed"
-    end
-  else
-    puts "INFO: skipping yajl-ruby because we're using the C extension"
+  begin
+    require 'yajl'
+  rescue LoadError
+    puts "INFO: yajl-ruby not installed"
   end
 else
   puts "INFO: skipping yajl-ruby on jruby"
@@ -20,22 +16,22 @@ end
 require 'ffi_yajl'
 begin
   require 'json'
-rescue Exception
+rescue LoadError
   puts "INFO: json gem not installed"
 end
 begin
   require 'psych'
-rescue Exception
+rescue LoadError
   puts "INFO: psych gem not installed"
 end
 begin
   require 'active_support'
-rescue Exception
+rescue LoadError
   puts "INFO: active_support gem not installed"
 end
 begin
   require 'oj'
-rescue Exception
+rescue LoadError
   puts "INFO: oj gem not installed"
 end
 

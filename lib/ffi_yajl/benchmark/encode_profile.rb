@@ -5,7 +5,7 @@ require 'rubygems'
 require 'ffi_yajl'
 begin
   require 'perftools'
-rescue Exception
+rescue LoadError
   puts "INFO: perftools.rb gem not installed"
 end
 

@@ -4,14 +4,10 @@ require 'yaml'
 require 'yajl'
 require 'ffi_yajl'
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
-  if ENV['FORCE_FFI_YAJL'] != 'ext'
-    begin
-      require 'yajl'
-    rescue Exception
-      puts "INFO: yajl-ruby not installed"
-    end
-  else
-    puts "INFO: skipping yajl-ruby because we're using the C extension"
+  begin
+    require 'yajl'
+  rescue LoadError
+    puts "INFO: yajl-ruby not installed"
   end
 else
   puts "INFO: skipping yajl-ruby on jruby"
