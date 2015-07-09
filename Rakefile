@@ -1,4 +1,4 @@
-$: << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
+$LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
 
 require 'rspec/core/rake_task'
 require 'rubygems/package_task'
@@ -160,7 +160,6 @@ else
     end
   end
 end
-
 
 desc 'Run all style checks'
 task :style => ['style:rubocop', 'style:reek']

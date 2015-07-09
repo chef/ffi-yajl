@@ -23,7 +23,6 @@
 module FFI_Yajl
   module FFI
     module Parser
-
         def set_value(val)
           case stack.last
           when Hash
@@ -50,9 +49,8 @@ module FFI_Yajl
         end
 
         def key_pop
-          @key = key_stack.pop()
+          @key = key_stack.pop
         end
-
 
       def setup_callbacks
         @null_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
@@ -68,7 +66,7 @@ module FFI_Yajl
           1
         end
         @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t ]) do |ctx, stringval, stringlen|
-          s = stringval.slice(0,stringlen)
+          s = stringval.slice(0, stringlen)
           s.force_encoding('UTF-8') if defined? Encoding
           # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
           v = ( s =~ /[\.eE]/ ) ? s.to_f : s.to_i
@@ -80,7 +78,7 @@ module FFI_Yajl
           1
         end
         @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
-          s = stringval.slice(0,stringlen)
+          s = stringval.slice(0, stringlen)
           s.force_encoding('UTF-8') if defined? Encoding
           set_value(s)
           1
@@ -91,7 +89,7 @@ module FFI_Yajl
           1
         end
         @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
-          s = key.slice(0,keylen)
+          s = key.slice(0, keylen)
           s.force_encoding('UTF-8') if defined? Encoding
           self.key = @opts[:symbolize_keys] ? s.to_sym : s
           1
@@ -112,7 +110,6 @@ module FFI_Yajl
           1
         end
       end
-
 
       def do_yajl_parse(str, yajl_opts = {})
         setup_callbacks

@@ -7,7 +7,6 @@ require 'ffi_yajl'
 module FFI_Yajl
   class Benchmark
     class ParseProfileRubyProf
-
       def run
         begin
           require 'ruby-prof'
@@ -33,7 +32,6 @@ module FFI_Yajl
 
         end
       end
-
     end
   end
 end

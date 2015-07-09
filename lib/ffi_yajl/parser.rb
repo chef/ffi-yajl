@@ -82,7 +82,7 @@ module FFI_Yajl
       return nil if str == ""
 
       if str.respond_to?(:read)
-        str = str.read()
+        str = str.read
       end
 
       # call either the ext or ffi hook

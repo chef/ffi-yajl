@@ -47,7 +47,6 @@ describe "FFI_Yajl::MapLibraryName" do
   end
 
   host_os_library_name_mapping.each do |host_os, library_names|
-
     context "#library_names" do
       it "maps #{host_os} correctly" do
         allow(Test).to receive(:host_os).and_return(host_os)
@@ -112,6 +111,5 @@ describe "FFI_Yajl::MapLibraryName" do
         Test.send(:ffi_open_yajl_library)
       end
     end
-
   end
 end

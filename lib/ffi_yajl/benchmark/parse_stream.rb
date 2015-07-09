@@ -20,7 +20,7 @@ times = ARGV[0] ? ARGV[0].to_i : 100
 puts "Starting benchmark parsing JSON stream (#{File.size(filename)} bytes of JSON data with 430 JSON separate strings) #{times} times\n\n"
 Benchmark.bmbm { |x|
   parser = Yajl::Parser.new
-  parser.on_parse_complete = lambda {|obj|}
+  parser.on_parse_complete = lambda { |obj| }
   x.report {
     puts "Yajl::Parser#parse"
     times.times {

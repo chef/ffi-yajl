@@ -25,18 +25,17 @@ require 'spec_helper'
 require 'date'
 
 describe "FFI_Yajl::Encoder" do
-
   let(:options) { {} }
 
   let(:encoder) { FFI_Yajl::Encoder.new(options) }
 
   it "encodes hashes in keys as strings", :ruby_gte_193 => true do
-    ruby = { {'a' => 'b'} => 2 }
+    ruby = { { 'a' => 'b' } => 2 }
     expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
   end
 
   it "encodes arrays in keys as strings", :ruby_gte_193 => true do
-    ruby = { [0,1] => 2 }
+    ruby = { [0, 1] => 2 }
     expect(encoder.encode(ruby)).to eq('{"[0, 1]":2}')
   end
 
@@ -66,14 +65,14 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "encodes bignums in keys as strings" do
-    ruby = { 12345678901234567890 => 2 }
+    ruby = { 12_345_678_901_234_567_890 => 2 }
     expect(encoder.encode(ruby)).to eq('{"12345678901234567890":2}')
   end
 
   it "encodes objects in keys as strings" do
     o = Object.new
     ruby = { o => 2 }
-    expect(encoder.encode(ruby)).to eq(%Q{{"#{o.to_s}":2}})
+    expect(encoder.encode(ruby)).to eq(%{{"#{o}":2}})
   end
 
   it "encodes an object in a key which has a #to_json method as strings" do
@@ -84,7 +83,7 @@ describe "FFI_Yajl::Encoder" do
     end
     o = Thing.new
     ruby = { o => 2 }
-    expect(encoder.encode(ruby)).to eq(%Q{{"#{o.to_s}":2}})
+    expect(encoder.encode(ruby)).to eq(%{{"#{o}":2}})
   end
 
   # XXX: 127 == YAJL_MAX_DEPTH hardcodedness, zero control for us, it isn't even a twiddleable #define
@@ -92,14 +91,14 @@ describe "FFI_Yajl::Encoder" do
     root = []
     a = root
     127.times { |_| a << []; a = a[0] }
-    expect{ encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
+    expect { encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
   end
 
   it "raises an exception for deeply nested hashes" do
     root = {}
     a = root
-    127.times {|_| a["a"] = {}; a = a["a"] }
-    expect{ encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
+    127.times { |_| a["a"] = {}; a = a["a"] }
+    expect { encoder.encode(root) }.to raise_error(FFI_Yajl::EncodeError)
   end
 
   it "encodes symbols in keys as strings" do
@@ -113,7 +112,7 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "can encode 32-bit unsigned ints" do
-    ruby = { "gid"=>4294967294 }
+    ruby = { "gid" => 4_294_967_294 }
     expect(encoder.encode(ruby)).to eq('{"gid":4294967294}')
   end
 
@@ -128,7 +127,7 @@ describe "FFI_Yajl::Encoder" do
 
   it "can encode Date objects" do
     ruby = Date.parse('2001-02-03')
-    expect(encoder.encode(ruby)).to eq( %q{"2001-02-03"} )
+    expect(encoder.encode(ruby)).to eq( '"2001-02-03"' )
   end
 
   it "can encode StringIOs" do
@@ -148,13 +147,13 @@ describe "FFI_Yajl::Encoder" do
 
     it "encodes them correctly" do
       ruby = Time.local(2001, 02, 02, 21, 05, 06)
-      expect(encoder.encode(ruby)).to eq( %q{"2001-02-02 21:05:06 +0000"} )
+      expect(encoder.encode(ruby)).to eq( '"2001-02-02 21:05:06 +0000"' )
     end
   end
 
   it "can encode DateTime objects" do
     ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00')
-    expect(encoder.encode(ruby)).to eq( %q{"2001-02-03T04:05:06+07:00"} )
+    expect(encoder.encode(ruby)).to eq( '"2001-02-03T04:05:06+07:00"' )
   end
 
   describe "testing .to_json for Objects" do
@@ -176,25 +175,25 @@ describe "FFI_Yajl::Encoder" do
 
   context "when encoding invalid utf-8" do
     ruby = {
-      "automatic"=>{
-        "etc"=>{
-          "passwd"=>{
-            "root"=>{"dir"=>"/root", "gid"=>0, "uid"=>0, "shell"=>"/bin/sh", "gecos"=>"Elan Ruusam\xc3\xa4e"},
-            "glen"=>{"dir"=>"/home/glen", "gid"=>500, "uid"=>500, "shell"=>"/bin/bash", "gecos"=>"Elan Ruusam\xE4e"},
-          }
+      "automatic" => {
+        "etc" => {
+          "passwd" => {
+            "root" => { "dir" => "/root", "gid" => 0, "uid" => 0, "shell" => "/bin/sh", "gecos" => "Elan Ruusam\xc3\xa4e" },
+            "glen" => { "dir" => "/home/glen", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Elan Ruusam\xE4e" },
+          },
         },
       },
     }
 
     it "raises an error on invalid json" do
-      expect{ encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, /Invalid UTF-8 string 'Elan Ruusam.e': cannot encode to UTF-8/)
+      expect { encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, /Invalid UTF-8 string 'Elan Ruusam.e': cannot encode to UTF-8/)
     end
 
     context "when validate_utf8 is off" do
       let(:options) {  { :validate_utf8 => false } }
 
       it "does not raise an error" do
-        expect{ encoder.encode(ruby) }.not_to raise_error
+        expect { encoder.encode(ruby) }.not_to raise_error
       end
 
       it "returns utf8" do

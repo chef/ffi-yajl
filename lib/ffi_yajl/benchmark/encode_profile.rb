@@ -14,7 +14,6 @@ ENV['CPUPROFILE_FREQUENCY'] = "4000"
 module FFI_Yajl
   class Benchmark
     class EncodeProfile
-
       def run
         if defined?(PerfTools)
           filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
@@ -32,7 +31,6 @@ module FFI_Yajl
           system("pprof.rb --text /tmp/ffi_yajl_encode_profile.out")
         end
       end
-
     end
   end
 end

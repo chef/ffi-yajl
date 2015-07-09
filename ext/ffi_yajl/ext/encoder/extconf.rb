@@ -1,3 +1,4 @@
+# rubocop:disable Style/GlobalVars
 require 'mkmf'
 require 'rubygems'
 require 'libyajl2'
