@@ -29,7 +29,6 @@ require 'libyajl2'
 
 module FFI_Yajl
   module MapLibraryName
-
     private
 
     # Stub for tests to override the host_os

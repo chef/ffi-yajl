@@ -1,8 +1,14 @@
+AbcSize:
+  Enabled: false
 AndOr:
+  Enabled: false
+ClassAndModuleCamelCase:
   Enabled: false
 ClassLength:
   Enabled: false
 CommentAnnotation:
+  Enabled: false
+CyclomaticComplexity:
   Enabled: false
 Documentation:
   Enabled: false
@@ -20,8 +26,18 @@ LineLength:
   Enabled: false
 MethodLength:
   Enabled: false
-PercentLiteralDelimiters:
+ModuleLength:
   Enabled: false
+PerceivedComplexity:
+  Enabled: false
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  '{}'
+    '%q': '{}'
+    '%Q': '{}'
+    '%w': '{}'
+    '%W': '{}'
+    '%x': '{}'
 RegexpLiteral:
   Enabled: false
 SignalException:
@@ -36,3 +52,7 @@ StringLiterals:
   Enabled: false
 TrailingComma:
   EnforcedStyleForMultiline: comma
+UnusedMethodArgument:
+  Enabled: false
+UnusedBlockArgument:
+  Enabled: false

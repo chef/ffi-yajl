@@ -34,7 +34,6 @@ rescue LoadError
 end
 
 class FFI_Yajl::Benchmark::Parse
-
   def run
     filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "item.json"))
     json = File.new(filename, 'r')
@@ -49,14 +48,14 @@ class FFI_Yajl::Benchmark::Parse
           FFI_Yajl::Parser.parse(json_str)
         }
       }
-#      ffi_parser = FFI_Yajl::Parser.new
-#      x.report {
-#        puts "FFI_Yajl::Parser#parse (from a String)"
-#        times.times {
-#          json.rewind
-#          ffi_parser.parse(json.read)
-#        }
-#      }
+      #      ffi_parser = FFI_Yajl::Parser.new
+      #      x.report {
+      #        puts "FFI_Yajl::Parser#parse (from a String)"
+      #        times.times {
+      #          json.rewind
+      #          ffi_parser.parse(json.read)
+      #        }
+      #      }
       if defined?(Yajl::Parser)
         x.report {
           puts "Yajl::Parser.parse (from a String)"
@@ -65,7 +64,7 @@ class FFI_Yajl::Benchmark::Parse
           }
         }
         io_parser = Yajl::Parser.new
-        io_parser.on_parse_complete = lambda {|obj|} if times > 1
+        io_parser.on_parse_complete = lambda { |obj| } if times > 1
         x.report {
           puts "Yajl::Parser#parse (from an IO)"
           times.times {
@@ -74,7 +73,7 @@ class FFI_Yajl::Benchmark::Parse
           }
         }
         string_parser = Yajl::Parser.new
-        string_parser.on_parse_complete = lambda {|obj|} if times > 1
+        string_parser.on_parse_complete = lambda { |obj| } if times > 1
         x.report {
           puts "Yajl::Parser#parse (from a String)"
           times.times {
@@ -140,7 +139,5 @@ class FFI_Yajl::Benchmark::Parse
       end
     }
     json.close
-
   end
 end
-

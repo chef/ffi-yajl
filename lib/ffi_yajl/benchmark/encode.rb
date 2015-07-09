@@ -42,16 +42,14 @@ end
 module FFI_Yajl
   class Benchmark
     class Encode
-
       def run
-        #filename = ARGV[0] || 'benchmark/subjects/ohai.json'
+        # filename = ARGV[0] || 'benchmark/subjects/ohai.json'
         filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
         hash = File.open(filename, 'rb') { |f| FFI_Yajl::Parser.parse(f.read) }
 
         times = ARGV[1] ? ARGV[1].to_i : 1000
         puts "Starting benchmark encoding #{filename} #{times} times\n\n"
         ::Benchmark.bmbm { |x|
-
           x.report("FFI_Yajl::Encoder.encode (to a String)") {
             times.times {
               output = FFI_Yajl::Encoder.encode(hash)
@@ -125,16 +123,15 @@ module FFI_Yajl
               }
             end
           end
-#          if defined?(ActiveSupport::JSON)
-#            x.report("ActiveSupport::JSON.encode") {
-#              times.times {
-#                ActiveSupport::JSON.encode(hash)
-#              }
-#            }
-#          end
+          #          if defined?(ActiveSupport::JSON)
+          #            x.report("ActiveSupport::JSON.encode") {
+          #              times.times {
+          #                ActiveSupport::JSON.encode(hash)
+          #              }
+          #            }
+          #          end
         }
       end
     end
   end
-
 end

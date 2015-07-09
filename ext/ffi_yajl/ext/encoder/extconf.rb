@@ -1,3 +1,4 @@
+# rubocop:disable Style/GlobalVars
 require 'mkmf'
 require 'rubygems'
 require 'libyajl2'
@@ -54,7 +55,7 @@ if !windows? && !find_header('yajl/yajl_tree.h')
   dir_config('yajl', HEADER_DIRS, LIB_DIRS)
 
   # here we use find_library in order to deliberately link with -lyajl as a useful side-effect
-  if !(find_header('yajl/yajl_tree.h') && find_library('yajl', 'yajl_complete_parse'))
+  unless find_header('yajl/yajl_tree.h') && find_library('yajl', 'yajl_complete_parse')
     abort "libyajl2 is missing.  please install libyajl2"
   end
 end

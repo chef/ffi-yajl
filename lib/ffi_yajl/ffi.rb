@@ -42,16 +42,16 @@ module FFI_Yajl
 
   class YajlCallbacks < ::FFI::Struct
     layout :yajl_null, :pointer,
-      :yajl_boolean, :pointer,
-      :yajl_integer, :pointer,
-      :yajl_double, :pointer,
-      :yajl_number, :pointer,
-      :yajl_string, :pointer,
-      :yajl_start_map, :pointer,
-      :yajl_map_key, :pointer,
-      :yajl_end_map, :pointer,
-      :yajl_start_array, :pointer,
-      :yajl_end_array, :pointer
+           :yajl_boolean, :pointer,
+           :yajl_integer, :pointer,
+           :yajl_double, :pointer,
+           :yajl_number, :pointer,
+           :yajl_string, :pointer,
+           :yajl_start_map, :pointer,
+           :yajl_map_key, :pointer,
+           :yajl_end_map, :pointer,
+           :yajl_start_array, :pointer,
+           :yajl_end_array, :pointer
   end
 
   enum :yajl_status, [
@@ -61,30 +61,30 @@ module FFI_Yajl
     :yajl_status_error,
   ]
 
-# FFI::Enums are slow, should remove the rest
-#  enum :yajl_gen_status, [
-#    :yajl_gen_status_ok,
-#    :yajl_gen_keys_must_be_strings,
-#    :yajl_max_depth_exceeded,
-#    :yajl_gen_in_error_state,
-#    :yajl_gen_generation_complete,
-#    :yajl_gen_invalid_number,
-#    :yajl_gen_no_buf,
-#  ]
+  # FFI::Enums are slow, should remove the rest
+  #  enum :yajl_gen_status, [
+  #    :yajl_gen_status_ok,
+  #    :yajl_gen_keys_must_be_strings,
+  #    :yajl_max_depth_exceeded,
+  #    :yajl_gen_in_error_state,
+  #    :yajl_gen_generation_complete,
+  #    :yajl_gen_invalid_number,
+  #    :yajl_gen_no_buf,
+  #  ]
 
   enum :yajl_option, [
     :yajl_allow_comments, 0x01,
     :yajl_dont_validate_strings, 0x02,
     :yajl_allow_trailing_garbage, 0x04,
     :yajl_allow_multiple_values, 0x08,
-    :yajl_allow_partial_values, 0x10,
+    :yajl_allow_partial_values, 0x10
   ]
 
   enum :yajl_gen_option, [
     :yajl_gen_beautify, 0x01,
     :yajl_gen_indent_string, 0x02,
     :yajl_gen_print_callback, 0x04,
-    :yajl_gen_validate_utf8, 0x08,
+    :yajl_gen_validate_utf8, 0x08
   ]
 
   typedef :pointer, :yajl_handle
@@ -132,10 +132,9 @@ module FFI_Yajl
   attach_function :yajl_gen_array_open, [:yajl_gen], :int
   attach_function :yajl_gen_array_close, [:yajl_gen], :int
   # yajl_gen_status yajl_gen_get_buf (yajl_gen hand, const unsigned char **buf, unsigned int *len)
-  attach_function :yajl_gen_get_buf, [:yajl_gen, :pointer ,:pointer], :int
+  attach_function :yajl_gen_get_buf, [:yajl_gen, :pointer, :pointer], :int
   # void yajl_gen_clear (yajl_gen hand)
   attach_function :yajl_gen_clear, [:yajl_gen], :void
-
 end
 
 require 'ffi_yajl/encoder'

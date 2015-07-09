@@ -32,14 +32,14 @@ module FFI_Yajl
     # stack used to build up our complex object
     #
     def stack
-      @stack ||= Array.new
+      @stack ||= []
     end
 
     #
     # stack to keep track of keys as we create nested hashes
     #
     def key_stack
-      @key_stack ||= Array.new
+      @key_stack ||= []
     end
 
     def self.parse(obj, *args)
@@ -81,9 +81,7 @@ module FFI_Yajl
       # XXX: bug-compat with ruby-yajl
       return nil if str == ""
 
-      if str.respond_to?(:read)
-        str = str.read()
-      end
+      str = str.read if str.respond_to?(:read)
 
       # call either the ext or ffi hook
       do_yajl_parse(str, yajl_opts)

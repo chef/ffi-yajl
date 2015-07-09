@@ -20,7 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$: << File.expand_path(File.join(File.dirname( __FILE__ ), "../lib"))
+$LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "../lib"))
 
 # load yajl-ruby into the same process (tests that both c-libs can be
 # linked in the same process).  this should work, see:
@@ -42,5 +42,4 @@ RSpec.configure do |c|
   c.expect_with :rspec do |c|
     c.syntax = :expect
   end
-
 end

@@ -23,7 +23,7 @@ Benchmark.bmbm { |x|
   x.report {
     puts "Yajl::Parser#parse"
     yajl = Yajl::Parser.new
-    yajl.on_parse_complete = lambda {|obj|} if times > 1
+    yajl.on_parse_complete = lambda { |obj| } if times > 1
     times.times {
       json.rewind
       hash = yajl.parse(json)
