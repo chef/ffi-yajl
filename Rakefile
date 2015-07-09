@@ -123,7 +123,7 @@ if RUBY_VERSION.to_f >= 1.9
         puts "rubocop gem is not installed"
       end
     else
-      Rubocop::RakeTask.new(:rubocop) do |t|
+      RuboCop::RakeTask.new(:rubocop) do |t|
         t.fail_on_error = false
       end
     end
