@@ -41,8 +41,8 @@ module FFI_Yajl
 
         # setup our own state
         state = {
-          :json_opts => opts,
-          :processing_key => false,
+          json_opts: opts,
+          processing_key: false,
         }
 
         # do the encoding

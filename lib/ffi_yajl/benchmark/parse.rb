@@ -92,7 +92,7 @@ class FFI_Yajl::Benchmark::Parse
           puts "JSON.parse"
           times.times {
             json.rewind
-            JSON.parse(json.read, :max_nesting => false)
+            JSON.parse(json.read, max_nesting: false)
           }
         }
       end

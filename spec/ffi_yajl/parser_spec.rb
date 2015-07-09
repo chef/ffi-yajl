@@ -87,7 +87,7 @@ describe "FFI_Yajl::Parser" do
       let(:json) { '{"key": /* this is a comment */ "value"}' }
 
       context "when allow_comments is false" do
-        let(:options) { { :allow_comments => false } }
+        let(:options) { { allow_comments: false } }
 
         it "should not parse" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
@@ -95,7 +95,7 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when allow_comments is true" do
-        let(:options) { { :allow_comments => true } }
+        let(:options) { { allow_comments: true } }
 
         it "should parse" do
           expect(parser).to eq("key" => "value")
@@ -115,7 +115,7 @@ describe "FFI_Yajl::Parser" do
       let(:json) { %{{"key": \n/*\n this is a multiline comment \n*/\n "value"}} }
 
       context "when allow_comments is false" do
-        let(:options) { { :allow_comments => false } }
+        let(:options) { { allow_comments: false } }
 
         it "should not parse" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
@@ -123,7 +123,7 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when allow_comments is true" do
-        let(:options) { { :allow_comments => true } }
+        let(:options) { { allow_comments: true } }
 
         it "should parse" do
           expect(parser).to eq("key" => "value")
@@ -135,7 +135,7 @@ describe "FFI_Yajl::Parser" do
       let(:json) { %{{"key": \n// this is an inline comment\n "value"}} }
 
       context "when allow_comments is false" do
-        let(:options) { { :allow_comments => false } }
+        let(:options) { { allow_comments: false } }
 
         it "should not parse" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
@@ -143,7 +143,7 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when allow_comments is true" do
-        let(:options) { { :allow_comments => true } }
+        let(:options) { { allow_comments: true } }
 
         it "should parse" do
           expect(parser).to eq("key" => "value")
@@ -152,14 +152,14 @@ describe "FFI_Yajl::Parser" do
     end
 
     context "when json is invalid UTF8" do
-      let(:json) { "[\"#{"\201\203"}\"]" }
+      let(:json) { "[\"\201\203\"]" }
 
       it "should not parse by default" do
         expect { parser }.to raise_error(FFI_Yajl::ParseError)
       end
 
       context "when :dont_validate_strings is set to true" do
-        let(:options) { { :dont_validate_strings => true } }
+        let(:options) { { dont_validate_strings: true } }
 
         it "should parse" do
           expect(parser).to eq(["\x81\x83"])
@@ -167,7 +167,7 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when :dont_validate_strings is set to false" do
-        let(:options) { { :dont_validate_strings => false } }
+        let(:options) { { dont_validate_strings: false } }
 
         it "should not parse" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
@@ -175,14 +175,14 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when :check_utf8 is set to true" do
-        let(:options) { { :check_utf8 => true } }
+        let(:options) { { check_utf8: true } }
 
         it "should not parse" do
           expect { parser }.to raise_error(FFI_Yajl::ParseError)
         end
 
         context "when :dont_validate_strings is set to true" do
-          let(:options) { { :check_utf8 => true, :dont_validate_strings => true } }
+          let(:options) { { check_utf8: true, dont_validate_strings: true } }
 
           it "should raise an ArgumentError" do
             expect { parser }.to raise_error(ArgumentError)
@@ -190,7 +190,7 @@ describe "FFI_Yajl::Parser" do
         end
 
         context "when :dont_validate_strings is set to false" do
-          let(:options) { { :check_utf8 => true, :dont_validate_strings => false } }
+          let(:options) { { check_utf8: true, dont_validate_strings: false } }
 
           it "should not parse" do
             expect { parser }.to raise_error(FFI_Yajl::ParseError)
@@ -199,14 +199,14 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when :check_utf8 is set to false" do
-        let(:options) { { :check_utf8 => false } }
+        let(:options) { { check_utf8: false } }
 
         it "should parse" do
           expect(parser).to eq(["\x81\x83"])
         end
 
         context "when :dont_validate_strings is set to true" do
-          let(:options) { { :check_utf8 => false, :dont_validate_strings => true } }
+          let(:options) { { check_utf8: false, dont_validate_strings: true } }
 
           it "should parse" do
             expect(parser).to eq(["\x81\x83"])
@@ -214,7 +214,7 @@ describe "FFI_Yajl::Parser" do
         end
 
         context "when :dont_validate_strings is set to false" do
-          let(:options) { { :check_utf8 => false, :dont_validate_strings => false } }
+          let(:options) { { check_utf8: false, dont_validate_strings: false } }
 
           it "should raise an ArgumentError" do
             expect { parser }.to raise_error(ArgumentError)
@@ -239,10 +239,10 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when symbolize_keys is true" do
-        let(:options) { { :symbolize_keys => true } }
+        let(:options) { { symbolize_keys: true } }
 
         it "should symbolize keys correctly" do
-          expect(parser).to eq(:key => 1234)
+          expect(parser).to eq(key: 1234)
         end
       end
 
@@ -308,10 +308,10 @@ describe "FFI_Yajl::Parser" do
       end
 
       context "when symbolize_keys is true" do
-        let(:options) { { :symbolize_keys => true } }
+        let(:options) { { symbolize_keys: true } }
 
         it "should symbolize keys correctly" do
-          expect(parser).to eq(:"日本語" => 1234)
+          expect(parser).to eq("日本語": 1234)
         end
 
         if RUBY_VERSION.to_f >= 1.9
@@ -382,7 +382,7 @@ describe "FFI_Yajl::Parser" do
         end
 
         context "with allow_trailing_garbage" do
-          let(:options) { { :allow_trailing_garbage => true } }
+          let(:options) { { allow_trailing_garbage: true } }
           it "parses" do
             expect(parser).to eq("foo" => { "foo" => 1234 })
           end
@@ -474,7 +474,7 @@ describe "FFI_Yajl::Parser" do
 
     # NOTE: parsing floats with 8 million digits on windows has some kind of huge
     #       perf issues likely in ruby and/or the underlying windows libs
-    context "when parsing big floats", :ruby_gte_193 => true, :unix_only => true do
+    context "when parsing big floats", ruby_gte_193: true, unix_only: true do
       let(:json) { '[0.' + '1' * 2**23 + ']' }
 
       it "parses" do
@@ -482,9 +482,9 @@ describe "FFI_Yajl::Parser" do
       end
     end
 
-    context "when parsing long hash keys with symbolize_keys option", :ruby_gte_193 => true do
+    context "when parsing long hash keys with symbolize_keys option", ruby_gte_193: true do
       let(:json) { '{"' + 'a' * 2**23 + '": 0}' }
-      let(:options) { { :symbolize_keys => true } }
+      let(:options) { { symbolize_keys: true } }
 
       it "parses" do
         expect { parser }.not_to raise_error
@@ -500,7 +500,7 @@ describe "FFI_Yajl::Parser" do
 
     context "should raise an exception for repeated keys" do
       let(:json) { '{"foo":"bar","foo":"baz"}' }
-      let(:options) { { :unique_key_checking => true } }
+      let(:options) { { unique_key_checking: true } }
       it "should raise" do
         expect { parser }.to raise_error(FFI_Yajl::ParseError)
       end

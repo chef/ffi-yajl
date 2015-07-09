@@ -26,7 +26,7 @@ Benchmark.bmbm { |x|
   x.report {
     puts "JSON.parser"
     times.times {
-      JSON.parse(Net::HTTP.get_response(uri).body, :max_nesting => false)
+      JSON.parse(Net::HTTP.get_response(uri).body, max_nesting: false)
     }
   }
 }

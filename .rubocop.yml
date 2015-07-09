@@ -2,6 +2,8 @@ AbcSize:
   Enabled: false
 AndOr:
   Enabled: false
+Lint/AssignmentInCondition:
+  Enabled: false
 ClassAndModuleCamelCase:
   Enabled: false
 ClassLength:
@@ -23,7 +25,7 @@ Style/FileName:
     - bin/ffi-yajl-bench
 FormatString:
   Enabled: false
-HashSyntax:
+Lint/HandleExceptions:
   Enabled: false
 LineLength:
   Enabled: false

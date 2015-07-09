@@ -31,7 +31,7 @@ Benchmark.bmbm { |x|
       puts "JSON.parse"
       times.times {
         json.rewind
-        JSON.parse(json.read, :max_nesting => false)
+        JSON.parse(json.read, max_nesting: false)
       }
     }
   end

@@ -34,7 +34,7 @@ Benchmark.bmbm { |x|
       times.times {
         json.rewind
         while chunk = json.gets
-          JSON.parse(chunk, :max_nesting => false)
+          JSON.parse(chunk, max_nesting: false)
         end
       }
     }

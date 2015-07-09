@@ -34,8 +34,8 @@ end
 require 'ffi_yajl'
 
 RSpec.configure do |conf|
-  conf.filter_run_excluding :unix_only => true unless RUBY_PLATFORM !~ /mswin|mingw|windows/
-  conf.filter_run_excluding :ruby_gte_193 => true unless RUBY_VERSION.to_f >= 2.0 || RUBY_VERSION =~ /^1\.9\.3/
+  conf.filter_run_excluding unix_only: true unless RUBY_PLATFORM !~ /mswin|mingw|windows/
+  conf.filter_run_excluding ruby_gte_193: true unless RUBY_VERSION.to_f >= 2.0 || RUBY_VERSION =~ /^1\.9\.3/
 
   conf.order = 'random'
 

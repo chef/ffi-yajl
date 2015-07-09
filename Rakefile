@@ -11,7 +11,7 @@ Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
 end
 
 desc "Build it and ship it"
-task :ship => [:clean, :gem] do
+task ship: [:clean, :gem] do
   sh("git tag #{FFI_Yajl::VERSION}")
   sh("git push --tags")
   Dir[File.expand_path("../pkg/*.gem", __FILE__)].reverse_each do |built_gem|
@@ -27,7 +27,7 @@ task :clean do
 end
 
 desc "install the gem locally"
-task :install => [:package] do
+task install: [:package] do
   if defined?(RUBY_ENGINE) && RUBY_ENGINE == "jruby"
     sh %{gem install pkg/#{unix_gemspec.name}-#{unix_gemspec.version}-universal-java.gem}
   else
@@ -162,12 +162,12 @@ else
 end
 
 desc 'Run all style checks'
-task :style => ['style:rubocop', 'style:reek']
+task style: ['style:rubocop', 'style:reek']
 
 desc 'Run style + spec tests by default on travis'
-task :travis => %w{style spec}
+task travis: %w{style spec}
 
 desc 'Run style, spec and test kichen on travis'
-task :travis_all => ['style', 'spec', 'integration:cloud']
+task travis_all: ['style', 'spec', 'integration:cloud']
 
-task :default => ['style', 'spec', 'integration:vagrant']
+task default: ['style', 'spec', 'integration:vagrant']
