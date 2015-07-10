@@ -18,23 +18,19 @@ json.close
 
 times = ARGV[0] ? ARGV[0].to_i : 1000
 puts "Starting benchmark encoding #{filename} into JSON #{times} times\n\n"
-Benchmark.bmbm { |x|
+Benchmark.bmbm do |x|
   encoder = Yajl::Encoder.new
-  x.report {
+  x.report do
     puts "Yajl::Encoder#encode"
-    times.times {
-      encoder.encode(hash, StringIO.new)
-    }
-  }
-  if defined?(JSON)
-    x.report {
-      puts "JSON's #to_json"
-      times.times {
-        JSON.generate(hash)
-      }
-    }
+    times.times { encoder.encode(hash, StringIO.new) }
   end
-}
+  if defined?(JSON)
+    x.report do
+      puts "JSON's #to_json"
+      times.times { JSON.generate(hash) }
+    end
+  end
+end
 
 # YAML Section
 filename = 'benchmark/subjects/ohai.yml'
@@ -43,11 +39,9 @@ data = YAML.load_stream(yml)
 yml.close
 
 puts "Starting benchmark encoding #{filename} into YAML #{times} times\n\n"
-Benchmark.bmbm { |x|
-  x.report {
+Benchmark.bmbm do |x|
+  x.report do
     puts "YAML.dump"
-    times.times {
-      YAML.dump(data, StringIO.new)
-    }
-  }
-}
+    times.times { YAML.dump(data, StringIO.new) }
+  end
+end

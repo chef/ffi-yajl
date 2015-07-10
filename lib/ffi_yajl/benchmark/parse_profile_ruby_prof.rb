@@ -14,23 +14,20 @@ module FFI_Yajl
           puts "INFO: perftools.rb gem not installed"
         end
 
-        if defined?(RubyProf)
-          filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
-          json = File.new(filename, 'r').read
+        return if defined?(RubyProf)
 
-          times = 1000
-          puts "Starting profiling encoding #{filename} #{times} times\n\n"
+        filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
+        json = File.new(filename, 'r').read
 
-          result = RubyProf.profile do
-            times.times {
-              FFI_Yajl::Parser.parse(json)
-            }
-          end
+        times = 1000
+        puts "Starting profiling encoding #{filename} #{times} times\n\n"
 
-          printer = RubyProf::GraphPrinter.new(result)
-          printer.print(STDOUT, {})
-
+        result = RubyProf.profile do
+          times.times { FFI_Yajl::Parser.parse(json) }
         end
+
+        printer = RubyProf::GraphPrinter.new(result)
+        printer.print(STDOUT, {})
       end
     end
   end

@@ -17,26 +17,26 @@ hash = Yajl::Parser.new.parse(json)
 json.close
 
 puts "Starting benchmark encoding #{filename} #{times} times\n\n"
-Benchmark.bmbm { |x|
+Benchmark.bmbm do |x|
   encoder = Yajl::Encoder.new
-  x.report {
+  x.report do
     puts "Yajl::Encoder#encode"
-    times.times {
+    times.times do
       encoder.encode(hash, StringIO.new)
-    }
-  }
-  if defined?(JSON)
-    x.report {
-      puts "JSON's #to_json"
-      times.times {
-        JSON.generate(hash)
-      }
-    }
+    end
   end
-  x.report {
+  if defined?(JSON)
+    x.report do
+      puts "JSON's #to_json"
+      times.times do
+        JSON.generate(hash)
+      end
+    end
+  end
+  x.report do
     puts "Marshal.dump"
-    times.times {
+    times.times do
       Marshal.dump(hash)
-    }
-  }
-}
+    end
+  end
+end

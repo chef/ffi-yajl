@@ -25,6 +25,8 @@ Style/FileName:
     - bin/ffi-yajl-bench
 FormatString:
   Enabled: false
+Style/GuardClause:
+  Enabled: false
 Lint/HandleExceptions:
   Enabled: false
 LineLength:

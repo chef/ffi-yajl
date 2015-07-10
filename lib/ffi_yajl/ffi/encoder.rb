@@ -159,7 +159,7 @@ class Fixnum
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
-      raise ::FFI_Yajl::EncodeError.new("'#{str}' is an invalid number")
+      raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
     if state[:processing_key]
       if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
@@ -177,7 +177,7 @@ class Bignum
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
-      raise ::FFI_Yajl::EncodeError.new("'#{str}' is an invalid number")
+      raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
     if state[:processing_key]
       if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
@@ -195,7 +195,7 @@ class Float
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
-      raise ::FFI_Yajl::EncodeError.new("'#{str}' is an invalid number")
+      raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
     if state[:processing_key]
       if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
