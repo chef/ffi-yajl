@@ -311,7 +311,7 @@ describe "FFI_Yajl::Parser" do
         let(:options) { { symbolize_keys: true } }
 
         it "should symbolize keys correctly" do
-          expect(parser).to eq(:"日本語" => 1234)
+          expect(parser).to eq(:"日本語" => 1234) # rubocop:disable Style/HashSyntax
         end
 
         if RUBY_VERSION.to_f >= 1.9
