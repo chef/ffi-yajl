@@ -18,37 +18,37 @@ json = File.new(filename, 'r')
 
 times = ARGV[0] ? ARGV[0].to_i : 100
 puts "Starting benchmark parsing JSON stream (#{File.size(filename)} bytes of JSON data with 430 JSON separate strings) #{times} times\n\n"
-Benchmark.bmbm { |x|
+Benchmark.bmbm do |x|
   parser = Yajl::Parser.new
-  parser.on_parse_complete = lambda { |obj| }
-  x.report {
+  parser.on_parse_complete = ->(obj) {}
+  x.report do
     puts "Yajl::Parser#parse"
-    times.times {
+    times.times do
       json.rewind
       parser.parse(json)
-    }
-  }
+    end
+  end
   if defined?(JSON)
-    x.report {
+    x.report do
       puts "JSON.parse"
-      times.times {
+      times.times do
         json.rewind
         while chunk = json.gets
-          JSON.parse(chunk, :max_nesting => false)
+          JSON.parse(chunk, max_nesting: false)
         end
-      }
-    }
+      end
+    end
   end
   if defined?(ActiveSupport::JSON)
-    x.report {
+    x.report do
       puts "ActiveSupport::JSON.decode"
-      times.times {
+      times.times do
         json.rewind
         while chunk = json.gets
           ActiveSupport::JSON.decode(chunk)
         end
-      }
-    }
+      end
+    end
   end
-}
+end
 json.close

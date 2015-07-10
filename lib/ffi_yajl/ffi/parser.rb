@@ -23,12 +23,12 @@
 module FFI_Yajl
   module FFI
     module Parser
-      def set_value(val)
+      def set_value(val) # rubocop:disable Style/AccessorMethodName
         case stack.last
         when Hash
-          raise FFI_Yajl::ParseError.new("internal error: missing key in parse") if key.nil?
+          raise FFI_Yajl::ParseError, "internal error: missing key in parse" if key.nil?
           if @opts[:unique_key_checking] && stack.last.key?(key)
-            raise FFI_Yajl::ParseError.new("repeated key: #{key}")
+            raise FFI_Yajl::ParseError, "repeated key: #{key}"
           end
           stack.last[key] = val
         when Array
@@ -143,15 +143,15 @@ module FFI_Yajl
           ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_partial_values, :int, 1)
         end
 
-        if ( stat = ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
+        if ( ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
-          raise ::FFI_Yajl::ParseError.new(error)
+          raise ::FFI_Yajl::ParseError, error
         end
-        if ( stat = FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
+        if ( ::FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
-          raise ::FFI_Yajl::ParseError.new(error)
+          raise ::FFI_Yajl::ParseError, error
         end
         stack.pop
       ensure

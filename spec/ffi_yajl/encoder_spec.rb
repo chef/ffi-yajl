@@ -29,12 +29,12 @@ describe "FFI_Yajl::Encoder" do
 
   let(:encoder) { FFI_Yajl::Encoder.new(options) }
 
-  it "encodes hashes in keys as strings", :ruby_gte_193 => true do
+  it "encodes hashes in keys as strings", ruby_gte_193: true do
     ruby = { { 'a' => 'b' } => 2 }
     expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
   end
 
-  it "encodes arrays in keys as strings", :ruby_gte_193 => true do
+  it "encodes arrays in keys as strings", ruby_gte_193: true do
     ruby = { [0, 1] => 2 }
     expect(encoder.encode(ruby)).to eq('{"[0, 1]":2}')
   end
@@ -102,7 +102,7 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "encodes symbols in keys as strings" do
-    ruby = { :thing => 1 }
+    ruby = { thing: 1 }
     expect(encoder.encode(ruby)).to eq('{"thing":1}')
   end
 
@@ -190,7 +190,7 @@ describe "FFI_Yajl::Encoder" do
     end
 
     context "when validate_utf8 is off" do
-      let(:options) {  { :validate_utf8 => false } }
+      let(:options) {  { validate_utf8: false } }
 
       it "does not raise an error" do
         expect { encoder.encode(ruby) }.not_to raise_error

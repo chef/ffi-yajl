@@ -2,6 +2,8 @@ AbcSize:
   Enabled: false
 AndOr:
   Enabled: false
+Lint/AssignmentInCondition:
+  Enabled: false
 ClassAndModuleCamelCase:
   Enabled: false
 ClassLength:
@@ -18,9 +20,14 @@ Encoding:
   Enabled: false
 Eval:
   Enabled: false
+Style/FileName:
+  Exclude:
+    - bin/ffi-yajl-bench
 FormatString:
   Enabled: false
-HashSyntax:
+Style/GuardClause:
+  Enabled: false
+Lint/HandleExceptions:
   Enabled: false
 LineLength:
   Enabled: false
@@ -39,6 +46,8 @@ PercentLiteralDelimiters:
     '%W': '{}'
     '%x': '{}'
 RegexpLiteral:
+  Enabled: false
+Style/Semicolon:
   Enabled: false
 SignalException:
   Enabled: false

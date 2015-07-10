@@ -5,7 +5,7 @@ require 'rubygems'
 require 'ffi_yajl'
 begin
   require 'perftools'
-rescue Exception
+rescue LoadError
   puts "INFO: perftools.rb gem not installed"
 end
 
@@ -15,20 +15,18 @@ module FFI_Yajl
   class Benchmark
     class ParseProfile
       def run
-        if defined?(PerfTools)
-          filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
-          json = File.new(filename, 'r').read
+        return if defined?(PerfTools)
 
-          times = 1000
-          puts "Starting profiling encoding #{filename} #{times} times\n\n"
+        filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
+        json = File.new(filename, 'r').read
 
-          PerfTools::CpuProfiler.start("/tmp/ffi_yajl_encode_profile.out") do
-            times.times {
-              output = FFI_Yajl::Parser.parse(json)
-            }
-          end
-          system("pprof.rb --text /tmp/ffi_yajl_encode_profile.out")
+        times = 1000
+        puts "Starting profiling encoding #{filename} #{times} times\n\n"
+
+        PerfTools::CpuProfiler.start("/tmp/ffi_yajl_encode_profile.out") do
+          times.times { FFI_Yajl::Parser.parse(json) }
         end
+        system("pprof.rb --text /tmp/ffi_yajl_encode_profile.out")
       end
     end
   end

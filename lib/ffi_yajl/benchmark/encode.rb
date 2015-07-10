@@ -5,14 +5,10 @@ require 'rubygems'
 require 'benchmark'
 require 'stringio'
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
-  if ENV['FORCE_FFI_YAJL'] != 'ext'
-    begin
-      require 'yajl'
-    rescue Exception
-      puts "INFO: yajl-ruby not installed"
-    end
-  else
-    puts "INFO: skipping yajl-ruby because we're using the C extension"
+  begin
+    require 'yajl'
+  rescue LoadError
+    puts "INFO: yajl-ruby not installed"
   end
 else
   puts "INFO: skipping yajl-ruby on jruby"
@@ -20,22 +16,12 @@ end
 require 'ffi_yajl'
 begin
   require 'json'
-rescue Exception
+rescue LoadError
   puts "INFO: json gem not installed"
 end
 begin
-  require 'psych'
-rescue Exception
-  puts "INFO: psych gem not installed"
-end
-begin
-  require 'active_support'
-rescue Exception
-  puts "INFO: active_support gem not installed"
-end
-begin
   require 'oj'
-rescue Exception
+rescue LoadError
   puts "INFO: oj gem not installed"
 end
 
@@ -49,88 +35,47 @@ module FFI_Yajl
 
         times = ARGV[1] ? ARGV[1].to_i : 1000
         puts "Starting benchmark encoding #{filename} #{times} times\n\n"
-        ::Benchmark.bmbm { |x|
-          x.report("FFI_Yajl::Encoder.encode (to a String)") {
-            times.times {
-              output = FFI_Yajl::Encoder.encode(hash)
-            }
-          }
+        ::Benchmark.bmbm do |x|
+          x.report("FFI_Yajl::Encoder.encode (to a String)") do
+            times.times { FFI_Yajl::Encoder.encode(hash) }
+          end
 
           ffi_string_encoder = FFI_Yajl::Encoder.new
-          x.report("FFI_Yajl::Encoder#encode (to a String)") {
-            times.times {
-              output = ffi_string_encoder.encode(hash)
-            }
-          }
+          x.report("FFI_Yajl::Encoder#encode (to a String)") do
+            times.times { ffi_string_encoder.encode(hash) }
+          end
 
           if defined?(Oj)
-            x.report("Oj.dump (to a String)") {
-              times.times {
-                output = Oj.dump(hash)
-              }
-            }
+            x.report("Oj.dump (to a String)") do
+              times.times { Oj.dump(hash) }
+            end
           end
 
           if defined?(Yajl::Encoder)
-            x.report("Yajl::Encoder.encode (to a String)") {
-              times.times {
-                output = Yajl::Encoder.encode(hash)
-              }
-            }
+            x.report("Yajl::Encoder.encode (to a String)") do
+              times.times { Yajl::Encoder.encode(hash) }
+            end
 
             io_encoder = Yajl::Encoder.new
-            x.report("Yajl::Encoder#encode (to an IO)") {
-              times.times {
-                io_encoder.encode(hash, StringIO.new)
-              }
-            }
+            x.report("Yajl::Encoder#encode (to an IO)") do
+              times.times { io_encoder.encode(hash, StringIO.new) }
+            end
 
             string_encoder = Yajl::Encoder.new
-            x.report("Yajl::Encoder#encode (to a String)") {
-              times.times {
-                output = string_encoder.encode(hash)
-              }
-            }
+            x.report("Yajl::Encoder#encode (to a String)") do
+              times.times { string_encoder.encode(hash) }
+            end
           end
 
           if defined?(JSON)
-            x.report("JSON.generate") {
-              times.times {
-                JSON.generate(hash)
-              }
-            }
-            x.report("JSON.fast_generate") {
-              times.times {
-                JSON.fast_generate(hash)
-              }
-            }
-          end
-          if defined?(Psych)
-            x.report("Psych.to_json") {
-              times.times {
-                Psych.to_json(hash)
-              }
-            }
-            if defined?(Psych::JSON::Stream)
-              x.report("Psych::JSON::Stream") {
-                times.times {
-                  io = StringIO.new
-                  stream = Psych::JSON::Stream.new io
-                  stream.start
-                  stream.push hash
-                  stream.finish
-                }
-              }
+            x.report("JSON.generate") do
+              times.times { JSON.generate(hash) }
+            end
+            x.report("JSON.fast_generate") do
+              times.times { JSON.fast_generate(hash) }
             end
           end
-          #          if defined?(ActiveSupport::JSON)
-          #            x.report("ActiveSupport::JSON.encode") {
-          #              times.times {
-          #                ActiveSupport::JSON.encode(hash)
-          #              }
-          #            }
-          #          end
-        }
+        end
       end
     end
   end
