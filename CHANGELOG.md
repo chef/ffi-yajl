@@ -1,12 +1,22 @@
 # ChangeLog
 
-## master (unreleased)
+## 2.2.1 (07/13/2015)
 
 ### New features
 
 ### Changes
 
 ### Bugs fixed
+
+* [**Aaron Lasseigne**](https://github.com/AaronLasseigne):
+  Thanks for fixing my bad .travis.yml
+* [**Kouhei Sutou**](https://github.com/kou):
+  Numerous circular argument reference fixes, method redefined, assigned but unused warnings,
+  superclass mismatch warnings, etc.
+* Fixed uninitialized variable when using C-ext.
+* Fixed README require
+* Fixed superclass mismatch in rbx when using C-ext.
+* Lots of rubocop fixes, and added rubocop to travis
 
 ## 2.2.0 (04/30/2015)
 
