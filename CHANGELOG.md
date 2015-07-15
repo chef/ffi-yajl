@@ -1,10 +1,20 @@
 # ChangeLog
 
-## 2.2.1 (07/13/2015)
+## master (unreleased)
 
 ### New features
 
 ### Changes
+
+### Bugs fixed
+
+## 2.2.2 (07/15/2015)
+
+### Bugs fixed
+
+* Fix uninitialized constant StringIO error in C extension
+
+## 2.2.1 (07/13/2015)
 
 ### Bugs fixed
 
