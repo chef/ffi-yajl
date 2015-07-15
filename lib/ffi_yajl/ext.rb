@@ -27,6 +27,10 @@ require 'ffi_yajl/parser'
 require 'ffi_yajl/ext/dlopen'
 require 'ffi_yajl/map_library_name'
 
+# needed so the encoder c-code can find these symbols
+require 'stringio'
+require 'date'
+
 module FFI_Yajl
   extend FFI_Yajl::MapLibraryName
   extend FFI_Yajl::Ext::Dlopen
