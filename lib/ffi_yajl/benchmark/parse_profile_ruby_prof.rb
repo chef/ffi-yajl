@@ -1,15 +1,15 @@
 # Portions Originally Copyright (c) 2008-2011 Brian Lopez - http://github.com/brianmario
 # See MIT-LICENSE
 
-require 'rubygems'
-require 'ffi_yajl'
+require "rubygems"
+require "ffi_yajl"
 
 module FFI_Yajl
   class Benchmark
     class ParseProfileRubyProf
       def run
         begin
-          require 'ruby-prof'
+          require "ruby-prof"
         rescue LoadError
           puts "INFO: perftools.rb gem not installed"
         end
@@ -17,7 +17,7 @@ module FFI_Yajl
         return if defined?(RubyProf)
 
         filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
-        json = File.new(filename, 'r').read
+        json = File.new(filename, "r").read
 
         times = 1000
         puts "Starting profiling encoding #{filename} #{times} times\n\n"

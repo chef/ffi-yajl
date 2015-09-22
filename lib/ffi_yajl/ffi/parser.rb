@@ -39,7 +39,7 @@ module FFI_Yajl
       end
 
       def stack_pop
-        set_value( stack.pop ) if stack.length > 1
+        set_value(stack.pop) if stack.length > 1
       end
 
       def key_push
@@ -51,58 +51,58 @@ module FFI_Yajl
       end
 
       def setup_callbacks
-        @null_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
+        @null_callback = ::FFI::Function.new(:int, [:pointer]) do |_ctx|
           set_value(nil)
           1
         end
-        @boolean_callback = ::FFI::Function.new(:int, [:pointer, :int]) do |ctx, boolval|
+        @boolean_callback = ::FFI::Function.new(:int, [:pointer, :int]) do |_ctx, boolval|
           set_value(boolval == 1 ? true : false)
           1
         end
-        @integer_callback = ::FFI::Function.new(:int, [:pointer, :long_long]) do |ctx, intval|
+        @integer_callback = ::FFI::Function.new(:int, [:pointer, :long_long]) do |_ctx, intval|
           set_value(intval)
           1
         end
-        @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t ]) do |ctx, stringval, stringlen|
+        @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |_ctx, stringval, stringlen|
           s = stringval.slice(0, stringlen)
-          s.force_encoding('UTF-8') if defined? Encoding
+          s.force_encoding("UTF-8") if defined? Encoding
           # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
-          v = ( s =~ /[\.eE]/ ) ? s.to_f : s.to_i
+          v = (s =~ /[\.eE]/) ? s.to_f : s.to_i
           set_value(v)
           1
         end
-        @double_callback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
+        @double_callback = ::FFI::Function.new(:int, [:pointer, :double]) do |_ctx, doubleval|
           set_value(doubleval)
           1
         end
-        @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
+        @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |_ctx, stringval, stringlen|
           s = stringval.slice(0, stringlen)
-          s.force_encoding('UTF-8') if defined? Encoding
+          s.force_encoding("UTF-8") if defined? Encoding
           set_value(s)
           1
         end
-        @start_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
+        @start_map_callback = ::FFI::Function.new(:int, [:pointer]) do |_ctx|
           key_push  # for key => { } case, save the key
           stack.push({})
           1
         end
-        @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
+        @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |_ctx, key, keylen|
           s = key.slice(0, keylen)
-          s.force_encoding('UTF-8') if defined? Encoding
+          s.force_encoding("UTF-8") if defined? Encoding
           self.key = @opts[:symbolize_keys] ? s.to_sym : s
           1
         end
-        @end_map_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
+        @end_map_callback = ::FFI::Function.new(:int, [:pointer]) do |_ctx|
           key_pop
           stack_pop
           1
         end
-        @start_array_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
+        @start_array_callback = ::FFI::Function.new(:int, [:pointer]) do |_ctx|
           key_push  # for key => [ ] case, save the key
           stack.push([])
           1
         end
-        @end_array_callback = ::FFI::Function.new(:int, [:pointer]) do |ctx|
+        @end_array_callback = ::FFI::Function.new(:int, [:pointer]) do |_ctx|
           key_pop
           stack_pop
           1
@@ -143,12 +143,12 @@ module FFI_Yajl
           ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_partial_values, :int, 1)
         end
 
-        if ( ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
+        if (::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok)
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError, error
         end
-        if ( ::FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
+        if (::FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok)
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError, error

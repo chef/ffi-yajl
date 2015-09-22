@@ -20,16 +20,16 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'rubygems'
+require "rubygems"
 
-require 'ffi_yajl/encoder'
-require 'ffi_yajl/parser'
-require 'ffi_yajl/ext/dlopen'
-require 'ffi_yajl/map_library_name'
+require "ffi_yajl/encoder"
+require "ffi_yajl/parser"
+require "ffi_yajl/ext/dlopen"
+require "ffi_yajl/map_library_name"
 
 # needed so the encoder c-code can find these symbols
-require 'stringio'
-require 'date'
+require "stringio"
+require "date"
 
 module FFI_Yajl
   extend FFI_Yajl::MapLibraryName
@@ -38,12 +38,12 @@ module FFI_Yajl
   dlopen_yajl_library
 
   class Parser
-    require 'ffi_yajl/ext/parser'
+    require "ffi_yajl/ext/parser"
     include FFI_Yajl::Ext::Parser
   end
 
   class Encoder
-    require 'ffi_yajl/ext/encoder'
+    require "ffi_yajl/ext/encoder"
     include FFI_Yajl::Ext::Encoder
   end
 end

@@ -1,19 +1,19 @@
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/..')
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/..")
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 
-require 'rubygems'
-require 'benchmark'
-require 'yajl'
+require "rubygems"
+require "benchmark"
+require "yajl"
 begin
-  require 'json'
+  require "json"
 rescue LoadError
 end
 
 # JSON section
-filename = 'benchmark/subjects/ohai.json'
-marshal_filename = 'benchmark/subjects/ohai.marshal_dump'
-json = File.new(filename, 'r')
-marshal_file = File.new(marshal_filename, 'r')
+filename = "benchmark/subjects/ohai.json"
+marshal_filename = "benchmark/subjects/ohai.marshal_dump"
+json = File.new(filename, "r")
+marshal_file = File.new(marshal_filename, "r")
 
 hash = {}
 
@@ -23,7 +23,7 @@ Benchmark.bmbm do |x|
   x.report do
     puts "Yajl::Parser#parse"
     yajl = Yajl::Parser.new
-    yajl.on_parse_complete = ->(obj) {} if times > 1
+    yajl.on_parse_complete = ->(_obj) {} if times > 1
     times.times do
       json.rewind
       hash = yajl.parse(json)

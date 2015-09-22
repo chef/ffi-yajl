@@ -21,8 +21,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'spec_helper'
-require 'date'
+require "spec_helper"
+require "date"
 
 describe "FFI_Yajl::Encoder" do
   let(:options) { {} }
@@ -30,7 +30,7 @@ describe "FFI_Yajl::Encoder" do
   let(:encoder) { FFI_Yajl::Encoder.new(options) }
 
   it "encodes hashes in keys as strings", ruby_gte_193: true do
-    ruby = { { 'a' => 'b' } => 2 }
+    ruby = { { "a" => "b" } => 2 }
     expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
   end
 
@@ -77,7 +77,7 @@ describe "FFI_Yajl::Encoder" do
 
   it "encodes an object in a key which has a #to_json method as strings" do
     class Thing
-      def to_json(*a)
+      def to_json(*_a)
         "{}"
       end
     end
@@ -126,40 +126,40 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "can encode Date objects" do
-    ruby = Date.parse('2001-02-03')
-    expect(encoder.encode(ruby)).to eq( '"2001-02-03"' )
+    ruby = Date.parse("2001-02-03")
+    expect(encoder.encode(ruby)).to eq('"2001-02-03"')
   end
 
   it "can encode StringIOs" do
-    ruby = { "foo" => StringIO.new('THING') }
+    ruby = { "foo" => StringIO.new("THING") }
     expect(encoder.encode(ruby)).to eq("{\"foo\":\"THING\"}")
   end
 
   context "when encoding Time objects in UTC timezone" do
     before do
-      @saved_tz = ENV['TZ']
-      ENV['TZ'] = 'UTC'
+      @saved_tz = ENV["TZ"]
+      ENV["TZ"] = "UTC"
     end
 
     after do
-      ENV['TZ'] = @saved_tz
+      ENV["TZ"] = @saved_tz
     end
 
     it "encodes them correctly" do
       ruby = Time.local(2001, 02, 02, 21, 05, 06)
-      expect(encoder.encode(ruby)).to eq( '"2001-02-02 21:05:06 +0000"' )
+      expect(encoder.encode(ruby)).to eq('"2001-02-02 21:05:06 +0000"')
     end
   end
 
   it "can encode DateTime objects" do
-    ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00')
-    expect(encoder.encode(ruby)).to eq( '"2001-02-03T04:05:06+07:00"' )
+    ruby = DateTime.parse("2001-02-03T04:05:06.1+07:00")
+    expect(encoder.encode(ruby)).to eq('"2001-02-03T04:05:06+07:00"')
   end
 
   describe "testing .to_json for Objects" do
     class NoToJson; end
     class HasToJson
-      def to_json(*args)
+      def to_json(*_args)
         "{}"
       end
     end
@@ -179,10 +179,10 @@ describe "FFI_Yajl::Encoder" do
         "etc" => {
           "passwd" => {
             "root" => { "dir" => "/root", "gid" => 0, "uid" => 0, "shell" => "/bin/sh", "gecos" => "Elan Ruusam\xc3\xa4e" },
-            "glen" => { "dir" => "/home/glen", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Elan Ruusam\xE4e" },
-          },
-        },
-      },
+            "glen" => { "dir" => "/home/glen", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Elan Ruusam\xE4e" }
+          }
+        }
+      }
     }
 
     it "raises an error on invalid json" do
@@ -197,11 +197,11 @@ describe "FFI_Yajl::Encoder" do
       end
 
       it "returns utf8" do
-        expect( encoder.encode(ruby).encoding ).to eq(Encoding::UTF_8)
+        expect(encoder.encode(ruby).encoding).to eq(Encoding::UTF_8)
       end
 
       it "returns valid utf8" do
-        expect( encoder.encode(ruby).valid_encoding? ).to be true
+        expect(encoder.encode(ruby).valid_encoding?).to be true
       end
     end
   end

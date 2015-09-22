@@ -1,67 +1,27 @@
-AbcSize:
+Lint/HandleExceptions:
   Enabled: false
-AndOr:
+Lint/Eval:
   Enabled: false
-Lint/AssignmentInCondition:
+Metrics/AbcSize:
   Enabled: false
-ClassAndModuleCamelCase:
+Metrics/ClassLength:
   Enabled: false
-ClassLength:
+Metrics/CyclomaticComplexity:
   Enabled: false
-CommentAnnotation:
+Metrics/LineLength:
   Enabled: false
-CyclomaticComplexity:
+Metrics/MethodLength:
   Enabled: false
-Documentation:
+Metrics/ModuleLength:
   Enabled: false
-DoubleNegation:
+Metrics/PerceivedComplexity:
   Enabled: false
-Encoding:
+Style/ClassAndModuleCamelCase:
   Enabled: false
-Eval:
+Style/DoubleNegation:
   Enabled: false
 Style/FileName:
   Exclude:
     - bin/ffi-yajl-bench
-FormatString:
-  Enabled: false
-Style/GuardClause:
-  Enabled: false
-Lint/HandleExceptions:
-  Enabled: false
-LineLength:
-  Enabled: false
-MethodLength:
-  Enabled: false
-ModuleLength:
-  Enabled: false
-PerceivedComplexity:
-  Enabled: false
-PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%':  '{}'
-    '%q': '{}'
-    '%Q': '{}'
-    '%w': '{}'
-    '%W': '{}'
-    '%x': '{}'
-RegexpLiteral:
-  Enabled: false
-Style/Semicolon:
-  Enabled: false
-SignalException:
-  Enabled: false
-SingleSpaceBeforeFirstArg:
-  Enabled: false
-SpaceInsideBrackets:
-  Enabled: false
-SpaceInsideParens:
-  Enabled: false
-StringLiterals:
-  Enabled: false
-TrailingComma:
-  EnforcedStyleForMultiline: comma
-UnusedMethodArgument:
-  Enabled: false
-UnusedBlockArgument:
-  Enabled: false
+Style/HashSyntax:
+  EnforcedStyle: 'ruby19'

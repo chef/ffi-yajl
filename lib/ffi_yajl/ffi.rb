@@ -20,18 +20,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'rubygems'
+require "rubygems"
 
-require 'libyajl2'
+require "libyajl2"
 begin
-  require 'ffi'
+  require "ffi"
 rescue LoadError
   $stderr.puts "FATAL: to use the ffi extension instead of the compiled C extension, the ffi gem must be installed"
   $stderr.puts "       (it is optional, so you must include it in your bundle manually)"
   exit 1
 end
 
-require 'ffi_yajl/map_library_name'
+require "ffi_yajl/map_library_name"
 
 module FFI_Yajl
   extend ::FFI::Library
@@ -42,23 +42,23 @@ module FFI_Yajl
 
   class YajlCallbacks < ::FFI::Struct
     layout :yajl_null, :pointer,
-           :yajl_boolean, :pointer,
-           :yajl_integer, :pointer,
-           :yajl_double, :pointer,
-           :yajl_number, :pointer,
-           :yajl_string, :pointer,
-           :yajl_start_map, :pointer,
-           :yajl_map_key, :pointer,
-           :yajl_end_map, :pointer,
-           :yajl_start_array, :pointer,
-           :yajl_end_array, :pointer
+      :yajl_boolean, :pointer,
+      :yajl_integer, :pointer,
+      :yajl_double, :pointer,
+      :yajl_number, :pointer,
+      :yajl_string, :pointer,
+      :yajl_start_map, :pointer,
+      :yajl_map_key, :pointer,
+      :yajl_end_map, :pointer,
+      :yajl_start_array, :pointer,
+      :yajl_end_array, :pointer
   end
 
   enum :yajl_status, [
     :yajl_status_ok,
     :yajl_status_client_canceled,
     :yajl_status_insufficient_data,
-    :yajl_status_error,
+    :yajl_status_error
   ]
 
   # FFI::Enums are slow, should remove the rest
@@ -95,7 +95,7 @@ module FFI_Yajl
   typedef :string, :ustring
 
   # const char *yajl_status_to_string (yajl_status code)
-  attach_function :yajl_status_to_string, [ :yajl_status ], :string
+  attach_function :yajl_status_to_string, [:yajl_status], :string
   # yajl_handle yajl_alloc(const yajl_callbacks * callbacks, yajl_alloc_funcs * afs, void * ctx)
   attach_function :yajl_alloc, [:pointer, :pointer, :pointer], :yajl_handle
   # void yajl_free (yajl_handle handle)
@@ -137,17 +137,17 @@ module FFI_Yajl
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 end
 
-require 'ffi_yajl/encoder'
-require 'ffi_yajl/parser'
+require "ffi_yajl/encoder"
+require "ffi_yajl/parser"
 
 module FFI_Yajl
   class Parser
-    require 'ffi_yajl/ffi/parser'
+    require "ffi_yajl/ffi/parser"
     include FFI_Yajl::FFI::Parser
   end
 
   class Encoder
-    require 'ffi_yajl/ffi/encoder'
+    require "ffi_yajl/ffi/encoder"
     include FFI_Yajl::FFI::Encoder
   end
 end
