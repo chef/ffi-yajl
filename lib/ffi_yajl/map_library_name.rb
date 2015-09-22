@@ -20,7 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'libyajl2'
+require "libyajl2"
 
 # Mixin for use in finding the right yajl library on the system.  The 'caller'
 # needs to also mixin either the FFI module or the DLopen module.  Those are
@@ -36,7 +36,7 @@ module FFI_Yajl
     # @api private
     # @return Array<String> lower case ruby host_os string
     def host_os
-      RbConfig::CONFIG['host_os'].downcase
+      RbConfig::CONFIG["host_os"].downcase
     end
 
     # Array of yajl library names on the platform.  Some platforms like Windows
@@ -47,13 +47,13 @@ module FFI_Yajl
     def library_names
       case host_os
       when /mingw|mswin/
-        [ "libyajl.so", "yajl.dll" ]
+        ["libyajl.so", "yajl.dll"]
       when /cygwin/
-        [ "libyajl.so", "cygyajl.dll" ]
+        ["libyajl.so", "cygyajl.dll"]
       when /darwin/
-        [ "libyajl.bundle", "libyajl.dylib" ]
+        ["libyajl.bundle", "libyajl.dylib"]
       else
-        [ "libyajl.so" ]
+        ["libyajl.so"]
       end
     end
 
@@ -78,7 +78,7 @@ module FFI_Yajl
     # @api private
     def dlopen_yajl_library
       found = false
-      ( expanded_library_names + library_names ).each do |libname|
+      (expanded_library_names + library_names).each do |libname|
         begin
           dlopen(libname)
           found = true
@@ -103,7 +103,7 @@ module FFI_Yajl
         rescue LoadError
         end
       end
-      ffi_lib 'yajl' unless found
+      ffi_lib "yajl" unless found
     end
   end
 end

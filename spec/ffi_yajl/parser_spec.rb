@@ -21,7 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'spec_helper'
+require "spec_helper"
 
 describe "FFI_Yajl::Parser" do
   shared_examples_for "correct json parsing" do
@@ -44,42 +44,42 @@ describe "FFI_Yajl::Parser" do
     context "when parsing bare int" do
       let(:json) { "1" }
       it "should parse to the int value" do
-        expect( parser ).to eq(1)
+        expect(parser).to eq(1)
       end
     end
 
     context "when parsing bare string" do
       let(:json) { '"a"' }
       it "should parse to the string value" do
-        expect( parser ).to eq("a")
+        expect(parser).to eq("a")
       end
     end
 
     context "when parsing bare true" do
       let(:json) { "true" }
       it "should parse to the true value" do
-        expect( parser ).to eq(true)
+        expect(parser).to eq(true)
       end
     end
 
     context "when parsing bare false" do
       let(:json) { "false" }
       it "should parse to the false value" do
-        expect( parser ).to eq(false)
+        expect(parser).to eq(false)
       end
     end
 
     context "when parsing bare null" do
       let(:json) { "null" }
       it "should parse to the nil value" do
-        expect( parser ).to eq(nil)
+        expect(parser).to eq(nil)
       end
     end
 
     context "when parsing bare float" do
       let(:json) { "1.1" }
       it "should parse to the a float" do
-        expect( parser ).to eq(1.1)
+        expect(parser).to eq(1.1)
       end
     end
 
@@ -271,14 +271,14 @@ describe "FFI_Yajl::Parser" do
             Encoding.default_internal = @saved_encoding
           end
           it "encodes keys to UTF-8" do
-            expect(parser.keys.first.encoding).to eql(Encoding.find('utf-8'))
+            expect(parser.keys.first.encoding).to eql(Encoding.find("utf-8"))
           end
           it "encodes values to UTF-8" do
-            expect(parser.values.first.encoding).to eql(Encoding.find('utf-8'))
+            expect(parser.values.first.encoding).to eql(Encoding.find("utf-8"))
           end
         end
 
-        %w{utf-8 us-ascii}.each do |encoding|
+        %w[utf-8 us-ascii].each do |encoding|
           context "when Encoding.default_internal is #{encoding}" do
             before do
               @saved_encoding = Encoding.default_internal
@@ -349,7 +349,7 @@ describe "FFI_Yajl::Parser" do
     # NOTE: we are choosing to be compatible with yajl-ruby here vs. JSON
     # gem and libyajl C behavior (which is to throw an exception in this case)
     context "when the JSON is empty string" do
-      let(:json) { '' }
+      let(:json) { "" }
 
       it "returns nil" do
         expect(parser).to be_nil
@@ -402,7 +402,7 @@ describe "FFI_Yajl::Parser" do
       let(:json) { '{"München": "Bayern"}' }
 
       it "correctly parses" do
-        expect(parser).to eql( "München" => "Bayern" )
+        expect(parser).to eql("München" => "Bayern")
       end
     end
 
@@ -411,7 +411,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 3.14159265358979}' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 3.14159265358979 )
+          expect(parser).to eql("foo" => 3.14159265358979)
         end
       end
 
@@ -419,7 +419,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo":-2.00231930436153}' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => -2.00231930436153 )
+          expect(parser).to eql("foo" => -2.00231930436153)
         end
       end
 
@@ -427,7 +427,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 1.602176565E-19}' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 1.602176565e-19 )
+          expect(parser).to eql("foo" => 1.602176565e-19)
         end
       end
 
@@ -435,7 +435,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 6.6260689633e-34 }' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 6.6260689633e-34 )
+          expect(parser).to eql("foo" => 6.6260689633e-34)
         end
       end
 
@@ -443,7 +443,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 6.0221413E+23}' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 6.0221413e+23 )
+          expect(parser).to eql("foo" => 6.0221413e+23)
         end
       end
 
@@ -451,7 +451,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 8.9875517873681764e+9 }' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 8.9875517873681764e+9 )
+          expect(parser).to eql("foo" => 8.9875517873681764e+9)
         end
       end
 
@@ -459,7 +459,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 2.99792458E8  }' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 2.99792458e+8 )
+          expect(parser).to eql("foo" => 2.99792458e+8)
         end
       end
 
@@ -467,7 +467,7 @@ describe "FFI_Yajl::Parser" do
         let(:json) { '{"foo": 1.0973731568539e7 }' }
 
         it "correctly parses" do
-          expect(parser).to eql( "foo" => 1.0973731568539e+7 )
+          expect(parser).to eql("foo" => 1.0973731568539e+7)
         end
       end
     end
@@ -475,7 +475,7 @@ describe "FFI_Yajl::Parser" do
     # NOTE: parsing floats with 8 million digits on windows has some kind of huge
     #       perf issues likely in ruby and/or the underlying windows libs
     context "when parsing big floats", ruby_gte_193: true, unix_only: true do
-      let(:json) { '[0.' + '1' * 2**23 + ']' }
+      let(:json) { "[0." + "1" * 2**23 + "]" }
 
       it "parses" do
         expect { parser }.not_to raise_error
@@ -483,7 +483,7 @@ describe "FFI_Yajl::Parser" do
     end
 
     context "when parsing long hash keys with symbolize_keys option", ruby_gte_193: true do
-      let(:json) { '{"' + 'a' * 2**23 + '": 0}' }
+      let(:json) { '{"' + "a" * 2**23 + '": 0}' }
       let(:options) { { symbolize_keys: true } }
 
       it "parses" do
@@ -494,7 +494,7 @@ describe "FFI_Yajl::Parser" do
     context "should ignore repeated keys by default" do
       let(:json) { '{"foo":"bar","foo":"baz"}' }
       it "should replace the first hash key with the second" do
-        expect(parser).to eql( "foo" => "baz" )
+        expect(parser).to eql("foo" => "baz")
       end
     end
 

@@ -20,8 +20,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'date'
-require 'stringio'
+require "date"
+require "stringio"
 
 module FFI_Yajl
   module FFI
@@ -42,7 +42,7 @@ module FFI_Yajl
         # setup our own state
         state = {
           json_opts: opts,
-          processing_key: false,
+          processing_key: false
         }
 
         # do the encoding
@@ -51,7 +51,7 @@ module FFI_Yajl
         # get back our encoded JSON
         string_ptr = ::FFI::MemoryPointer.new(:string)
         length_ptr = ::FFI::MemoryPointer.new(:int)
-        if ( status = FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr) ) != 0
+        if (status = FFI_Yajl.yajl_gen_get_buf(yajl_gen, string_ptr, length_ptr)) != 0
           FFI_Yajl::Encoder.raise_error_for_status(status)
         end
         string = string_ptr.get_pointer(0).read_string
@@ -68,12 +68,12 @@ class Hash
   def ffi_yajl(yajl_gen, state)
     if state[:processing_key]
       str = to_s
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_map_open(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, '{')
+      if (status = FFI_Yajl.yajl_gen_map_open(yajl_gen)) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status, "{")
       end
       each do |key, value|
         # Perf Fix: mutate state hash rather than creating new copy
@@ -82,8 +82,8 @@ class Hash
         state[:processing_key] = false
         value.ffi_yajl(yajl_gen, state)
       end
-      if ( status = FFI_Yajl.yajl_gen_map_close(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, '}')
+      if (status = FFI_Yajl.yajl_gen_map_close(yajl_gen)) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status, "}")
       end
     end
   end
@@ -93,18 +93,18 @@ class Array
   def ffi_yajl(yajl_gen, state)
     if state[:processing_key]
       str = to_s
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_array_open(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, '[')
+      if (status = FFI_Yajl.yajl_gen_array_open(yajl_gen)) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status, "[")
       end
       each do |value|
         value.ffi_yajl(yajl_gen, state)
       end
-      if ( status = FFI_Yajl.yajl_gen_array_close(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, ']')
+      if (status = FFI_Yajl.yajl_gen_array_close(yajl_gen)) != 0
+        FFI_Yajl::Encoder.raise_error_for_status(status, "]")
       end
     end
   end
@@ -114,11 +114,11 @@ class NilClass
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_null(yajl_gen) ) != 0
+      if (status = FFI_Yajl.yajl_gen_null(yajl_gen)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
@@ -129,11 +129,11 @@ class TrueClass
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 1) ) != 0
+      if (status = FFI_Yajl.yajl_gen_bool(yajl_gen, 1)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
@@ -144,11 +144,11 @@ class FalseClass
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 0) ) != 0
+      if (status = FFI_Yajl.yajl_gen_bool(yajl_gen, 0)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
@@ -162,11 +162,11 @@ class Fixnum
       raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
     if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_integer(yajl_gen, self) ) != 0
+      if (status = FFI_Yajl.yajl_gen_integer(yajl_gen, self)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
@@ -180,11 +180,11 @@ class Bignum
       raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
     if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
@@ -198,11 +198,11 @@ class Float
       raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
     if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     else
-      if ( status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize) ) != 0
+      if (status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize)) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
@@ -210,53 +210,53 @@ class Float
 end
 
 class Symbol
-  def ffi_yajl(yajl_gen, state)
+  def ffi_yajl(yajl_gen, _state)
     str = to_s
-    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+    if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status, str)
     end
   end
 end
 
 class String
-  def ffi_yajl(yajl_gen, state)
-    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, self, bytesize) ) != 0
+  def ffi_yajl(yajl_gen, _state)
+    if (status = FFI_Yajl.yajl_gen_string(yajl_gen, self, bytesize)) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status, self)
     end
   end
 end
 
 class StringIO
-  def ffi_yajl(yajl_gen, state)
+  def ffi_yajl(yajl_gen, _state)
     str = read
-    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+    if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status, str)
     end
   end
 end
 
 class Date
-  def ffi_yajl(yajl_gen, state)
+  def ffi_yajl(yajl_gen, _state)
     str = to_s
-    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+    if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status, str)
     end
   end
 end
 
 class Time
-  def ffi_yajl(yajl_gen, state)
+  def ffi_yajl(yajl_gen, _state)
     str = strftime "%Y-%m-%d %H:%M:%S %z"
-    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+    if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status, str)
     end
   end
 end
 
 class DateTime
-  def ffi_yajl(yajl_gen, state)
+  def ffi_yajl(yajl_gen, _state)
     str = to_s
-    if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
+    if (status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)) != 0
       FFI_Yajl::Encoder.raise_error_for_status(status, str)
     end
   end
@@ -273,6 +273,6 @@ class Object
       str = to_s
       status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize)
     end
-    FFI_Yajl::Encoder.raise_error_for_status(status, str) if ( status ) != 0
+    FFI_Yajl::Encoder.raise_error_for_status(status, str) if (status) != 0
   end
 end

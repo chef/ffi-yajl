@@ -1,18 +1,18 @@
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/..')
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/..")
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 
-require 'rubygems'
-require 'benchmark'
-require 'yajl'
-require 'stringio'
+require "rubygems"
+require "benchmark"
+require "yajl"
+require "stringio"
 begin
-  require 'json'
+  require "json"
 rescue LoadError
 end
 
 times = ARGV[0] ? ARGV[0].to_i : 1000
-filename = 'benchmark/subjects/ohai.json'
-json = File.new(filename, 'r')
+filename = "benchmark/subjects/ohai.json"
+json = File.new(filename, "r")
 hash = Yajl::Parser.new.parse(json)
 json.close
 

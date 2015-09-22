@@ -1,10 +1,11 @@
-$LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
+$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__), "lib"))
 
-require 'rspec/core/rake_task'
-require 'rubygems/package_task'
-require 'rake/extensiontask'
-require 'ffi_yajl/version'
-require 'github_changelog_generator/task'
+require "finstyle"
+require "rspec/core/rake_task"
+require "rubygems/package_task"
+require "rake/extensiontask"
+require "ffi_yajl/version"
+require "github_changelog_generator/task"
 
 Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
@@ -12,8 +13,8 @@ Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
 end
 
 GitHubChangelogGenerator::RakeTask.new :changelog do |config|
-  config.since_tag = '1.0.1'
-  config.exclude_labels = %w{duplicate question invalid wontfix changelog_skip}
+  config.since_tag = "1.0.1"
+  config.exclude_labels = %w[duplicate question invalid wontfix changelog_skip]
 end
 
 desc "Build it and ship it"
@@ -41,26 +42,26 @@ task install: [:package] do
   end
 end
 
-spec = Gem::Specification.load('ffi-yajl.gemspec')
+spec = Gem::Specification.load("ffi-yajl.gemspec")
 
 Rake::ExtensionTask.new do |ext|
-  ext.name = 'encoder'
-  ext.lib_dir = 'lib/ffi_yajl/ext'
-  ext.ext_dir = 'ext/ffi_yajl/ext/encoder'
+  ext.name = "encoder"
+  ext.lib_dir = "lib/ffi_yajl/ext"
+  ext.ext_dir = "ext/ffi_yajl/ext/encoder"
   ext.gem_spec = spec
 end
 
 Rake::ExtensionTask.new do |ext|
-  ext.name = 'parser'
-  ext.lib_dir = 'lib/ffi_yajl/ext'
-  ext.ext_dir = 'ext/ffi_yajl/ext/parser'
+  ext.name = "parser"
+  ext.lib_dir = "lib/ffi_yajl/ext"
+  ext.ext_dir = "ext/ffi_yajl/ext/parser"
   ext.gem_spec = spec
 end
 
 Rake::ExtensionTask.new do |ext|
-  ext.name = 'dlopen'
-  ext.lib_dir = 'lib/ffi_yajl/ext'
-  ext.ext_dir = 'ext/ffi_yajl/ext/dlopen'
+  ext.name = "dlopen"
+  ext.lib_dir = "lib/ffi_yajl/ext"
+  ext.ext_dir = "ext/ffi_yajl/ext/dlopen"
   ext.gem_spec = spec
 end
 
@@ -79,14 +80,14 @@ end
 namespace :spec do
   desc "Run all specs against ffi extension"
   RSpec::Core::RakeTask.new(:ffi) do |t|
-    ENV['FORCE_FFI_YAJL'] = "ffi"
-    t.pattern = FileList['spec/**/*_spec.rb']
+    ENV["FORCE_FFI_YAJL"] = "ffi"
+    t.pattern = FileList["spec/**/*_spec.rb"]
   end
   if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
     desc "Run all specs again c extension"
     RSpec::Core::RakeTask.new(:ext) do |t|
-      ENV['FORCE_FFI_YAJL'] = "ext"
-      t.pattern = FileList['spec/**/*_spec.rb']
+      ENV["FORCE_FFI_YAJL"] = "ext"
+      t.pattern = FileList["spec/**/*_spec.rb"]
     end
   end
 end
@@ -94,7 +95,7 @@ end
 if RUBY_VERSION.to_f >= 1.9
   namespace :integration do
     begin
-      require 'kitchen'
+      require "kitchen"
     rescue LoadError
       task :vagrant do
         puts "test-kitchen gem is not installed"
@@ -103,7 +104,7 @@ if RUBY_VERSION.to_f >= 1.9
         puts "test-kitchen gem is not installed"
       end
     else
-      desc 'Run Test Kitchen with Vagrant'
+      desc "Run Test Kitchen with Vagrant"
       task :vagrant do
         Kitchen.logger = Kitchen.default_file_logger
         Kitchen::Config.new.instances.each do |instance|
@@ -111,19 +112,19 @@ if RUBY_VERSION.to_f >= 1.9
         end
       end
 
-      desc 'Run Test Kitchen with cloud plugins'
+      desc "Run Test Kitchen with cloud plugins"
       task :cloud do
-        if ENV['TRAVIS_PULL_REQUEST'] != 'true'
-          ENV['KITCHEN_YAML'] = '.kitchen.cloud.yml'
+        if ENV["TRAVIS_PULL_REQUEST"] != "true"
+          ENV["KITCHEN_YAML"] = ".kitchen.cloud.yml"
           sh "kitchen test --concurrency 4"
         end
       end
     end
   end
   namespace :style do
-    desc 'Run Ruby style checks'
+    desc "Run Ruby style checks"
     begin
-      require 'rubocop/rake_task'
+      require "rubocop/rake_task"
     rescue LoadError
       task :rubocop do
         puts "rubocop gem is not installed"
@@ -134,9 +135,9 @@ if RUBY_VERSION.to_f >= 1.9
       end
     end
 
-    desc 'Run Ruby smell checks'
+    desc "Run Ruby smell checks"
     begin
-      require 'reek/rake/task'
+      require "reek/rake/task"
     rescue LoadError
       task :reek do
         puts "reek gem is not installed"
@@ -167,13 +168,13 @@ else
   end
 end
 
-desc 'Run all style checks'
-task style: ['style:rubocop', 'style:reek']
+desc "Run all style checks"
+task style: ["style:rubocop", "style:reek"]
 
-desc 'Run style + spec tests by default on travis'
-task travis: %w{style spec}
+desc "Run style + spec tests by default on travis"
+task travis: %w[style spec]
 
-desc 'Run style, spec and test kichen on travis'
-task travis_all: ['style', 'spec', 'integration:cloud']
+desc "Run style, spec and test kichen on travis"
+task travis_all: ["style", "spec", "integration:cloud"]
 
-task default: ['style', 'spec', 'integration:vagrant']
+task default: ["style", "spec", "integration:vagrant"]

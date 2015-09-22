@@ -1,26 +1,26 @@
 # Portions Originally Copyright (c) 2008-2011 Brian Lopez - http://github.com/brianmario
 # See MIT-LICENSE
 
-require 'rubygems'
-require 'benchmark'
-require 'stringio'
+require "rubygems"
+require "benchmark"
+require "stringio"
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
   begin
-    require 'yajl'
+    require "yajl"
   rescue LoadError
     puts "INFO: yajl-ruby not installed"
   end
 else
   puts "INFO: skipping yajl-ruby on jruby"
 end
-require 'ffi_yajl'
+require "ffi_yajl"
 begin
-  require 'json'
+  require "json"
 rescue LoadError
   puts "INFO: json gem not installed"
 end
 begin
-  require 'oj'
+  require "oj"
 rescue LoadError
   puts "INFO: oj gem not installed"
 end
@@ -31,7 +31,7 @@ module FFI_Yajl
       def run
         # filename = ARGV[0] || 'benchmark/subjects/ohai.json'
         filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
-        hash = File.open(filename, 'rb') { |f| FFI_Yajl::Parser.parse(f.read) }
+        hash = File.open(filename, "rb") { |f| FFI_Yajl::Parser.parse(f.read) }
 
         times = ARGV[1] ? ARGV[1].to_i : 1000
         puts "Starting benchmark encoding #{filename} #{times} times\n\n"

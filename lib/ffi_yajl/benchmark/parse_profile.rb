@@ -1,15 +1,15 @@
 # Portions Originally Copyright (c) 2008-2011 Brian Lopez - http://github.com/brianmario
 # See MIT-LICENSE
 
-require 'rubygems'
-require 'ffi_yajl'
+require "rubygems"
+require "ffi_yajl"
 begin
-  require 'perftools'
+  require "perftools"
 rescue LoadError
   puts "INFO: perftools.rb gem not installed"
 end
 
-ENV['CPUPROFILE_FREQUENCY'] = "4000"
+ENV["CPUPROFILE_FREQUENCY"] = "4000"
 
 module FFI_Yajl
   class Benchmark
@@ -18,7 +18,7 @@ module FFI_Yajl
         return if defined?(PerfTools)
 
         filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "ohai.json"))
-        json = File.new(filename, 'r').read
+        json = File.new(filename, "r").read
 
         times = 1000
         puts "Starting profiling encoding #{filename} #{times} times\n\n"
