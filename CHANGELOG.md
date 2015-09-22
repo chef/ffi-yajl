@@ -1,5 +1,14 @@
 # Change Log
 
+## [Unreleased](https://github.com/chef/ffi-yajl/tree/HEAD)
+
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.2...HEAD)
+
+**Merged pull requests:**
+
+- Remove ruby 1.9.2 support [\#73](https://github.com/chef/ffi-yajl/pull/73) ([lamont-granquist](https://github.com/lamont-granquist))
+- Use github-changelog-generator to generate CHANGELOG.md file [\#72](https://github.com/chef/ffi-yajl/pull/72) ([lamont-granquist](https://github.com/lamont-granquist))
+
 ## [2.2.2](https://github.com/chef/ffi-yajl/tree/2.2.2) (2015-07-15)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.1...2.2.2)
 
