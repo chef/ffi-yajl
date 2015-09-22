@@ -13,7 +13,6 @@ rvm:
   - 2.1
   - 2.0.0
   - 1.9.3
-  - 1.9.2
   - ruby-head
   - rbx
   - jruby-19mode
@@ -46,10 +45,6 @@ matrix:
     - rvm: 1.9.3
       jdk: openjdk6
     - rvm: 1.9.3
-      jdk: openjdk7
-    - rvm: 1.9.2
-      jdk: openjdk6
-    - rvm: 1.9.2
       jdk: openjdk7
     - rvm: rbx
       jdk: openjdk6
