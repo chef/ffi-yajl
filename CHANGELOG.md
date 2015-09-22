@@ -1,139 +1,150 @@
-# ChangeLog
+# Change Log
 
-## master (unreleased)
+## [2.2.2](https://github.com/chef/ffi-yajl/tree/2.2.2) (2015-07-15)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.1...2.2.2)
 
-### New features
+**Merged pull requests:**
 
-### Changes
+- fix uninitialized constant errors [\#69](https://github.com/chef/ffi-yajl/pull/69) ([lamont-granquist](https://github.com/lamont-granquist))
 
-### Bugs fixed
+## [2.2.1](https://github.com/chef/ffi-yajl/tree/2.2.1) (2015-07-13)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.0...2.2.1)
 
-## 2.2.2 (07/15/2015)
+**Closed issues:**
 
-### Bugs fixed
+- typo? require 'ffi-yajl' [\#63](https://github.com/chef/ffi-yajl/issues/63)
 
-* Fix uninitialized constant StringIO error in C extension
+**Merged pull requests:**
 
-## 2.2.1 (07/13/2015)
+- Lcg/more cops [\#68](https://github.com/chef/ffi-yajl/pull/68) ([lamont-granquist](https://github.com/lamont-granquist))
+- fix superclass mismatch on rbx in c ext [\#67](https://github.com/chef/ffi-yajl/pull/67) ([lamont-granquist](https://github.com/lamont-granquist))
+- Lcg/rubocop [\#66](https://github.com/chef/ffi-yajl/pull/66) ([lamont-granquist](https://github.com/lamont-granquist))
+- Fix require in readme [\#65](https://github.com/chef/ffi-yajl/pull/65) ([thommay](https://github.com/thommay))
+- Fix uninitialized instance variable when using ext [\#64](https://github.com/chef/ffi-yajl/pull/64) ([danielsdeleo](https://github.com/danielsdeleo))
+- Fix superclass mismatch for class StringIO [\#62](https://github.com/chef/ffi-yajl/pull/62) ([kou](https://github.com/kou))
+- Suppress assigned but unused variable warning [\#61](https://github.com/chef/ffi-yajl/pull/61) ([kou](https://github.com/kou))
+- Suppress circular require warnings [\#60](https://github.com/chef/ffi-yajl/pull/60) ([kou](https://github.com/kou))
+- Suppress method redefined warnings [\#59](https://github.com/chef/ffi-yajl/pull/59) ([kou](https://github.com/kou))
+- fix parse error in travis.yml [\#58](https://github.com/chef/ffi-yajl/pull/58) ([AaronLasseigne](https://github.com/AaronLasseigne))
 
-### Bugs fixed
+## [2.2.0](https://github.com/chef/ffi-yajl/tree/2.2.0) (2015-04-30)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.1.0...2.2.0)
 
-* [**Aaron Lasseigne**](https://github.com/AaronLasseigne):
-  Thanks for fixing my bad .travis.yml
-* [**Kouhei Sutou**](https://github.com/kou):
-  Numerous circular argument reference fixes, method redefined, assigned but unused warnings,
-  superclass mismatch warnings, etc.
-* Fixed uninitialized variable when using C-ext.
-* Fixed README require
-* Fixed superclass mismatch in rbx when using C-ext.
-* Lots of rubocop fixes, and added rubocop to travis
+**Merged pull requests:**
 
-## 2.2.0 (04/30/2015)
+- change :validate\_utf8=false to still emit utf8 [\#57](https://github.com/chef/ffi-yajl/pull/57) ([lamont-granquist](https://github.com/lamont-granquist))
+- emit token that failed utf-8 validation [\#56](https://github.com/chef/ffi-yajl/pull/56) ([lamont-granquist](https://github.com/lamont-granquist))
 
-### New features
+## [2.1.0](https://github.com/chef/ffi-yajl/tree/2.1.0) (2015-04-20)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.0.0...2.1.0)
 
-* Bad UTF8 exceptions now display the invalid token
-* `validate_utf8: false` will sanitize output and produce valid UTF8-clean JSON
+**Implemented enhancements:**
 
-### Changes
+- write c extension for dlopen [\#23](https://github.com/chef/ffi-yajl/issues/23)
+- make ffi gem optional [\#22](https://github.com/chef/ffi-yajl/issues/22)
 
-* Ruby 1.8.7 support dropped.
+**Merged pull requests:**
 
-## 2.1.0 (04/20/2015)
+- add :unique\_key\_checking flag to parser [\#55](https://github.com/chef/ffi-yajl/pull/55) ([lamont-granquist](https://github.com/lamont-granquist))
+- add copyright notices [\#54](https://github.com/chef/ffi-yajl/pull/54) ([lamont-granquist](https://github.com/lamont-granquist))
+- add ruby 2.2.0 track latest rbx [\#53](https://github.com/chef/ffi-yajl/pull/53) ([lamont-granquist](https://github.com/lamont-granquist))
+- add DLopen extension [\#52](https://github.com/chef/ffi-yajl/pull/52) ([lamont-granquist](https://github.com/lamont-granquist))
+- Lcg/add appveyor config [\#50](https://github.com/chef/ffi-yajl/pull/50) ([lamont-granquist](https://github.com/lamont-granquist))
+- Remove ffi gem as a hard dependency [\#49](https://github.com/chef/ffi-yajl/pull/49) ([lamont-granquist](https://github.com/lamont-granquist))
+- support encoding StringIOs [\#19](https://github.com/chef/ffi-yajl/pull/19) ([lamont-granquist](https://github.com/lamont-granquist))
 
-### New features
+## [2.0.0](https://github.com/chef/ffi-yajl/tree/2.0.0) (2015-03-17)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.4.0...2.0.0)
 
-* StringIOs are now encoded to strings
-* Added `:unique_key_checking` flag to parser that will raise on repeated hash keys
-  (commonly edit mistakes in long JSON documents).
+**Fixed bugs:**
 
-### Changes
+- cygwin impossible to use [\#36](https://github.com/chef/ffi-yajl/issues/36)
 
-* Includes its own dlopen extension
-* C extension should operation without ffi
+**Merged pull requests:**
 
-## 2.0.0 (03/17/2015)
+- Removing JSON gem compatibility layer [\#47](https://github.com/chef/ffi-yajl/pull/47) ([lamont-granquist](https://github.com/lamont-granquist))
+- use travis containers [\#45](https://github.com/chef/ffi-yajl/pull/45) ([lamont-granquist](https://github.com/lamont-granquist))
+- Lcg/fix windows check [\#44](https://github.com/chef/ffi-yajl/pull/44) ([lamont-granquist](https://github.com/lamont-granquist))
 
-### Changes
+## [1.4.0](https://github.com/chef/ffi-yajl/tree/1.4.0) (2015-02-17)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.3.1...1.4.0)
 
-* Dropped the `ffi-yajl/json_gem` monkeypatch compatibility layer completely.  The deprecation
-  warning has been in there for months now and all the work to remove it from chef and ohai
-  has been done in all the latest releases.
+**Merged pull requests:**
 
-## 1.4.0 (02/17/2015)
+- Lcg/fix windows check [\#43](https://github.com/chef/ffi-yajl/pull/43) ([lamont-granquist](https://github.com/lamont-granquist))
+- add note about license [\#40](https://github.com/chef/ffi-yajl/pull/40) ([lamont-granquist](https://github.com/lamont-granquist))
+- Update README w/ basic use and "why this" [\#39](https://github.com/chef/ffi-yajl/pull/39) ([danielsdeleo](https://github.com/danielsdeleo))
+- Lcg/invalid utf8 [\#38](https://github.com/chef/ffi-yajl/pull/38) ([lamont-granquist](https://github.com/lamont-granquist))
+- include status code for Unknown Error [\#37](https://github.com/chef/ffi-yajl/pull/37) ([glensc](https://github.com/glensc))
 
-### New features
+## [1.3.1](https://github.com/chef/ffi-yajl/tree/1.3.1) (2014-11-25)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.3.0...1.3.1)
 
-* Implement :validate_utf8 (on by default) which can be set to false to suppress validation
+**Merged pull requests:**
 
-### Bugs fixed
+- Lcg/object as key [\#34](https://github.com/chef/ffi-yajl/pull/34) ([lamont-granquist](https://github.com/lamont-granquist))
 
-* [**Elan Ruusamäe**](https://github.com/glensc):
-  include status code for Unknown Error
-* [**Tyler Vann-Campbell**](https://github.com/lrdcasimir)
-  Fix check for windows? on cygwin and get dll name right
-* Correctly throw useful invalid UTF-8 error exception
+## [1.3.0](https://github.com/chef/ffi-yajl/tree/1.3.0) (2014-11-23)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.2.0...1.3.0)
 
-## 1.3.1 (11/24/2014)
+**Fixed bugs:**
 
-### Bugs fixed
+- ffi-yajl slowness on Windows with Chef [\#26](https://github.com/chef/ffi-yajl/issues/26)
+- ffi-yajl should parse bare objects for ruby-yajl compat [\#16](https://github.com/chef/ffi-yajl/issues/16)
+- parsing nil needs to not coredump [\#15](https://github.com/chef/ffi-yajl/issues/15)
+- keys need to be '\#to\_s''d as a last resort [\#14](https://github.com/chef/ffi-yajl/issues/14)
+- Can't install gem with cygwin  [\#10](https://github.com/chef/ffi-yajl/issues/10)
+- Segfault when executing `JSON.parse 1` in rails console [\#2](https://github.com/chef/ffi-yajl/issues/2)
 
-* fixes using Objects as Hash keys
+**Merged pull requests:**
 
-## 1.3.0 (11/22/2014)
+- Lcg/encoding keys [\#33](https://github.com/chef/ffi-yajl/pull/33) ([lamont-granquist](https://github.com/lamont-granquist))
+- Lcg/parser bugs [\#32](https://github.com/chef/ffi-yajl/pull/32) ([lamont-granquist](https://github.com/lamont-granquist))
+- fix minor typo [\#31](https://github.com/chef/ffi-yajl/pull/31) ([glensc](https://github.com/glensc))
+- Cygwin detection https://github.com/opscode/ffi-yajl/issues/10 [\#30](https://github.com/chef/ffi-yajl/pull/30) ([electrawn](https://github.com/electrawn))
+- add better ext-vs-ffi logic [\#29](https://github.com/chef/ffi-yajl/pull/29) ([lamont-granquist](https://github.com/lamont-granquist))
+- windows isn't compatible with libyajl \<= 1.1.0 [\#28](https://github.com/chef/ffi-yajl/pull/28) ([lamont-granquist](https://github.com/lamont-granquist))
 
-### New features
+## [1.2.0](https://github.com/chef/ffi-yajl/tree/1.2.0) (2014-10-10)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.1.0...1.2.0)
 
-* [**Jason Potkanski**](https://github.com/electrawn):
-  Cygwin detection
+**Fixed bugs:**
 
-### Changes
+- Only fall back to `.to\_json` if object supports it [\#24](https://github.com/chef/ffi-yajl/issues/24)
+- Config -\> RbConfig deprecation warning on every execution of knife. [\#17](https://github.com/chef/ffi-yajl/issues/17)
 
-* warn on fallback to ffi when yajl-ruby is loaded (ffi-yajl and yajl-ruby use incompatible yajl c-libs)
-* warn when we don't use the c ext on MRI or RBX (ffi is currently much slower than the c-ext)
-* further bumped the libyajl2-gem pin to ~> 1.2 (required for the cygwin users)
-* fix minimum libyajl2-gem version to ~> 1.1 (ffi-yajl >= 1.2.0 with libyajl2-gem 1.0 fails on windows)
-* allow the c-ext to load on ruby 1.8.7
+**Merged pull requests:**
 
-### Bugs fixed
+- fix libnames for windows [\#27](https://github.com/chef/ffi-yajl/pull/27) ([lamont-granquist](https://github.com/lamont-granquist))
+- If an object does not have .to\_json, we no longer try to call it [\#25](https://github.com/chef/ffi-yajl/pull/25) ([tyler-ball](https://github.com/tyler-ball))
+- Lcg/rbconfig [\#13](https://github.com/chef/ffi-yajl/pull/13) ([lamont-granquist](https://github.com/lamont-granquist))
 
-* fixes using Arrays and Hashes (and true/false/nil) as Hash keys
-* fixes bare object parsing in issue #2 and #6
-* fixes parsing nil object to not coredump the MRI ruby VM (issue #15)
+## [1.1.0](https://github.com/chef/ffi-yajl/tree/1.1.0) (2014-08-26)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.0.2...1.1.0)
 
-## 1.2.0 (10/09/2014)
+**Fixed bugs:**
 
-### Changes
+- Fix Rubinius [\#6](https://github.com/chef/ffi-yajl/issues/6)
 
-* Encoding Object will no longer blindly call .to_json().  It will first check if the Object supports a .to_json() method
-and if it does not it will call .to_s().  This prevents NoSuchMethod errors when not using the JSON gem.  
+**Merged pull requests:**
 
-### Bugs fixed
+- fixing rbx via ffi [\#12](https://github.com/chef/ffi-yajl/pull/12) ([lamont-granquist](https://github.com/lamont-granquist))
+- extconf.rb: remove "-Wl,--no-undefined" from ldflags [\#11](https://github.com/chef/ffi-yajl/pull/11) ([lebrinkma](https://github.com/lebrinkma))
+- add datetime encoding [\#9](https://github.com/chef/ffi-yajl/pull/9) ([lamont-granquist](https://github.com/lamont-granquist))
 
-* C extension was broken on windows due to libyajl.so being renamed to yajl.dll which has been reverted in
-  libyajl2-gem.
-* Change Config to RbConfig for FFI-based dlopen for non-DL/non-Fiddle fallback.
+## [1.0.2](https://github.com/chef/ffi-yajl/tree/1.0.2) (2014-08-10)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/1.0.1...1.0.2)
 
-## 1.1.0 (08/26/2014)
+**Fixed bugs:**
 
-### New features
+- can't install on Mac OS X [\#1](https://github.com/chef/ffi-yajl/issues/1)
 
-* Support encoding Date, Time and DateTime objects
+**Merged pull requests:**
 
-### Bugs fixed
+- ensure opts hash is never nil [\#5](https://github.com/chef/ffi-yajl/pull/5) ([lamont-granquist](https://github.com/lamont-granquist))
+- Lcg/json opts [\#4](https://github.com/chef/ffi-yajl/pull/4) ([lamont-granquist](https://github.com/lamont-granquist))
+- change allow\_comment default to true [\#3](https://github.com/chef/ffi-yajl/pull/3) ([lamont-granquist](https://github.com/lamont-granquist))
 
-* Fixed Rubinius on at least Ubuntu 14.04 and Mac
-* [**Lennart Brinkmann**](https://github.com/lebrinkma):
-  remove `-Wl,--no-undefined` if ruby mkmf.rb adds it in the CFLAGS because we do not directly link against `-lyajl`
 
-## 1.0.2 (08/09/2014)
 
-### Bugs fixed
-
-* fixed opts chaining issue in the encoder that was breaking pretty printing in knife
-* changed default :allow_comments to true (considered a regression against yajl-ruby compatibility)
-
-## 1.0.1 (07/17/2014)
-
-* No ChangeLog entries for this version or earlier, check the commit logs
-
+\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
