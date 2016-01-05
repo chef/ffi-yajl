@@ -47,7 +47,7 @@ module FFI_Yajl
         if str.respond_to?(:scrub)
           str.scrub!
         else
-          str.encode!("UTF-8", undef: :replace, invalid: :replace)
+          str.encode!("UTF-16le", undef: :replace, invalid: :replace).encode!('UTF-8')
         end
       end
       str
@@ -68,7 +68,7 @@ module FFI_Yajl
       if token.respond_to?(:scrub)
         token.scrub!
       else
-        token.encode("utf-8", undef: :replace, invalid: :replace)
+        token.encode!("UTF-16le", undef: :replace, invalid: :replace).encode!('UTF-8')
       end
       case status
       when 1 # yajl_gen_keys_must_be_strings
