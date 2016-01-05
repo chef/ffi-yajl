@@ -209,6 +209,13 @@ describe "FFI_Yajl::Encoder" do
         json = encoder.encode(ruby)
         expect(json).to match(/Hañs Helmüt/)
       end
+
+      it "does not grow after a round trip" do
+        json = encoder.encode(ruby)
+        ruby2 = FFI_Yajl::Parser.parse(json)
+        json2 = encoder.encode(ruby2)
+        expect(json).to eql(json2)
+      end
     end
   end
 end
