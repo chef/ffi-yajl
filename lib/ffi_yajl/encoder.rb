@@ -41,7 +41,15 @@ module FFI_Yajl
       # call either the ext or ffi hook
       str = do_yajl_encode(obj, yajl_gen_opts, opts)
       # we can skip cleaning the whole string for utf-8 issues if we have yajl validate as we go
-      str.force_encoding("UTF-8").encode!("UTF-8", undef: :replace, invalid: :replace) unless yajl_gen_opts[:yajl_gen_validate_utf8]
+
+      str.force_encoding("UTF-8")
+      unless yajl_gen_opts[:yajl_gen_validate_utf8]
+        if str.respond_to?(:scrub)
+          str.scrub!
+        else
+          str.encode!("UTF-8", 'binary', undef: :replace, invalid: :replace)
+        end
+      end
       str
     end
 
@@ -56,7 +64,12 @@ module FFI_Yajl
 
     def self.raise_error_for_status(status, token = nil)
       # scrub token to valid utf-8 since we may be issuing an exception on an invalid utf-8 token
-      token = token.to_s.force_encoding("UTF-8").encode("utf-8", undef: :replace, invalid: :replace)
+      token = token.to_s.force_encoding("UTF-8")
+      if token.respond_to?(:scrub)
+        token.scrub!
+      else
+        token.encode("utf-8", 'binary', undef: :replace, invalid: :replace)
+      end
       case status
       when 1 # yajl_gen_keys_must_be_strings
         raise FFI_Yajl::EncodeError, "YAJL internal error: attempted use of non-string object as key"
