@@ -180,6 +180,7 @@ describe "FFI_Yajl::Encoder" do
           "passwd" => {
             "root" => { "dir" => "/root", "gid" => 0, "uid" => 0, "shell" => "/bin/sh", "gecos" => "Elan Ruusam\xc3\xa4e" },
             "glen" => { "dir" => "/home/glen", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Elan Ruusam\xE4e" },
+            "helmüt" => { "dir" => "/home/helmüt", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Hañs Helmüt" },
           },
         },
       },
@@ -202,6 +203,11 @@ describe "FFI_Yajl::Encoder" do
 
       it "returns valid utf8" do
         expect( encoder.encode(ruby).valid_encoding? ).to be true
+      end
+
+      it "does not mangle valid utf8" do
+        json = encoder.encode(ruby)
+        expect(json).to match(/Hañs Helmüt/)
       end
     end
   end
