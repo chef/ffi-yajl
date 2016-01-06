@@ -180,13 +180,14 @@ describe "FFI_Yajl::Encoder" do
           "passwd" => {
             "root" => { "dir" => "/root", "gid" => 0, "uid" => 0, "shell" => "/bin/sh", "gecos" => "Elan Ruusam\xc3\xa4e" },
             "glen" => { "dir" => "/home/glen", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Elan Ruusam\xE4e" },
+            "helmüt" => { "dir" => "/home/helmüt", "gid" => 500, "uid" => 500, "shell" => "/bin/bash", "gecos" => "Hañs Helmüt" },
           },
         },
       },
     }
 
     it "raises an error on invalid json" do
-      expect { encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, /Invalid UTF-8 string 'Elan Ruusam.e': cannot encode to UTF-8/)
+      expect { encoder.encode(ruby) }.to raise_error(FFI_Yajl::EncodeError, /Invalid UTF-8 string 'Elan Ruusam.*': cannot encode to UTF-8/)
     end
 
     context "when validate_utf8 is off" do
@@ -202,6 +203,18 @@ describe "FFI_Yajl::Encoder" do
 
       it "returns valid utf8" do
         expect( encoder.encode(ruby).valid_encoding? ).to be true
+      end
+
+      it "does not mangle valid utf8" do
+        json = encoder.encode(ruby)
+        expect(json).to match(/Hañs Helmüt/)
+      end
+
+      it "does not grow after a round trip" do
+        json = encoder.encode(ruby)
+        ruby2 = FFI_Yajl::Parser.parse(json)
+        json2 = encoder.encode(ruby2)
+        expect(json).to eql(json2)
       end
     end
   end
