@@ -1,11 +1,11 @@
 # Change Log
 
-## [Unreleased](https://github.com/chef/ffi-yajl/tree/HEAD)
-
-[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.2...HEAD)
+## [2.2.3](https://github.com/chef/ffi-yajl/tree/2.2.3) (2016-01-07)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.2...2.2.3)
 
 **Merged pull requests:**
 
+- fix validate\_utf8: false encoding coercion [\#75](https://github.com/chef/ffi-yajl/pull/75) ([lamont-granquist](https://github.com/lamont-granquist))
 - Remove ruby 1.9.2 support [\#73](https://github.com/chef/ffi-yajl/pull/73) ([lamont-granquist](https://github.com/lamont-granquist))
 - Use github-changelog-generator to generate CHANGELOG.md file [\#72](https://github.com/chef/ffi-yajl/pull/72) ([lamont-granquist](https://github.com/lamont-granquist))
 
@@ -18,10 +18,6 @@
 
 ## [2.2.1](https://github.com/chef/ffi-yajl/tree/2.2.1) (2015-07-13)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.0...2.2.1)
-
-**Closed issues:**
-
-- typo? require 'ffi-yajl' [\#63](https://github.com/chef/ffi-yajl/issues/63)
 
 **Merged pull requests:**
 
@@ -47,11 +43,6 @@
 ## [2.1.0](https://github.com/chef/ffi-yajl/tree/2.1.0) (2015-04-20)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/2.0.0...2.1.0)
 
-**Implemented enhancements:**
-
-- write c extension for dlopen [\#23](https://github.com/chef/ffi-yajl/issues/23)
-- make ffi gem optional [\#22](https://github.com/chef/ffi-yajl/issues/22)
-
 **Merged pull requests:**
 
 - add :unique\_key\_checking flag to parser [\#55](https://github.com/chef/ffi-yajl/pull/55) ([lamont-granquist](https://github.com/lamont-granquist))
@@ -64,10 +55,6 @@
 
 ## [2.0.0](https://github.com/chef/ffi-yajl/tree/2.0.0) (2015-03-17)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/1.4.0...2.0.0)
-
-**Fixed bugs:**
-
-- cygwin impossible to use [\#36](https://github.com/chef/ffi-yajl/issues/36)
 
 **Merged pull requests:**
 
@@ -96,15 +83,6 @@
 ## [1.3.0](https://github.com/chef/ffi-yajl/tree/1.3.0) (2014-11-23)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/1.2.0...1.3.0)
 
-**Fixed bugs:**
-
-- ffi-yajl slowness on Windows with Chef [\#26](https://github.com/chef/ffi-yajl/issues/26)
-- ffi-yajl should parse bare objects for ruby-yajl compat [\#16](https://github.com/chef/ffi-yajl/issues/16)
-- parsing nil needs to not coredump [\#15](https://github.com/chef/ffi-yajl/issues/15)
-- keys need to be '\#to\_s''d as a last resort [\#14](https://github.com/chef/ffi-yajl/issues/14)
-- Can't install gem with cygwin  [\#10](https://github.com/chef/ffi-yajl/issues/10)
-- Segfault when executing `JSON.parse 1` in rails console [\#2](https://github.com/chef/ffi-yajl/issues/2)
-
 **Merged pull requests:**
 
 - Lcg/encoding keys [\#33](https://github.com/chef/ffi-yajl/pull/33) ([lamont-granquist](https://github.com/lamont-granquist))
@@ -117,11 +95,6 @@
 ## [1.2.0](https://github.com/chef/ffi-yajl/tree/1.2.0) (2014-10-10)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/1.1.0...1.2.0)
 
-**Fixed bugs:**
-
-- Only fall back to `.to\_json` if object supports it [\#24](https://github.com/chef/ffi-yajl/issues/24)
-- Config -\> RbConfig deprecation warning on every execution of knife. [\#17](https://github.com/chef/ffi-yajl/issues/17)
-
 **Merged pull requests:**
 
 - fix libnames for windows [\#27](https://github.com/chef/ffi-yajl/pull/27) ([lamont-granquist](https://github.com/lamont-granquist))
@@ -131,10 +104,6 @@
 ## [1.1.0](https://github.com/chef/ffi-yajl/tree/1.1.0) (2014-08-26)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/1.0.2...1.1.0)
 
-**Fixed bugs:**
-
-- Fix Rubinius [\#6](https://github.com/chef/ffi-yajl/issues/6)
-
 **Merged pull requests:**
 
 - fixing rbx via ffi [\#12](https://github.com/chef/ffi-yajl/pull/12) ([lamont-granquist](https://github.com/lamont-granquist))
@@ -143,10 +112,6 @@
 
 ## [1.0.2](https://github.com/chef/ffi-yajl/tree/1.0.2) (2014-08-10)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/1.0.1...1.0.2)
-
-**Fixed bugs:**
-
-- can't install on Mac OS X [\#1](https://github.com/chef/ffi-yajl/issues/1)
 
 **Merged pull requests:**
 

@@ -12,6 +12,7 @@ Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
 end
 
 GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+  config.issues = false
   config.since_tag = '1.0.1'
   config.exclude_labels = %w{duplicate question invalid wontfix changelog_skip}
 end
