@@ -377,8 +377,12 @@ void Init_encoder() {
   rb_define_method(rb_cNilClass, "ffi_yajl", rb_cNilClass_ffi_yajl, 2);
   rb_define_method(rb_cTrueClass, "ffi_yajl", rb_cTrueClass_ffi_yajl, 2);
   rb_define_method(rb_cFalseClass, "ffi_yajl", rb_cFalseClass_ffi_yajl, 2);
+#ifdef rb_cFixnum /* ruby < 2.4 */
   rb_define_method(rb_cFixnum, "ffi_yajl", rb_cFixnum_ffi_yajl, 2);
   rb_define_method(rb_cBignum, "ffi_yajl", rb_cBignum_ffi_yajl, 2);
+#else
+  rb_define_method(rb_cInteger, "ffi_yajl", rb_cFixnum_ffi_yajl, 2);
+#endif
   rb_define_method(rb_cFloat, "ffi_yajl", rb_cFloat_ffi_yajl, 2);
   rb_define_method(rb_cString, "ffi_yajl", rb_cString_ffi_yajl, 2);
   rb_define_method(rb_cSymbol, "ffi_yajl", rb_cSymbol_ffi_yajl, 2);
