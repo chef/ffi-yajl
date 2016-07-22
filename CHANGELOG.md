@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.3.0](https://github.com/chef/ffi-yajl/tree/2.3.0) (2016-07-22)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.3...2.3.0)
+
+**Merged pull requests:**
+
+- replace Fixnum+Bignum with Integer [\#80](https://github.com/chef/ffi-yajl/pull/80) ([lamont-granquist](https://github.com/lamont-granquist))
+- update travis matrix [\#78](https://github.com/chef/ffi-yajl/pull/78) ([lamont-granquist](https://github.com/lamont-granquist))
+
 ## [2.2.3](https://github.com/chef/ffi-yajl/tree/2.2.3) (2016-01-07)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.2...2.2.3)
 
