@@ -8,7 +8,7 @@ end
 
 group :development do
   # for testing loading concurrently with yajl-ruby, not on jruby
-  gem 'yajl-ruby', platforms: [ :ruby, :mswin, :mingw ]
+  # gem 'yajl-ruby', platforms: [ :ruby, :mswin, :mingw ]
   gem 'github_changelog_generator'
 end
 

@@ -1,61 +1,34 @@
 sudo: false
 before_install: 
-#  - gem update bundler
+  - gem install bundler
   - bundle --version
-#  - gem update --system
+  - gem update --system
   - gem --version
 bundler_args: --without development_extras --jobs 3 --retry 3
 script:  rake compile; rake spec
 after_success: gem install yajl-ruby; gem install json; gem install psych; FORCE_FFI_YAJL="ext" ffi-yajl-bench
 language: ruby
-rvm:
-  - 2.2
-  - 2.1
-  - 2.0.0
-  - 1.9.3
-  - ruby-head
-  - rbx
-  - jruby-19mode
-  - jruby-head
-jdk:
-  - openjdk7
-  - oraclejdk7
-  - openjdk6
 matrix:
+  include:
+    - rvm: 2.3.1
+    - rvm: 2.2.5
+    - rvm: ruby-head
+    - rvm: rbx
+    - rvm: jruby
+      jdk: oraclejdk7
+    - rvm: jruby
+      jdk: oraclejdk8
+    - rvm: jruby
+      jdk: openjdk7
+    - rvm: jruby-head
+      jdk: oraclejdk7
+    - rvm: jruby-head
+      jdk: oraclejdk8
+    - rvm: jruby-head
+      jdk: openjdk7
   allow_failures:
     - rvm: ruby-head
-      jdk: oraclejdk7
-    - rvm: jruby-head
-      jdk: oraclejdk7
-    - rvm: jruby-head
-      jdk: openjdk7
-  exclude:
-    - rvm: 2.2
-      jdk: openjdk6
-    - rvm: 2.2
-      jdk: openjdk7
-    - rvm: 2.1
-      jdk: openjdk6
-    - rvm: 2.1
-      jdk: openjdk7
-    - rvm: 2.0.0
-      jdk: openjdk6
-    - rvm: 2.0.0
-      jdk: openjdk7
-    - rvm: 1.9.3
-      jdk: openjdk6
-    - rvm: 1.9.3
-      jdk: openjdk7
-    - rvm: rbx
-      jdk: openjdk6
-    - rvm: rbx
-      jdk: openjdk7
-    - rvm: ruby-head
-      jdk: openjdk6
-    - rvm: ruby-head
-      jdk: openjdk7
-    - rvm: jruby-head
-      jdk: openjdk6
+
 branches:
   only:
     - master
