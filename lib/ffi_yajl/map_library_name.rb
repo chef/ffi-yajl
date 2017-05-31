@@ -47,13 +47,13 @@ module FFI_Yajl
     def library_names
       case host_os
       when /mingw|mswin/
-        [ "libyajl.so", "yajl.dll" ]
+        [ "libyajl.so.2", "yajl.dll" ]
       when /cygwin/
-        [ "libyajl.so", "cygyajl.dll" ]
+        [ "libyajl.so.2", "cygyajl.dll" ]
       when /darwin/
         [ "libyajl.bundle", "libyajl.dylib" ]
       else
-        [ "libyajl.so" ]
+        [ "libyajl.so.2" ]
       end
     end
 
