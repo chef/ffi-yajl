@@ -132,4 +132,4 @@ desc "Run style + spec tests by default on travis"
 task travis: %w{style spec}
 
 desc "Run style + spec tests by default"
-task default: %w{style spec}
+task default: %w{compile style spec}
