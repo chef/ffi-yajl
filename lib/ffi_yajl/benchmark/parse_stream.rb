@@ -1,20 +1,20 @@
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/..')
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/..")
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 
-require 'rubygems'
-require 'benchmark'
-require 'yajl'
+require "rubygems"
+require "benchmark"
+require "yajl"
 begin
-  require 'json'
+  require "json"
 rescue LoadError
 end
 begin
-  require 'active_support'
+  require "active_support"
 rescue LoadError
 end
 
-filename = 'benchmark/subjects/twitter_stream.json'
-json = File.new(filename, 'r')
+filename = "benchmark/subjects/twitter_stream.json"
+json = File.new(filename, "r")
 
 times = ARGV[0] ? ARGV[0].to_i : 100
 puts "Starting benchmark parsing JSON stream (#{File.size(filename)} bytes of JSON data with 430 JSON separate strings) #{times} times\n\n"

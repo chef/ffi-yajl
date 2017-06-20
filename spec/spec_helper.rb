@@ -26,18 +26,18 @@ $LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "../lib"))
 # linked in the same process).  this should work, see:
 # http://stackoverflow.com/questions/3232822/linking-with-multiple-versions-of-a-library
 begin
-  require 'yajl'
+  require "yajl"
 rescue LoadError
-  puts 'WARN: yajl cannot be loaded, expected if this is jruby'
+  puts "WARN: yajl cannot be loaded, expected if this is jruby"
 end
 
-require 'ffi_yajl'
+require "ffi_yajl"
 
 RSpec.configure do |conf|
   conf.filter_run_excluding unix_only: true unless RUBY_PLATFORM !~ /mswin|mingw|windows/
   conf.filter_run_excluding ruby_gte_193: true unless RUBY_VERSION.to_f >= 2.0 || RUBY_VERSION =~ /^1\.9\.3/
 
-  conf.order = 'random'
+  conf.order = "random"
 
   conf.expect_with :rspec do |rspec|
     rspec.syntax = :expect

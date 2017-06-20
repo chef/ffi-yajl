@@ -21,12 +21,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'spec_helper'
+require "spec_helper"
 
 describe "FFI_Yajl::Parser" do
   shared_examples_for "correct json parsing" do
     context "when json has 23456789012E666" do
-      let(:json) {  '{"key": 23456789012E666}' }
+      let(:json) { '{"key": 23456789012E666}' }
 
       it "should return infinity" do
         infinity = (1.0 / 0)
@@ -271,10 +271,10 @@ describe "FFI_Yajl::Parser" do
             Encoding.default_internal = @saved_encoding
           end
           it "encodes keys to UTF-8" do
-            expect(parser.keys.first.encoding).to eql(Encoding.find('utf-8'))
+            expect(parser.keys.first.encoding).to eql(Encoding.find("utf-8"))
           end
           it "encodes values to UTF-8" do
-            expect(parser.values.first.encoding).to eql(Encoding.find('utf-8'))
+            expect(parser.values.first.encoding).to eql(Encoding.find("utf-8"))
           end
         end
 
@@ -349,7 +349,7 @@ describe "FFI_Yajl::Parser" do
     # NOTE: we are choosing to be compatible with yajl-ruby here vs. JSON
     # gem and libyajl C behavior (which is to throw an exception in this case)
     context "when the JSON is empty string" do
-      let(:json) { '' }
+      let(:json) { "" }
 
       it "returns nil" do
         expect(parser).to be_nil
@@ -475,7 +475,7 @@ describe "FFI_Yajl::Parser" do
     # NOTE: parsing floats with 8 million digits on windows has some kind of huge
     #       perf issues likely in ruby and/or the underlying windows libs
     context "when parsing big floats", ruby_gte_193: true, unix_only: true do
-      let(:json) { '[0.' + '1' * 2**23 + ']' }
+      let(:json) { "[0." + "1" * 2**23 + "]" }
 
       it "parses" do
         expect { parser }.not_to raise_error
@@ -483,7 +483,7 @@ describe "FFI_Yajl::Parser" do
     end
 
     context "when parsing long hash keys with symbolize_keys option", ruby_gte_193: true do
-      let(:json) { '{"' + 'a' * 2**23 + '": 0}' }
+      let(:json) { '{"' + "a" * 2**23 + '": 0}' }
       let(:options) { { symbolize_keys: true } }
 
       it "parses" do

@@ -21,8 +21,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'spec_helper'
-require 'date'
+require "spec_helper"
+require "date"
 
 describe "FFI_Yajl::Encoder" do
   let(:options) { {} }
@@ -30,7 +30,7 @@ describe "FFI_Yajl::Encoder" do
   let(:encoder) { FFI_Yajl::Encoder.new(options) }
 
   it "encodes hashes in keys as strings", ruby_gte_193: true do
-    ruby = { { 'a' => 'b' } => 2 }
+    ruby = { { "a" => "b" } => 2 }
     expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
   end
 
@@ -126,23 +126,23 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "can encode Date objects" do
-    ruby = Date.parse('2001-02-03')
+    ruby = Date.parse("2001-02-03")
     expect(encoder.encode(ruby)).to eq( '"2001-02-03"' )
   end
 
   it "can encode StringIOs" do
-    ruby = { "foo" => StringIO.new('THING') }
+    ruby = { "foo" => StringIO.new("THING") }
     expect(encoder.encode(ruby)).to eq("{\"foo\":\"THING\"}")
   end
 
   context "when encoding Time objects in UTC timezone" do
     before do
-      @saved_tz = ENV['TZ']
-      ENV['TZ'] = 'UTC'
+      @saved_tz = ENV["TZ"]
+      ENV["TZ"] = "UTC"
     end
 
     after do
-      ENV['TZ'] = @saved_tz
+      ENV["TZ"] = @saved_tz
     end
 
     it "encodes them correctly" do
@@ -152,7 +152,7 @@ describe "FFI_Yajl::Encoder" do
   end
 
   it "can encode DateTime objects" do
-    ruby = DateTime.parse('2001-02-03T04:05:06.1+07:00')
+    ruby = DateTime.parse("2001-02-03T04:05:06.1+07:00")
     expect(encoder.encode(ruby)).to eq( '"2001-02-03T04:05:06+07:00"' )
   end
 
@@ -191,7 +191,7 @@ describe "FFI_Yajl::Encoder" do
     end
 
     context "when validate_utf8 is off" do
-      let(:options) {  { validate_utf8: false } }
+      let(:options) { { validate_utf8: false } }
 
       it "does not raise an error" do
         expect { encoder.encode(ruby) }.not_to raise_error

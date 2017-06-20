@@ -20,18 +20,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'rubygems'
+require "rubygems"
 
-require 'libyajl2'
+require "libyajl2"
 begin
-  require 'ffi'
+  require "ffi"
 rescue LoadError
   $stderr.puts "FATAL: to use the ffi extension instead of the compiled C extension, the ffi gem must be installed"
   $stderr.puts "       (it is optional, so you must include it in your bundle manually)"
   exit 1
 end
 
-require 'ffi_yajl/map_library_name'
+require "ffi_yajl/map_library_name"
 
 module FFI_Yajl
   extend ::FFI::Library
@@ -137,17 +137,17 @@ module FFI_Yajl
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 end
 
-require 'ffi_yajl/encoder'
-require 'ffi_yajl/parser'
+require "ffi_yajl/encoder"
+require "ffi_yajl/parser"
 
 module FFI_Yajl
   class Parser
-    require 'ffi_yajl/ffi/parser'
+    require "ffi_yajl/ffi/parser"
     include FFI_Yajl::FFI::Parser
   end
 
   class Encoder
-    require 'ffi_yajl/ffi/encoder'
+    require "ffi_yajl/ffi/encoder"
     include FFI_Yajl::FFI::Encoder
   end
 end

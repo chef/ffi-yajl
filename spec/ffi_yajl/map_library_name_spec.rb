@@ -20,7 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'spec_helper'
+require "spec_helper"
 
 class Test
   extend FFI_Yajl::MapLibraryName
@@ -107,7 +107,7 @@ describe "FFI_Yajl::MapLibraryName" do
           allow(File).to receive(:file?).with(path).and_return(true)
           allow(Test).to receive(:ffi_lib).with(path).and_raise(LoadError)
         end
-        allow(Test).to receive(:ffi_lib).with('yajl').and_return(nil)
+        allow(Test).to receive(:ffi_lib).with("yajl").and_return(nil)
         Test.send(:ffi_open_yajl_library)
       end
     end
