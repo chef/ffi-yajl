@@ -28,6 +28,21 @@ matrix:
       jdk: oraclejdk8
     - rvm: jruby-head
       jdk: openjdk7
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: rbx
+    - rvm: jruby
+      jdk: oraclejdk7
+    - rvm: jruby
+      jdk: oraclejdk8
+    - rvm: jruby
+      jdk: openjdk7
+    - rvm: jruby-head
+      jdk: oraclejdk7
+    - rvm: jruby-head
+      jdk: oraclejdk8
+    - rvm: jruby-head
+      jdk: openjdk7
 
 branches:
   only:
