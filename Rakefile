@@ -4,17 +4,21 @@ require "rspec/core/rake_task"
 require "rubygems/package_task"
 require "rake/extensiontask"
 require "ffi_yajl/version"
-require "github_changelog_generator/task"
 
 Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
   Gem::PackageTask.new(gemspec).define
 end
 
-GitHubChangelogGenerator::RakeTask.new :changelog do |config|
-  config.issues = false
-  config.since_tag = "1.0.1"
-  config.exclude_labels = %w{duplicate question invalid wontfix changelog_skip}
+begin
+  require "github_changelog_generator/task"
+  GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+    config.issues = false
+    config.since_tag = "1.0.1"
+    config.exclude_labels = %w{duplicate question invalid wontfix changelog_skip}
+  end
+rescue LoadError
+  puts "no github-changelog-generator"
 end
 
 desc "Build it and ship it"
