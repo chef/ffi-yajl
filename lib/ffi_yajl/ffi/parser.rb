@@ -65,7 +65,7 @@ module FFI_Yajl
         end
         @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t ]) do |ctx, stringval, stringlen|
           s = stringval.slice(0, stringlen)
-          s.force_encoding('UTF-8') if defined? Encoding
+          s.force_encoding("UTF-8") if defined? Encoding
           # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
           v = ( s =~ /[\.eE]/ ) ? s.to_f : s.to_i
           set_value(v)
@@ -77,7 +77,7 @@ module FFI_Yajl
         end
         @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
           s = stringval.slice(0, stringlen)
-          s.force_encoding('UTF-8') if defined? Encoding
+          s.force_encoding("UTF-8") if defined? Encoding
           set_value(s)
           1
         end
@@ -88,7 +88,7 @@ module FFI_Yajl
         end
         @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
           s = key.slice(0, keylen)
-          s.force_encoding('UTF-8') if defined? Encoding
+          s.force_encoding("UTF-8") if defined? Encoding
           self.key = @opts[:symbolize_keys] ? s.to_sym : s
           1
         end
@@ -143,12 +143,12 @@ module FFI_Yajl
           ::FFI_Yajl.yajl_config(yajl_handle, :yajl_allow_partial_values, :int, 1)
         end
 
-        if ( ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok )
+        if ::FFI_Yajl.yajl_parse(yajl_handle, str, str.bytesize) != :yajl_status_ok
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError, error
         end
-        if ( ::FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok )
+        if ::FFI_Yajl.yajl_complete_parse(yajl_handle) != :yajl_status_ok
           # FIXME: dup the error and call yajl_free_error?
           error = ::FFI_Yajl.yajl_get_error(yajl_handle, 1, str, str.bytesize)
           raise ::FFI_Yajl::ParseError, error

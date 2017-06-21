@@ -1,10 +1,10 @@
-require 'rubygems'
-require 'benchmark'
-require 'yajl'
-require 'ffi_yajl'
+require "rubygems"
+require "benchmark"
+require "yajl"
+require "ffi_yajl"
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
   begin
-    require 'yajl'
+    require "yajl"
   rescue LoadError
     puts "INFO: yajl-ruby not installed"
   end
@@ -12,11 +12,11 @@ else
   puts "INFO: skipping yajl-ruby on jruby"
 end
 begin
-  require 'json'
+  require "json"
 rescue LoadError
 end
 begin
-  require 'oj'
+  require "oj"
 rescue LoadError
 end
 
@@ -25,7 +25,7 @@ module FFI_Yajl
     class Parse
       def run
         filename = File.expand_path(File.join(File.dirname(__FILE__), "subjects", "item.json"))
-        json = File.new(filename, 'r')
+        json = File.new(filename, "r")
         json_str = json.read
 
         times = ARGV[1] ? ARGV[1].to_i : 10_000

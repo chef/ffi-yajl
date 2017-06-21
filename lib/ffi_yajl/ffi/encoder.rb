@@ -20,8 +20,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'date'
-require 'stringio'
+require "date"
+require "stringio"
 
 module FFI_Yajl
   module FFI
@@ -73,7 +73,7 @@ class Hash
       end
     else
       if ( status = FFI_Yajl.yajl_gen_map_open(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, '{')
+        FFI_Yajl::Encoder.raise_error_for_status(status, "{")
       end
       each do |key, value|
         # Perf Fix: mutate state hash rather than creating new copy
@@ -83,7 +83,7 @@ class Hash
         value.ffi_yajl(yajl_gen, state)
       end
       if ( status = FFI_Yajl.yajl_gen_map_close(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, '}')
+        FFI_Yajl::Encoder.raise_error_for_status(status, "}")
       end
     end
   end
@@ -98,13 +98,13 @@ class Array
       end
     else
       if ( status = FFI_Yajl.yajl_gen_array_open(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, '[')
+        FFI_Yajl::Encoder.raise_error_for_status(status, "[")
       end
       each do |value|
         value.ffi_yajl(yajl_gen, state)
       end
       if ( status = FFI_Yajl.yajl_gen_array_close(yajl_gen) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, ']')
+        FFI_Yajl::Encoder.raise_error_for_status(status, "]")
       end
     end
   end
@@ -155,7 +155,7 @@ class FalseClass
   end
 end
 
-class Fixnum
+class Integer
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
@@ -173,7 +173,7 @@ class Fixnum
   end
 end
 
-class Bignum
+class Integer
   def ffi_yajl(yajl_gen, state)
     str = to_s
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
@@ -265,7 +265,7 @@ end
 # I feel dirty
 class Object
   def ffi_yajl(yajl_gen, state)
-    if !state[:processing_key] && self.respond_to?(:to_json)
+    if !state[:processing_key] && respond_to?(:to_json)
       str = to_json(state[:json_opts])
       # #yajl_gen_number outputs a string without quotes around it
       status = FFI_Yajl.yajl_gen_number(yajl_gen, str, str.bytesize)

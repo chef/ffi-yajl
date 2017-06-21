@@ -1,18 +1,18 @@
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/..')
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/..")
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 
-require 'rubygems'
-require 'benchmark'
-require 'yajl'
+require "rubygems"
+require "benchmark"
+require "yajl"
 begin
-  require 'json'
+  require "json"
 rescue LoadError
 end
-require 'yaml'
+require "yaml"
 
 # JSON Section
-filename = 'benchmark/subjects/ohai.json'
-json = File.new(filename, 'r')
+filename = "benchmark/subjects/ohai.json"
+json = File.new(filename, "r")
 hash = Yajl::Parser.new.parse(json)
 json.close
 
@@ -33,8 +33,8 @@ Benchmark.bmbm do |x|
 end
 
 # YAML Section
-filename = 'benchmark/subjects/ohai.yml'
-yml = File.new(filename, 'r')
+filename = "benchmark/subjects/ohai.yml"
+yml = File.new(filename, "r")
 data = YAML.load_stream(yml)
 yml.close
 

@@ -65,10 +65,10 @@ module FFI_Yajl
         raise ArgumentError, "options check_utf8 and dont_validate_strings are both true which conflict"
       end
 
-      yajl_opts[:yajl_allow_comments]         = true
+      yajl_opts[:yajl_allow_comments] = true
 
       if @opts.key?(:allow_comments)
-        yajl_opts[:yajl_allow_comments]       = @opts[:allow_comments]
+        yajl_opts[:yajl_allow_comments] = @opts[:allow_comments]
       end
 
       yajl_opts[:yajl_dont_validate_strings]  = (@opts[:check_utf8] == false || @opts[:dont_validate_strings])

@@ -1,17 +1,34 @@
+language: ruby
 sudo: false
-before_install: 
+dist: trusty
+
+before_install:
   - gem install bundler
   - bundle --version
   - gem update --system
   - gem --version
 bundler_args: --without development_extras --jobs 3 --retry 3
-script:  rake compile; rake spec
 after_success: gem install yajl-ruby; gem install json; gem install psych; FORCE_FFI_YAJL="ext" ffi-yajl-bench
-language: ruby
 matrix:
   include:
-    - rvm: 2.3.1
-    - rvm: 2.2.5
+    - rvm: 2.2.7
+    - rvm: 2.3.4
+    - rvm: 2.4.1
+    - rvm: ruby-head
+    - rvm: rbx
+    - rvm: jruby
+      jdk: oraclejdk7
+    - rvm: jruby
+      jdk: oraclejdk8
+    - rvm: jruby
+      jdk: openjdk7
+    - rvm: jruby-head
+      jdk: oraclejdk7
+    - rvm: jruby-head
+      jdk: oraclejdk8
+    - rvm: jruby-head
+      jdk: openjdk7
+  allow_failures:
     - rvm: ruby-head
     - rvm: rbx
     - rvm: jruby
