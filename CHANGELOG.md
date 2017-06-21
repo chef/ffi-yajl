@@ -1,5 +1,14 @@
 # Change Log
 
+## [Unreleased](https://github.com/chef/ffi-yajl/tree/HEAD)
+
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.3.0...HEAD)
+
+**Merged pull requests:**
+
+- Require Ruby 2.2 and fix testing [\#87](https://github.com/chef/ffi-yajl/pull/87) ([tas50](https://github.com/tas50))
+- Fix license. [\#86](https://github.com/chef/ffi-yajl/pull/86) ([voxik](https://github.com/voxik))
+
 ## [2.3.0](https://github.com/chef/ffi-yajl/tree/2.3.0) (2016-07-22)
 [Full Changelog](https://github.com/chef/ffi-yajl/compare/2.2.3...2.3.0)
 
