@@ -19,6 +19,7 @@
 .rvmrc
 .yardoc
 Gemfile.lock
+Gemfile.local
 InstalledFiles
 _yardoc
 bin/json_reformat

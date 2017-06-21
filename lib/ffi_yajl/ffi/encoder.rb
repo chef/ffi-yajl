@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Lamont Granquist
-# Copyright (c) 2015 Chef Software, Inc.
+# Copyright (c) 2015-2017, Chef Software Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -149,24 +149,6 @@ class FalseClass
       end
     else
       if ( status = FFI_Yajl.yajl_gen_bool(yajl_gen, 0) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, str)
-      end
-    end
-  end
-end
-
-class Integer
-  def ffi_yajl(yajl_gen, state)
-    str = to_s
-    if str == "NaN" || str == "Infinity" || str == "-Infinity"
-      raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
-    end
-    if state[:processing_key]
-      if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
-        FFI_Yajl::Encoder.raise_error_for_status(status, str)
-      end
-    else
-      if ( status = FFI_Yajl.yajl_gen_integer(yajl_gen, self) ) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
       end
     end
