@@ -20,11 +20,12 @@ gem 'ffi-yajl'
 
 ## Supported Ruby VMs:
 
-- Ruby MRI 1.9.3/2.0.0/2.1.x/2.2.x
+- Ruby MRI 1.9.3/2.0.0/2.2.x
 - rbx 2.2.x (possibly earlier)
 - Jruby 1.7.x (possibly earlier)
 
 Ruby 1.8.7 support was dropped in 2.2.0
+Ruby 2.1.x support was dropped in 2.3.1
 
 ## Supported Distros:
 
