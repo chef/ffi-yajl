@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # Copyright (c) 2015 Lamont Granquist
-# Copyright (c) 2015 Chef Software, Inc.
+# Copyright (c) 2015-2017, Chef Software Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -503,6 +503,13 @@ describe "FFI_Yajl::Parser" do
       let(:options) { { unique_key_checking: true } }
       it "should raise" do
         expect { parser }.to raise_error(FFI_Yajl::ParseError)
+      end
+    end
+
+    context "should not blow up with bad surrogate trailer" do
+      let(:json) { "{\"e\":{\"\\uD800\\\\DC00\":\"a\"}}" }
+      it "should not explode" do
+        expect { parser }.not_to raise_error
       end
     end
   end
