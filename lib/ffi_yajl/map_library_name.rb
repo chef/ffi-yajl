@@ -96,7 +96,7 @@ module FFI_Yajl
     # @api private
     def ffi_open_yajl_library
       found = false
-      expanded_library_names.each do |libname|
+      ( expanded_library_names + library_names ).each do |libname|
         begin
           ffi_lib libname
           found = true
