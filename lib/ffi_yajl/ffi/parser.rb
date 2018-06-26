@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Lamont Granquist
-# Copyright (c) 2015 Chef Software, Inc.
+# Copyright (c) 2015-2018, Chef Software Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -23,7 +23,7 @@
 module FFI_Yajl
   module FFI
     module Parser
-      def set_value(val) # rubocop:disable Style/AccessorMethodName
+      def set_value(val) # rubocop:disable Naming/AccessorMethodName
         case stack.last
         when Hash
           raise FFI_Yajl::ParseError, "internal error: missing key in parse" if key.nil?

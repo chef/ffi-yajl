@@ -1,3 +1,7 @@
 Lint/DuplicateMethods:
   Exclude:
     - 'lib/ffi_yajl/ffi/encoder.rb'
+Style/HashSyntax:
+  Enabled: true
+Security/Eval:
+  Enabled: false

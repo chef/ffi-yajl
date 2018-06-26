@@ -33,7 +33,7 @@ Benchmark.bmbm do |x|
       puts "JSON.parse"
       times.times do
         json.rewind
-        while chunk = json.gets
+        while ( chunk = json.gets )
           JSON.parse(chunk, max_nesting: false)
         end
       end
@@ -44,7 +44,7 @@ Benchmark.bmbm do |x|
       puts "ActiveSupport::JSON.decode"
       times.times do
         json.rewind
-        while chunk = json.gets
+        while ( chunk = json.gets )
           ActiveSupport::JSON.decode(chunk)
         end
       end
