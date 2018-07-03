@@ -42,14 +42,14 @@ if !windows? && !find_header("yajl/yajl_tree.h")
     "/usr/local/include",                   # /usr/local
     RbConfig::CONFIG["includedir"],         # Ruby
     "/usr/include",                         # (default)
-  ]
+  ].freeze
 
   LIB_DIRS = [
     "/opt/local/lib",                       # MacPorts
     "/usr/local/lib",                       # /usr/local + Homebrew
     RbConfig::CONFIG["libdir"],             # Ruby
     "/usr/lib",                             # (default)
-  ]
+  ].freeze
 
   # add --with-yajl-dir, --with-yajl-include, --with-yajl-lib
   dir_config("yajl", HEADER_DIRS, LIB_DIRS)

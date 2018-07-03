@@ -13,7 +13,7 @@ group :development do
 end
 
 group :development_extras do
-  gem "chefstyle"
+  gem "chefstyle", git: "https://github.com/chef/chefstyle.git", branch: "master"
 end
 
 instance_eval(ENV["GEMFILE_MOD"]) if ENV["GEMFILE_MOD"]
