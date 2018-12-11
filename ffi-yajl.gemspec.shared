@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
   s.bindir       = "bin"
   s.executables  = %w{ ffi-yajl-bench }
   s.require_path = 'lib'
-  s.files        = %w{ Rakefile LICENSE README.md } +
-    Dir.glob( "{lib,spec,ext}/**/*", File::FNM_DOTMATCH ).reject { |f| File.directory?(f) }
+  s.files        = %w{ LICENSE } +
+    Dir.glob( "{bin,lib,ext}/**/*", File::FNM_DOTMATCH ).reject { |f| File.directory?(f) }
 end
