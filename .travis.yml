@@ -1,5 +1,4 @@
 language: ruby
-sudo: false
 dist: trusty
 
 before_install:
@@ -13,7 +12,7 @@ matrix:
   include:
     - rvm: 2.2.10
     - rvm: 2.3.8
-    - rvm: 2.4.5
+    - rvm: 2.4.6
     - rvm: ruby-head
     - rvm: rbx
     - rvm: jruby
