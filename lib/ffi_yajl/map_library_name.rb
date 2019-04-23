@@ -34,7 +34,7 @@ module FFI_Yajl
     # Stub for tests to override the host_os
     #
     # @api private
-    # @return Array<String> lower case ruby host_os string
+    # @return [Array<String>] lower case ruby host_os string
     def host_os
       RbConfig::CONFIG["host_os"].downcase
     end
@@ -43,7 +43,7 @@ module FFI_Yajl
     # and Mac may have different names/extensions.
     #
     # @api private
-    # @return Array<String> Array of yajl library names for platform
+    # @return [Array<String>] Array of yajl library names for platform
     def library_names
       case host_os
       when /mingw|mswin/
@@ -63,7 +63,7 @@ module FFI_Yajl
     # the filesystem.  May return an empty array.
     #
     # @api private
-    # @return Array<String> Array of full paths to libyajl2 gem libraries
+    # @return [Array<String>] Array of full paths to libyajl2 gem libraries
     def expanded_library_names
       library_names.map do |libname|
         pathname = File.expand_path(File.join(Libyajl2.opt_path, libname))
