@@ -1,0 +1,40 @@
+steps:
+
+- label: run-lint-and-specs-ruby-2.4
+  command:
+    - export USER="root"
+    - bundle install --jobs=7 --retry=3 --without docs development
+    - bundle exec rake
+  expeditor:
+    executor:
+      docker:
+        image: ruby:2.4-stretch
+
+- label: run-lint-and-specs-ruby-2.6
+  command:
+    - export USER="root"
+    - bundle install --jobs=7 --retry=3 --without docs development
+    - bundle exec rake
+  expeditor:
+    executor:
+      docker:
+        image: ruby:2.6-stretch
+
+- label: run-lint-and-specs-jruby
+  command:
+    - bundle install --jobs=7 --retry=3 --without docs development
+    - export USER="root"
+    - bundle exec rake
+  expeditor:
+    executor:
+      docker:
+        image: jruby
+
+- label: run-specs-windows
+  command:
+    - /workdir/.expeditor/buildkite/verify.ps1
+  expeditor:
+    executor:
+      docker:
+        host_os: windows
+        shell: ["powershell", "-Command"]
