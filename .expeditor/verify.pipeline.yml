@@ -2,33 +2,39 @@ steps:
 
 - label: run-lint-and-specs-ruby-2.4
   command:
-    - export USER="root"
     - bundle install --jobs=7 --retry=3 --without docs development
     - bundle exec rake
   expeditor:
     executor:
       docker:
         image: ruby:2.4-stretch
+        privileged: true
+        environment:
+          - BUNDLE_GEMFILE=/workdir/Gemfile
 
 - label: run-lint-and-specs-ruby-2.6
   command:
-    - export USER="root"
     - bundle install --jobs=7 --retry=3 --without docs development
     - bundle exec rake
   expeditor:
     executor:
       docker:
         image: ruby:2.6-stretch
+        privileged: true
+        environment:
+          - BUNDLE_GEMFILE=/workdir/Gemfile
 
 - label: run-lint-and-specs-jruby
   command:
     - bundle install --jobs=7 --retry=3 --without docs development
-    - export USER="root"
     - bundle exec rake
   expeditor:
     executor:
       docker:
         image: jruby
+        privileged: true
+        environment:
+          - BUNDLE_GEMFILE=/workdir/Gemfile
 
 - label: run-specs-windows
   command:
