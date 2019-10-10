@@ -22,7 +22,7 @@ rescue LoadError
 end
 
 desc "Build it and ship it"
-task ship: [:clean, :gem] do
+task ship: %i{clean gem} do
   sh("git tag #{FFI_Yajl::VERSION}")
   sh("git push --tags")
   Dir[File.expand_path("../pkg/*.gem", __FILE__)].reverse_each do |built_gem|
@@ -133,7 +133,7 @@ desc "Run all style checks"
 task style: ["style:rubocop"]
 
 desc "Run style + spec tests by default on travis"
-task travis: %w{style spec}
+task buildkite: %w{style spec}
 
 desc "Run style + spec tests by default"
 task default: %w{compile style spec}
