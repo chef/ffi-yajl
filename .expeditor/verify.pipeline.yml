@@ -1,31 +1,54 @@
 steps:
 
-- label: run-lint-and-specs-ruby-2.4
+- label: ":ruby: 2.4"
   command:
+    - ruby --version
+    - bundle --version
+    - gem update --system
     - bundle install --jobs=7 --retry=3 --without docs development
     - bundle exec rake
   expeditor:
     executor:
       docker:
-        image: ruby:2.4-stretch
-        privileged: true
+        image: ruby:2.4
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
 
-- label: run-lint-and-specs-ruby-2.6
+- label: ":ruby: 2.5"
   command:
+    - ruby --version
+    - bundle --version
+    - gem update --system
     - bundle install --jobs=7 --retry=3 --without docs development
     - bundle exec rake
   expeditor:
     executor:
       docker:
-        image: ruby:2.6-stretch
+        image: ruby:2.5
+        environment:
+          - BUNDLE_GEMFILE=/workdir/Gemfile
+
+- label: ":ruby: 2.6"
+  command:
+    - ruby --version
+    - bundle --version
+    - gem update --system
+    - bundle install --jobs=7 --retry=3 --without docs development
+    - bundle exec rake
+  expeditor:
+    executor:
+      docker:
+        image: ruby:2.6
         privileged: true
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
 
 - label: run-lint-and-specs-jruby
   command:
+    - ruby --version
+    - bundle --version
+    - gem update --system
+    - apt-get update -y && apt-get install -y git
     - bundle install --jobs=7 --retry=3 --without docs development
     - bundle exec rake
   expeditor:
@@ -35,6 +58,7 @@ steps:
         privileged: true
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
+          - RUBY_PLATFORM="jruby"
 
 - label: run-specs-windows
   command:
@@ -43,4 +67,6 @@ steps:
     executor:
       docker:
         host_os: windows
+        environment:
+          - RUBY_PLATFORM="windows"
         shell: ["powershell", "-Command"]

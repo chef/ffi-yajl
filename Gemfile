@@ -2,6 +2,11 @@ source "https://rubygems.org"
 
 gemspec name: "ffi-yajl"
 
+group :test do
+  gem "rspec"
+  gem "rake-compiler"
+end
+
 platforms :rbx do
   gem "rubysl", "~> 2.0"
 end
