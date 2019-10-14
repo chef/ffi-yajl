@@ -7,7 +7,7 @@ slack:
 # This publish is triggered by the `built_in:publish_rubygems` artifact_action.
 rubygems:
   - ffi-yajl
-  - ffi-yajl-universla-java
+  - ffi-yajl-universal-java
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
