@@ -1,6 +1,6 @@
 # FFI YAJL
 
-[![Build Status](https://travis-ci.org/chef/ffi-yajl.svg?branch=master)](https://travis-ci.org/chef/ffi-yajl) [![Gem Version](https://badge.fury.io/rb/ffi-yajl.svg)](https://badge.fury.io/rb/ffi-yajl)
+[![Build status](https://badge.buildkite.com/35c43155d637f5201a5030cd4e7d8025573c0042094e00bbb3.svg?branch=master)](https://buildkite.com/chef-oss/chef-ffi-yajl-master-verify) [![Gem Version](https://badge.fury.io/rb/ffi-yajl.svg)](https://badge.fury.io/rb/ffi-yajl)
 
 **Umbrella Project**: [Chef Foundation](https://github.com/chef/chef-oss-practices/blob/master/projects/chef-foundation.md)
 
