@@ -1,13 +1,13 @@
 steps:
 
+# Allow ruby-2.4 to softfail since it was configured so in travis too
 - label: ":ruby: 2.4"
   command:
     - ruby --version
     - bundle --version
     - gem update --system
     - bundle install --without development_extras development --jobs 3 --retry 3 --path vendor/bundle
-    - gem install ffi json psych
-    - export FORCE_FFI_YAJL="ffi"
+    - gem install yajl-ruby json psych
     - bundle exec rake
   soft_fail:
       - exit_status: 1
@@ -17,7 +17,7 @@ steps:
         image: ruby:2.4
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
-          - FORCE_FFI_YAJL="ffi"
+          - FORCE_FFI_YAJL="ext"
 
 - label: ":ruby: 2.5"
   command:
@@ -52,6 +52,7 @@ steps:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"
 
+# Allow jruby to softfail since it was configured so in travis too
 - label: run-lint-and-specs-jruby
   command:
     - ruby --version
@@ -73,7 +74,7 @@ steps:
           - RUBY_PLATFORM="jruby"
           - FORCE_FFI_YAJL="ffi"
 
-- label: run-specs-windows
+- label: "run specs :windows:"
   command:
     - /workdir/.expeditor/buildkite/verify.ps1
   timeout_in_minutes: 20
