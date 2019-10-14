@@ -1,8 +1,16 @@
 # ffi-yajl Log
 
+<!-- latest_release 2.3.2 -->
+## [2.3.2](https://github.com/chef/ffi-yajl/tree/2.3.2) (2019-10-14)
+
+#### Merged Pull Requests
+- Use correct version file [#104](https://github.com/chef/ffi-yajl/pull/104) ([jaymalasinha](https://github.com/jaymalasinha))
 <!-- latest_release -->
-<!-- latest_release -->
-<!-- release_rollup -->
+<!-- release_rollup since=2.3.1 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Use correct version file [#104](https://github.com/chef/ffi-yajl/pull/104) ([jaymalasinha](https://github.com/jaymalasinha)) <!-- 2.3.2 -->
 <!-- release_rollup -->
 <!-- latest_stable_release -->
 
