@@ -30,6 +30,7 @@ module FFI_Yajl
           if @opts[:unique_key_checking] && stack.last.key?(key)
             raise FFI_Yajl::ParseError, "repeated key: #{key}"
           end
+
           stack.last[key] = val
         when Array
           stack.last.push(val)
@@ -55,15 +56,15 @@ module FFI_Yajl
           set_value(nil)
           1
         end
-        @boolean_callback = ::FFI::Function.new(:int, [:pointer, :int]) do |ctx, boolval|
+        @boolean_callback = ::FFI::Function.new(:int, %i{pointer int}) do |ctx, boolval|
           set_value(boolval == 1 ? true : false)
           1
         end
-        @integer_callback = ::FFI::Function.new(:int, [:pointer, :long_long]) do |ctx, intval|
+        @integer_callback = ::FFI::Function.new(:int, %i{pointer long_long}) do |ctx, intval|
           set_value(intval)
           1
         end
-        @number_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t ]) do |ctx, stringval, stringlen|
+        @number_callback = ::FFI::Function.new(:int, %i{pointer string size_t}) do |ctx, stringval, stringlen|
           s = stringval.slice(0, stringlen)
           s.force_encoding("UTF-8") if defined? Encoding
           # XXX: I can't think of a better way to do this right now.  need to call to_f if and only if its a float.
@@ -71,11 +72,11 @@ module FFI_Yajl
           set_value(v)
           1
         end
-        @double_callback = ::FFI::Function.new(:int, [:pointer, :double]) do |ctx, doubleval|
+        @double_callback = ::FFI::Function.new(:int, %i{pointer double}) do |ctx, doubleval|
           set_value(doubleval)
           1
         end
-        @string_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, stringval, stringlen|
+        @string_callback = ::FFI::Function.new(:int, %i{pointer string size_t}) do |ctx, stringval, stringlen|
           s = stringval.slice(0, stringlen)
           s.force_encoding("UTF-8") if defined? Encoding
           set_value(s)
@@ -86,7 +87,7 @@ module FFI_Yajl
           stack.push({})
           1
         end
-        @map_key_callback = ::FFI::Function.new(:int, [:pointer, :string, :size_t]) do |ctx, key, keylen|
+        @map_key_callback = ::FFI::Function.new(:int, %i{pointer string size_t}) do |ctx, key, keylen|
           s = key.slice(0, keylen)
           s.force_encoding("UTF-8") if defined? Encoding
           self.key = @opts[:symbolize_keys] ? s.to_sym : s

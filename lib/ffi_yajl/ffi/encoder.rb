@@ -161,6 +161,7 @@ class Integer
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
       raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
+
     if state[:processing_key]
       if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)
@@ -179,6 +180,7 @@ class Float
     if str == "NaN" || str == "Infinity" || str == "-Infinity"
       raise ::FFI_Yajl::EncodeError, "'#{str}' is an invalid number"
     end
+
     if state[:processing_key]
       if ( status = FFI_Yajl.yajl_gen_string(yajl_gen, str, str.bytesize) ) != 0
         FFI_Yajl::Encoder.raise_error_for_status(status, str)

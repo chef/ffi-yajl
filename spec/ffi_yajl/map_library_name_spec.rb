@@ -27,17 +27,17 @@ class Test
 end
 
 host_os_library_name_mapping = {
-  "mingw"    => [ "libyajl.so", "yajl.dll" ],
-  "mswin"    => [ "libyajl.so", "yajl.dll" ],
-  "cygwin"   => [ "libyajl.so", "cygyajl.dll" ],
-  "darwin"   => [ "libyajl.bundle", "libyajl.dylib" ],
+  "mingw" => [ "libyajl.so", "yajl.dll" ],
+  "mswin" => [ "libyajl.so", "yajl.dll" ],
+  "cygwin" => [ "libyajl.so", "cygyajl.dll" ],
+  "darwin" => [ "libyajl.bundle", "libyajl.dylib" ],
   "solaris2" => [ "libyajl.so" ],
-  "linux"    => [ "libyajl.so" ],
-  "aix"      => [ "libyajl.so" ],
-  "hpux"     => [ "libyajl.so" ],
-  "netbsd"   => [ "libyajl.so" ],
-  "openbsd"  => [ "libyajl.so" ],
-  "freebsd"  => [ "libyajl.so" ],
+  "linux" => [ "libyajl.so" ],
+  "aix" => [ "libyajl.so" ],
+  "hpux" => [ "libyajl.so" ],
+  "netbsd" => [ "libyajl.so" ],
+  "openbsd" => [ "libyajl.so" ],
+  "freebsd" => [ "libyajl.so" ],
 }
 
 describe "FFI_Yajl::MapLibraryName" do
