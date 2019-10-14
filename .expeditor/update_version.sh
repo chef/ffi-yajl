@@ -8,7 +8,7 @@ set -evx
 
 VERSION=$(cat VERSION)
 
-sed -i -r "s/^(\\s*)VERSION = \".+\"/\\1VERSION = \"$VERSION\"/" lib/mixlib/shellout/version.rb
+sed -i -r "s/^(\\s*)VERSION = \".+\"/\\1VERSION = \"$VERSION\"/" lib/ffi_yajl/version.rb
 
 # Once Expeditor finshes executing this script, it will commit the changes and push
 # the commit as a new tag corresponding to the value in the VERSION file.
