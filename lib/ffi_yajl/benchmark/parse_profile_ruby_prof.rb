@@ -2,7 +2,7 @@
 # See MIT-LICENSE
 
 require "rubygems"
-require "ffi_yajl"
+require_relative "../../ffi_yajl"
 
 module FFI_Yajl
   class Benchmark

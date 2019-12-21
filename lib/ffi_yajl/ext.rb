@@ -22,10 +22,10 @@
 
 require "rubygems"
 
-require "ffi_yajl/encoder"
-require "ffi_yajl/parser"
+require_relative "encoder"
+require_relative "parser"
 require "ffi_yajl/ext/dlopen"
-require "ffi_yajl/map_library_name"
+require_relative "map_library_name"
 
 # needed so the encoder c-code can find these symbols
 require "stringio"
