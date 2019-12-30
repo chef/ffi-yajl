@@ -13,9 +13,9 @@
 - Substitute require for require_relative [#105](https://github.com/chef/ffi-yajl/pull/105) ([tas50](https://github.com/tas50))
 <!-- latest_stable_release -->
 
-## [Unreleased](https://github.com/chef/ffi-yajl/tree/HEAD)
+## [2.3.1](https://github.com/chef/ffi-yajl/tree/2.3.1) (2016-06-21)
 
-[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.3.0...HEAD)
+[Full Changelog](https://github.com/chef/ffi-yajl/compare/2.3.0...2.3.1)
 
 **Merged pull requests:**
 
