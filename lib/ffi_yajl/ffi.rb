@@ -31,7 +31,7 @@ rescue LoadError
   exit 1
 end
 
-require "ffi_yajl/map_library_name"
+require_relative "map_library_name"
 
 module FFI_Yajl
   extend ::FFI::Library
@@ -137,17 +137,17 @@ module FFI_Yajl
   attach_function :yajl_gen_clear, [:yajl_gen], :void
 end
 
-require "ffi_yajl/encoder"
-require "ffi_yajl/parser"
+require_relative "encoder"
+require_relative "parser"
 
 module FFI_Yajl
   class Parser
-    require "ffi_yajl/ffi/parser"
+    require_relative "ffi/parser"
     include FFI_Yajl::FFI::Parser
   end
 
   class Encoder
-    require "ffi_yajl/ffi/encoder"
+    require_relative "ffi/encoder"
     include FFI_Yajl::FFI::Encoder
   end
 end

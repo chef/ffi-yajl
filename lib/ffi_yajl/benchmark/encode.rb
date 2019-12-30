@@ -13,7 +13,7 @@ if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
 else
   puts "INFO: skipping yajl-ruby on jruby"
 end
-require "ffi_yajl"
+require_relative "../../ffi_yajl"
 begin
   require "json"
 rescue LoadError

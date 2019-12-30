@@ -1,7 +1,7 @@
 require "rubygems"
 require "benchmark"
 require "yajl"
-require "ffi_yajl"
+require_relative "../../ffi_yajl"
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
   begin
     require "yajl"

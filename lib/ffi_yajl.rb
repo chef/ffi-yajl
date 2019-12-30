@@ -35,16 +35,16 @@
 # - Then we try the c-ext and rescue into ffi that fails
 #
 if ENV["FORCE_FFI_YAJL"] == "ext"
-  require "ffi_yajl/ext"
+  require_relative "ffi_yajl/ext"
 elsif ENV["FORCE_FFI_YAJL"] == "ffi"
-  require "ffi_yajl/ffi"
+  require_relative "ffi_yajl/ffi"
 elsif RUBY_PLATFORM == "java"
-  require "ffi_yajl/ffi"
+  require_relative "ffi_yajl/ffi"
 else
   begin
-    require "ffi_yajl/ext"
+    require_relative "ffi_yajl/ext"
   rescue LoadError
     warn "failed to load the ffi-yajl c-extension, falling back to ffi interface"
-    require "ffi_yajl/ffi"
+    require_relative "ffi_yajl/ffi"
   end
 end
