@@ -14,11 +14,5 @@ group :development do
 end
 
 group :development_extras do
-  gem "chefstyle", git: "https://github.com/chef/chefstyle.git", branch: "master"
+  gem "chefstyle"
 end
-
-instance_eval(ENV["GEMFILE_MOD"]) if ENV["GEMFILE_MOD"]
-
-# If you want to load debugging tools into the bundle exec sandbox,
-# add these additional dependencies into Gemfile.local
-eval_gemfile(__FILE__ + ".local") if File.exist?(__FILE__ + ".local")
