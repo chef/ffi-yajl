@@ -1,12 +1,12 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/..")
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 
-require "rubygems"
-require "benchmark"
+require "rubygems" unless defined?(Gem)
+require "benchmark" unless defined?(Benchmark)
 require "yajl"
-require "stringio"
+require "stringio" unless defined?(StringIO)
 begin
-  require "json"
+  require "json" unless defined?(JSON)
 rescue LoadError
 end
 

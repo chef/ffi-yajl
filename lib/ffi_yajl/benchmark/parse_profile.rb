@@ -1,7 +1,7 @@
 # Portions Originally Copyright (c) 2008-2011 Brian Lopez - http://github.com/brianmario
 # See MIT-LICENSE
 
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 require_relative "../../ffi_yajl"
 begin
   require "perftools"

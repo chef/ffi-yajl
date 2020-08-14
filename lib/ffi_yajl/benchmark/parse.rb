@@ -1,5 +1,5 @@
-require "rubygems"
-require "benchmark"
+require "rubygems" unless defined?(Gem)
+require "benchmark" unless defined?(Benchmark)
 require "yajl"
 require_relative "../../ffi_yajl"
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
@@ -12,7 +12,7 @@ else
   puts "INFO: skipping yajl-ruby on jruby"
 end
 begin
-  require "json"
+  require "json" unless defined?(JSON)
 rescue LoadError
 end
 begin

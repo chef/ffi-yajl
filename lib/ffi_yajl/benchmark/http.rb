@@ -1,15 +1,15 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/..")
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 
-require "rubygems"
-require "benchmark"
+require "rubygems" unless defined?(Gem)
+require "benchmark" unless defined?(Benchmark)
 require "yajl/http_stream"
 require "yajl/gzip"
 require "yajl/deflate"
 require "yajl/bzip2" unless defined?(Bzip2)
-require "json"
-require "uri"
-require "net/http"
+require "json" unless defined?(JSON)
+require "uri" unless defined?(URI)
+require "net/http" unless defined?(Net::HTTP)
 
 uri = URI.parse("http://search.twitter.com/search.json?q=github")
 # uri = URI.parse('http://localhost/yajl-ruby.git/benchmark/subjects/contacts.json')

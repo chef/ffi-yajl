@@ -21,7 +21,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require "date"
-require "stringio"
+require "stringio" unless defined?(StringIO)
 
 module FFI_Yajl
   module FFI
