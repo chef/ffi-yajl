@@ -20,7 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 
 require_relative "encoder"
 require_relative "parser"
@@ -28,7 +28,7 @@ require "ffi_yajl/ext/dlopen"
 require_relative "map_library_name"
 
 # needed so the encoder c-code can find these symbols
-require "stringio"
+require "stringio" unless defined?(StringIO)
 require "date"
 
 module FFI_Yajl

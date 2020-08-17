@@ -20,11 +20,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 
 require "libyajl2"
 begin
-  require "ffi"
+  require "ffi" unless defined?(FFI)
 rescue LoadError
   $stderr.puts "FATAL: to use the ffi extension instead of the compiled C extension, the ffi gem must be installed"
   $stderr.puts "       (it is optional, so you must include it in your bundle manually)"

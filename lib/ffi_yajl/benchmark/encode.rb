@@ -1,9 +1,9 @@
 # Portions Originally Copyright (c) 2008-2011 Brian Lopez - http://github.com/brianmario
 # See MIT-LICENSE
 
-require "rubygems"
-require "benchmark"
-require "stringio"
+require "rubygems" unless defined?(Gem)
+require "benchmark" unless defined?(Benchmark)
+require "stringio" unless defined?(StringIO)
 if !defined?(RUBY_ENGINE) || RUBY_ENGINE !~ /jruby/
   begin
     require "yajl"
@@ -15,7 +15,7 @@ else
 end
 require_relative "../../ffi_yajl"
 begin
-  require "json"
+  require "json" unless defined?(JSON)
 rescue LoadError
   puts "INFO: json gem not installed"
 end
