@@ -1,8 +1,16 @@
 # ffi-yajl Log
 
+<!-- latest_release 2.3.4 -->
+## [2.3.4](https://github.com/chef/ffi-yajl/tree/2.3.4) (2020-08-17)
+
+#### Merged Pull Requests
+- Optimize our requires [#109](https://github.com/chef/ffi-yajl/pull/109) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
-<!-- latest_release -->
-<!-- release_rollup -->
+<!-- release_rollup since=2.3.3 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Optimize our requires [#109](https://github.com/chef/ffi-yajl/pull/109) ([tas50](https://github.com/tas50)) <!-- 2.3.4 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
