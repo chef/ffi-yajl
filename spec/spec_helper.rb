@@ -31,7 +31,7 @@ rescue LoadError
   puts "WARN: yajl cannot be loaded, expected if this is jruby"
 end
 
-require "ffi_yajl"
+require "ffi_yajl" unless defined?(FFI_Yajl)
 
 RSpec.configure do |conf|
   conf.filter_run_excluding unix_only: true unless RUBY_PLATFORM !~ /mswin|mingw|windows/

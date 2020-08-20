@@ -1,6 +1,6 @@
 # rubocop:disable Style/GlobalVars
 require "mkmf"
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 require "libyajl2"
 
 RbConfig::MAKEFILE_CONFIG["CC"] = ENV["CC"] if ENV["CC"]

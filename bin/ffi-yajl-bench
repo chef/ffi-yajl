@@ -2,7 +2,7 @@
 
 $LOAD_PATH << File.expand_path(File.join(File.dirname( File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__ ), "../lib"))
 
-require "optparse"
+require "optparse" unless defined?(OptionParser)
 require "ffi_yajl/benchmark"
 
 opts = {}

@@ -1,6 +1,6 @@
 # rubocop:disable Style/GlobalVars
 require "mkmf"
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 
 RbConfig::MAKEFILE_CONFIG["CC"] = ENV["CC"] if ENV["CC"]
 
