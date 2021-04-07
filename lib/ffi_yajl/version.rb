@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Lamont Granquist
-# Copyright (c) 2015-2017, Chef Software Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,5 +21,5 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 module FFI_Yajl
-  VERSION = "2.3.4".freeze
+  VERSION = "2.4.0".freeze
 end
