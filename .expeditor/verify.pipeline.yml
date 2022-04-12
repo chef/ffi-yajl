@@ -61,7 +61,7 @@ steps:
 
 - label: "run-specs-ruby-3.0-windows"
   command:
-    - .expeditor/buildkite/run_windows_tests.ps1
+    - .expeditor/buildkite/run_windows_tests.ps1 "3.0"
   timeout_in_minutes: 20
   expeditor:
     executor:
@@ -75,7 +75,7 @@ steps:
 
 - label: "run-specs-ruby-3.1-windows"
   command:
-    - .expeditor/buildkite/run_windows_tests.ps1
+    - .expeditor/buildkite/run_windows_tests.ps1 "3.1"
   timeout_in_minutes: 20
   expeditor:
     executor:
