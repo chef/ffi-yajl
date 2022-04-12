@@ -23,6 +23,7 @@
 
 require "spec_helper"
 require "date"
+require "ffi_yajl/ext/dlopen"
 
 describe "FFI_Yajl::Encoder" do
   let(:options) { {} }
