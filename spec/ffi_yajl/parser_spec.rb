@@ -22,7 +22,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require "spec_helper"
-require "ffi_yajl/ext/dlopen"
 
 describe "FFI_Yajl::Parser" do
   shared_examples_for "correct json parsing" do

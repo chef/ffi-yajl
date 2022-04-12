@@ -21,7 +21,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require "spec_helper"
-require "ffi_yajl/ext/dlopen"
 
 class Test
   extend FFI_Yajl::MapLibraryName
