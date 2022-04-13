@@ -59,7 +59,7 @@ steps:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"
 
-- label: "run-specs-ruby-3.0-windows"
+- label: ":windows: :ruby: 3.0"
   command:
     - .expeditor/buildkite/run_windows_tests.ps1 "3.0"
   timeout_in_minutes: 20
@@ -73,7 +73,7 @@ steps:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"
 
-- label: "run-specs-ruby-3.1-windows"
+- label: ":windows: :ruby: 3.1"
   command:
     - .expeditor/buildkite/run_windows_tests.ps1 "3.1"
   timeout_in_minutes: 20
