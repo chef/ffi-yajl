@@ -27,6 +27,27 @@ def windows?
   !!(RUBY_PLATFORM =~ /mswin|mingw|cygwin|windows/)
 end
 
+def macos?
+  !!(RUBY_PLATFORM =~ /darwin/)
+end
+
+def clang?
+  cc_version = `#{RbConfig.expand("$(CC) --version")}`
+  cc_version.match?(/clang/i)
+end
+
+# XCode 14 warns if `-Wl,-undefined dynamic_lookup` is specified, and as
+# a result Ruby interpreters compiled under XCode 14 no longer specify
+# this flag by default in DLDFLAGS. Let's specify the list of dynamic symbols
+# here to avoid compilation failures.
+if clang? && macos?
+  symfile = File.join(__dir__, '../dlopen/yajl.sym')
+  dynamic_symbols = File.readlines(symfile)
+  dynamic_symbols.each do |sym|
+    $DLDFLAGS << " -Wl,-U,#{sym.strip}"
+  end
+end
+
 if windows?
   # include our libyajldll.a definitions on windows in the libyajl2 gem
   $libs = "#{$libs} -lyajldll"
