@@ -12,6 +12,8 @@ $LDFLAGS = "-L#{Libyajl2.opt_path} #{$LDFLAGS}"
 # remove "-Wl,--no-undefined" flag if existent to allow for loading with dlopen
 $LDFLAGS.slice!("-Wl,--no-undefined")
 
+$LDFLAGS << " -Wl,-undefined,dynamic_lookup" if RUBY_PLATFORM =~ /darwin/
+
 puts $CFLAGS
 puts $LDFLAGS
 
