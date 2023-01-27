@@ -1,14 +1,19 @@
-$LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
+$LOAD_PATH.unshift File.expand_path("#{__dir__}/lib")
 
 require "rspec/core/rake_task"
 require "rubygems/package_task"
 require "rake/extensiontask"
 require "ffi_yajl/version"
 
-Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
-  gemspec = eval(IO.read(gemspec_path))
-  Gem::PackageTask.new(gemspec).define
-end
+gemspec_file = Dir["#{__dir__}/*.gemspec"][0]
+
+ruby_gemspec = eval(IO.read(gemspec_file))
+Gem::PackageTask.new(ruby_gemspec).define
+
+ENV['FFI_YAJL_BUILD_JAVA'] = '1'
+java_gemspec = eval(IO.read(gemspec_file))
+Gem::PackageTask.new(java_gemspec).define
+ENV.delete('FFI_YAJL_BUILD_JAVA')
 
 begin
   require "github_changelog_generator/task"
