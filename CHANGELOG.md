@@ -1,7 +1,7 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.4.0 -->
-## [2.4.0](https://github.com/chef/ffi-yajl/tree/2.4.0) (2023-06-08)
+<!-- latest_release 2.5.0 -->
+## [2.5.0](https://github.com/chef/ffi-yajl/tree/2.5.0) (2023-06-08)
 
 #### Merged Pull Requests
 - Fix broken compilation with Ruby interpreter compiled with XCode 14 [#114](https://github.com/chef/ffi-yajl/pull/114) ([stanhu](https://github.com/stanhu))
