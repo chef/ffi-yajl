@@ -1,15 +1,16 @@
 # ffi-yajl Log
 
 <!-- latest_release 2.5.0 -->
-## [2.5.0](https://github.com/chef/ffi-yajl/tree/2.5.0) (2023-06-08)
+## [2.5.0](https://github.com/chef/ffi-yajl/tree/2.5.0) (2023-06-13)
 
 #### Merged Pull Requests
-- Fix broken compilation with Ruby interpreter compiled with XCode 14 [#114](https://github.com/chef/ffi-yajl/pull/114) ([stanhu](https://github.com/stanhu))
+- Remove 2.4 and 2.5 pipelines [#119](https://github.com/chef/ffi-yajl/pull/119) ([tpowell-progress](https://github.com/tpowell-progress))
 <!-- latest_release -->
 <!-- release_rollup since=2.4.0 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Remove 2.4 and 2.5 pipelines [#119](https://github.com/chef/ffi-yajl/pull/119) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.5.0 -->
 - Fix broken compilation with Ruby interpreter compiled with XCode 14 [#114](https://github.com/chef/ffi-yajl/pull/114) ([stanhu](https://github.com/stanhu)) <!-- 2.4.0 -->
 <!-- release_rollup -->
 
