@@ -1,30 +1,6 @@
 steps:
 
 # Allow ruby-2.4 to softfail since it was configured so in travis too
-- label: ":ruby: 2.4"
-  command:
-    - .expeditor/buildkite/run_linux_tests.sh
-  soft_fail:
-      - exit_status: 1
-  expeditor:
-    executor:
-      docker:
-        image: ruby:2.4
-        environment:
-          - BUNDLE_GEMFILE=/workdir/Gemfile
-          - FORCE_FFI_YAJL="ext"
-
-- label: ":ruby: 2.5"
-  command:
-    - .expeditor/buildkite/run_linux_tests.sh
-  expeditor:
-    executor:
-      docker:
-        image: ruby:2.5
-        environment:
-          - BUNDLE_GEMFILE=/workdir/Gemfile
-          - FORCE_FFI_YAJL="ext"
-
 - label: ":ruby: 2.6"
   command:
     - .expeditor/buildkite/run_linux_tests.sh
