@@ -19,6 +19,8 @@ ffi-yajl is a Ruby adapter for the [yajl](http://lloyd.github.io/yajl/) JSON par
 
 `cannot find -lyajldll: No such file or directory`
 
+If your build script ends up up in this state, a short term fix is `gem uninstall -I libyajl2` before the failing `bundle install`
+
 
 ### Install from the command-line:
 
