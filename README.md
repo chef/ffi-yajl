@@ -15,7 +15,12 @@ ffi-yajl is a Ruby adapter for the [yajl](http://lloyd.github.io/yajl/) JSON par
 
 ## How to Install
 
-Install from the command-line:
+**Warning** if building through Omnibus, a preinstalled ffi-yajl and libyajl2-gem version not matching the bundled version of the project you're attempting to build (e.g., Chef) may cause:
+
+`cannot find -lyajldll: No such file or directory`
+
+
+### Install from the command-line:
 
 ```
 gem install ffi-yajl
