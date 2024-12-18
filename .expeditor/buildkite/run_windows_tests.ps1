@@ -27,7 +27,7 @@ ruby --version
 bundler --version
 
 Write-Output "--- Updating system gems"
-gem update --system
+gem update
 
 Write-Output "--- Bundle install"
 bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle

@@ -6,7 +6,7 @@ set -evx
 echo "---Bundle install---"
 ruby --version
 bundle --version
-gem update --system
+gem update
 bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle
 gem install yajl-ruby json psych
 
