@@ -1,27 +1,5 @@
 steps:
 
-# Allow ruby-2.4 to softfail since it was configured so in travis too
-- label: ":ruby: 2.6"
-  command:
-    - .expeditor/buildkite/run_linux_tests.sh
-  expeditor:
-    executor:
-      docker:
-        image: ruby:2.6
-        environment:
-          - BUNDLE_GEMFILE=/workdir/Gemfile
-          - FORCE_FFI_YAJL="ext"
-
-- label: ":ruby: 3.0"
-  command:
-    - .expeditor/buildkite/run_linux_tests.sh
-  expeditor:
-    executor:
-      docker:
-        image: ruby:3.0
-        environment:
-          - BUNDLE_GEMFILE=/workdir/Gemfile
-          - FORCE_FFI_YAJL="ext"
 
 - label: ":ruby: 3.1"
   command:
@@ -30,21 +8,18 @@ steps:
     executor:
       docker:
         image: ruby:3.1
-        privileged: true
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"
 
-- label: ":windows: :ruby: 3.0"
+- label: ":ruby: 3.4"
   command:
-    - .expeditor/buildkite/run_windows_tests.ps1 "3.0"
-  timeout_in_minutes: 20
+    - .expeditor/buildkite/run_linux_tests.sh
   expeditor:
     executor:
       docker:
-        host_os: windows
-        shell: ["powershell", "-Command"]
-        image: rubydistros/windows-2019:3.0
+        image: ruby:3.4
+        privileged: true
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"
@@ -59,6 +34,20 @@ steps:
         host_os: windows
         shell: ["powershell", "-Command"]
         image: rubydistros/windows-2019:3.1
+        environment:
+          - BUNDLE_GEMFILE=/workdir/Gemfile
+          - FORCE_FFI_YAJL="ext"
+
+- label: ":windows: :ruby: 3.4"
+  command:
+    - .expeditor/buildkite/run_windows_tests.ps1 "3.4"
+  timeout_in_minutes: 20
+  expeditor:
+    executor:
+      docker:
+        host_os: windows
+        shell: ["powershell", "-Command"]
+        image: rubydistros/windows-2019:3.4
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"

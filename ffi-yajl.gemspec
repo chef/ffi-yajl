@@ -1,6 +1,27 @@
-gemspec = eval(IO.read(File.expand_path(File.join(File.dirname(__FILE__), "ffi-yajl.gemspec.shared"))))
+# frozen_string_literal: true
+$:.unshift File.expand_path("lib", __dir__)
+require "ffi_yajl/version"
 
-gemspec.platform = Gem::Platform::RUBY
-gemspec.extensions = %w{ext/ffi_yajl/ext/encoder/extconf.rb ext/ffi_yajl/ext/parser/extconf.rb ext/ffi_yajl/ext/dlopen/extconf.rb}
+Gem::Specification.new do |s|
+  s.name             = "ffi-yajl"
+  s.version          = FFI_Yajl::VERSION
+  s.extra_rdoc_files = ["README.md", "LICENSE" ]
+  s.license          = "MIT"
+  s.summary          = "Ruby FFI wrapper around YAJL 2.x"
+  s.description      = s.summary
+  s.author           = "Lamont Granquist"
+  s.email            = "lamont@chef.io"
+  s.homepage         = "http://github.com/chef/ffi-yajl"
 
-gemspec
+  s.required_ruby_version = ">= 3.1"
+
+  s.add_dependency "libyajl2", ">= 1.2"
+
+  s.bindir       = "bin"
+  s.executables  = %w{ ffi-yajl-bench }
+  s.require_path = "lib"
+  s.files        = %w{ LICENSE } + Dir.glob( "{bin,lib,ext}/**/*", File::FNM_DOTMATCH ).reject { |f| File.directory?(f) }
+
+  s.add_development_dependency "cookstyle", "~> 8.1"
+  s.platform = Gem::Platform::RUBY
+end

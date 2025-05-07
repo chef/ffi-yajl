@@ -22,6 +22,7 @@
 
 module FFI_Yajl
   class EncodeError < StandardError; end
+
   class Encoder
     attr_accessor :opts
 
@@ -35,7 +36,7 @@ module FFI_Yajl
 
       if opts[:pretty]
         yajl_gen_opts[:yajl_gen_beautify] = true
-        yajl_gen_opts[:yajl_gen_indent_string] = opts[:indent] ? opts[:indent] : "  "
+        yajl_gen_opts[:yajl_gen_indent_string] = opts[:indent] || "  "
       end
 
       # call either the ext or ffi hook

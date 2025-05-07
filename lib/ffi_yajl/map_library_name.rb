@@ -79,12 +79,12 @@ module FFI_Yajl
     def dlopen_yajl_library
       found = false
       ( expanded_library_names + library_names ).each do |libname|
-        begin
-          dlopen(libname)
-          found = true
-          break
-        rescue ArgumentError
-        end
+
+        dlopen(libname)
+        found = true
+        break
+      rescue ArgumentError
+
       end
       raise "cannot find yajl library for platform" unless found
     end
@@ -97,11 +97,11 @@ module FFI_Yajl
     def ffi_open_yajl_library
       found = false
       expanded_library_names.each do |libname|
-        begin
-          ffi_lib libname
-          found = true
-        rescue LoadError
-        end
+
+        ffi_lib libname
+        found = true
+      rescue LoadError
+
       end
       ffi_lib "yajl" unless found
     end

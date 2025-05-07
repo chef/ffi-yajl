@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2015 Lamont Granquist
 # Copyright (c) 2015 Chef Software, Inc.
 #
@@ -31,7 +30,7 @@ describe "FFI_Yajl::Encoder" do
 
   it "encodes hashes in keys as strings", ruby_gte_193: true do
     ruby = { { "a" => "b" } => 2 }
-    expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
+    expect(encoder.encode(ruby)).to eq('{"{\"a\" => \"b\"}":2}')
   end
 
   it "encodes arrays in keys as strings", ruby_gte_193: true do
@@ -158,6 +157,7 @@ describe "FFI_Yajl::Encoder" do
 
   describe "testing .to_json for Objects" do
     class NoToJson; end
+
     class HasToJson
       def to_json(*args)
         "{}"
