@@ -30,7 +30,7 @@ describe "FFI_Yajl::Encoder" do
 
   it "encodes hashes in keys as strings", ruby_gte_193: true do
     ruby = { { "a" => "b" } => 2 }
-    expect(encoder.encode(ruby)).to eq('{"{\"a\"=>\"b\"}":2}')
+    expect(encoder.encode(ruby)).to eq('{"{\"a\" => \"b\"}":2}')
   end
 
   it "encodes arrays in keys as strings", ruby_gte_193: true do
