@@ -132,7 +132,6 @@ rescue LoadError
   puts "Rubocop or Cookstyle gems are not installed. bundle install first to make sure all dependencies are installed."
 end
 
-
 desc "Run style + spec tests by default on travis"
 task buildkite: %w{style spec}
 
