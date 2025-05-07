@@ -19,7 +19,6 @@ steps:
     executor:
       docker:
         image: ruby:3.4
-        privileged: true
         environment:
           - BUNDLE_GEMFILE=/workdir/Gemfile
           - FORCE_FFI_YAJL="ext"
