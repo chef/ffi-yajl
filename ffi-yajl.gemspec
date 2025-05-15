@@ -15,12 +15,14 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 3.1"
 
-  s.add_dependency "libyajl2", ">= 1.2"
+  s.add_dependency "libyajl2", ">= 2.1"
 
   s.bindir       = "bin"
   s.executables  = %w{ ffi-yajl-bench }
   s.require_path = "lib"
   s.files        = %w{ LICENSE } + Dir.glob( "{bin,lib,ext}/**/*", File::FNM_DOTMATCH ).reject { |f| File.directory?(f) }
+
+   s.add_dependency "yajl"
 
   s.add_development_dependency "cookstyle", "~> 8.1"
   s.platform = Gem::Platform::RUBY

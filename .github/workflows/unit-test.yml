@@ -27,4 +27,5 @@ jobs:
         bundle install --jobs 4 --retry 3
     - name: Unit Test
       run: |
+        rake compile
         bundle exec rake spec
