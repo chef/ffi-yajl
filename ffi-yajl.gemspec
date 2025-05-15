@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
   s.files        = %w{ LICENSE } + Dir.glob( "{bin,lib,ext}/**/*", File::FNM_DOTMATCH ).reject { |f| File.directory?(f) }
 
-   s.add_dependency "yajl"
+  s.add_dependency "yajl"
 
   s.add_development_dependency "cookstyle", "~> 8.1"
   s.platform = Gem::Platform::RUBY
