@@ -6,18 +6,24 @@ param([String]$version)
 # unneccesary to check the exit code of each program being run - non-zero exit will force it to fail and terminate.
 $ErrorActionPreference = "Stop"
 
-# The specific paths of tools within the ruby31/34 devkit vary a bit across 3.1 and 3.4
-if ($version -eq "3.1")
-{
-    $base_dir = "C:\ruby31\"
-    $Env:PATH += ";" + $base_dir + "ruby\bin;" + $base_dir + "msys64\usr\bin;" + $base_dir + "msys64\mingw64\bin"
-}
-elseif($version -eq "3.4")
-{
-    $base_dir = "C:\ruby34\"
-    # Note path change - gcc is living in ucrt64\bin here, and mingw64 in earlier versions.
-    $Env:PATH += ";" + $base_dir + "ruby\bin;" + $base_dir + "msys64\usr\bin;" + $base_dir + "msys64\ucrt64\bin"
-}
+# # The specific paths of tools within the ruby31/34 devkit vary a bit across 3.1 and 3.4
+# if ($version -eq "3.1")
+# {
+#     $base_dir = "C:\ruby31\"
+#     $Env:PATH += ";" + $base_dir + "ruby\bin;" + $base_dir + "msys64\usr\bin;" + $base_dir + "msys64\mingw64\bin"
+# }
+# elseif($version -eq "3.4")
+# {
+#     $base_dir = "C:\ruby34\"
+#     # Note path change - gcc is living in ucrt64\bin here, and mingw64 in earlier versions.
+#     $Env:PATH += ";" + $base_dir + "ruby\bin;" + $base_dir + "msys64\usr\bin;" + $base_dir + "msys64\ucrt64\bin"
+# }
+
+$gccs = gci -path c:\opscode gcc.exe -Recurse -ErrorAction SilentlyContinue
+$env:path = "$($gccs[0].DirectoryName)" + ";" + $env:path
+
+$makes = gci -Path c:\opscode make.exe -Recurse -ErrorAction SilentlyContinue
+$env:path = "$($makes[0].DirectoryName)" + ";" + $env:path
 
 Write-Output "--- Ensuring required bins are in path"
 Write-Output  "PATH: " + $Env:PATH
