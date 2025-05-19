@@ -6,10 +6,14 @@ param([String]$version)
 # unneccesary to check the exit code of each program being run - non-zero exit will force it to fail and terminate.
 $ErrorActionPreference = "Stop"
 
-$gccs = gci -path c:\opscode gcc.exe -Recurse -ErrorAction SilentlyContinue
-$env:path = "$($gccs[0].DirectoryName)" + ";" + $env:path
+Write-Output "--- Updating system gems"
+gem update --system
 
-$makes = gci -Path c:\opscode make.exe -Recurse -ErrorAction SilentlyContinue
+Write-Output "--- Ensuring Make and GCC are installed"
+$gccs = Get-ChildItem -path c:\ gcc.exe -Recurse -ErrorAction SilentlyContinue
+$env:path = "$($gccs[0].DirectoryName)" + ";" + $env:path 
+
+$makes = Get-ChildItem -Path c:\ make.exe -Recurse -ErrorAction SilentlyContinue
 $env:path = "$($makes[0].DirectoryName)" + ";" + $env:path
 
 Write-Output "--- Ensuring required bins are in path"
@@ -18,9 +22,6 @@ make --version
 gcc --version
 ruby --version
 bundler --version
-
-Write-Output "--- Updating system gems"
-gem update --system
 
 Write-Output "--- Bundle install"
 bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle
