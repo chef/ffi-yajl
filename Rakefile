@@ -1,11 +1,13 @@
-$LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
+# $LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "lib"))
+lib = File.expand_path("lib", __dir__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require "rspec/core/rake_task"
 require "rubygems/package_task"
 require "rake/extensiontask"
 require "ffi_yajl/version"
 
-Dir[File.expand_path("../*gemspec", __FILE__)].reverse_each do |gemspec_path|
+Dir[File.expand_path("*gemspec", __dir__)].reverse_each do |gemspec_path|
   gemspec = eval(IO.read(gemspec_path))
   Gem::PackageTask.new(gemspec).define
 end
@@ -25,7 +27,7 @@ desc "Build it and ship it"
 task ship: %i{clean gem} do
   sh("git tag #{FFI_Yajl::VERSION}")
   sh("git push --tags")
-  Dir[File.expand_path("../pkg/*.gem", __FILE__)].reverse_each do |built_gem|
+  Dir[File.expand_path("pkg/*.gem", __dir__)].reverse_each do |built_gem|
     sh("gem push #{built_gem}")
   end
 end
@@ -97,40 +99,38 @@ namespace :spec do
 end
 
 namespace :integration do
-  begin
-    require "kitchen"
-  rescue LoadError
-    task :vagrant do
-      puts "test-kitchen gem is not installed"
-    end
-  else
-    desc "Run Test Kitchen with Vagrant"
-    task :vagrant do
-      Kitchen.logger = Kitchen.default_file_logger
-      Kitchen::Config.new.instances.each do |instance|
-        instance.test(:always)
-      end
+
+  require "kitchen"
+rescue LoadError
+  task :vagrant do
+    puts "test-kitchen gem is not installed"
+  end
+else
+  desc "Run Test Kitchen with Vagrant"
+  task :vagrant do
+    Kitchen.logger = Kitchen.default_file_logger
+    Kitchen::Config.new.instances.each do |instance|
+      instance.test(:always)
     end
   end
-end
-namespace :style do
-  desc "Run Ruby style checks"
-  begin
-    require "chefstyle"
-    require "rubocop/rake_task"
-  rescue LoadError
-    task :rubocop do
-      puts "chefstyle gem is not installed"
-    end
-  else
-    RuboCop::RakeTask.new(:rubocop) do |t|
-      t.fail_on_error = false
-    end
-  end
+
 end
 
-desc "Run all style checks"
-task style: ["style:rubocop"]
+desc "Check Linting and code style."
+task :style do
+  require "rubocop/rake_task"
+  require "cookstyle/chefstyle"
+
+  if RbConfig::CONFIG["host_os"] =~ /mswin|mingw|cygwin/
+    # Windows-specific command, rubocop erroneously reports the CRLF in each file which is removed when your PR is uploaeded to GitHub.
+    # This is a workaround to ignore the CRLF from the files before running cookstyle.
+    sh "cookstyle --chefstyle -c .rubocop.yml --except Layout/EndOfLine"
+  else
+    sh "cookstyle --chefstyle -c .rubocop.yml"
+  end
+rescue LoadError
+  puts "Rubocop or Cookstyle gems are not installed. bundle install first to make sure all dependencies are installed."
+end
 
 desc "Run style + spec tests by default on travis"
 task buildkite: %w{style spec}

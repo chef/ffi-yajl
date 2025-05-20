@@ -20,7 +20,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH << File.expand_path(File.join(File.dirname( __FILE__ ), "../lib"))
+lib = File.expand_path("lib", __dir__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 # load yajl-ruby into the same process (tests that both c-libs can be
 # linked in the same process).  this should work, see:
