@@ -360,6 +360,7 @@ void Init_encoder() {
   mExt = rb_define_module_under(mFFI_Yajl, "Ext");
   mEncoder = rb_define_module_under(mExt, "Encoder");
   cYajl_Gen = rb_define_class_under(mEncoder, "YajlGen", rb_cObject);
+  rb_undef_alloc_func(cYajl_Gen);
   rb_define_method(mEncoder, "do_yajl_encode", mEncoder_do_yajl_encode, 3);
 
   /* use rb_const_get instead of rb_define_class so that we don't get superclass mismatches */
