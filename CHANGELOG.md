@@ -1,15 +1,16 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.1 -->
-## [2.7.1](https://github.com/chef/ffi-yajl/tree/2.7.1) (2025-08-19)
+<!-- latest_release 2.7.2 -->
+## [2.7.2](https://github.com/chef/ffi-yajl/tree/2.7.2) (2025-09-02)
 
 #### Merged Pull Requests
-- Undefine allocation function for C extension class [#126](https://github.com/chef/ffi-yajl/pull/126) ([stanhu](https://github.com/stanhu))
+- Add myself to codeowners [#131](https://github.com/chef/ffi-yajl/pull/131) ([jaymzh](https://github.com/jaymzh))
 <!-- latest_release -->
 <!-- release_rollup since=2.4.0 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Add myself to codeowners [#131](https://github.com/chef/ffi-yajl/pull/131) ([jaymzh](https://github.com/jaymzh)) <!-- 2.7.2 -->
 - Undefine allocation function for C extension class [#126](https://github.com/chef/ffi-yajl/pull/126) ([stanhu](https://github.com/stanhu)) <!-- 2.7.1 -->
 - Updating for Ruby 3.4 and Cookstyle 8.1 support [#128](https://github.com/chef/ffi-yajl/pull/128) ([johnmccrae](https://github.com/johnmccrae)) <!-- 2.7.0 -->
 - Updated README with libyajl2 warning [#121](https://github.com/chef/ffi-yajl/pull/121) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.6.0 -->
