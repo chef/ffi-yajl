@@ -2,8 +2,6 @@
 
 [![Build status](https://badge.buildkite.com/35c43155d637f5201a5030cd4e7d8025573c0042094e00bbb3.svg?branch=master)](https://buildkite.com/chef-oss/chef-ffi-yajl-master-verify) [![Gem Version](https://badge.fury.io/rb/ffi-yajl.svg)](https://badge.fury.io/rb/ffi-yajl)
 
-**Umbrella Project**: [Chef Foundation](https://github.com/chef/chef-oss-practices/blob/master/projects/chef-foundation.md)
-
 ffi-yajl is a Ruby adapter for the [yajl](http://lloyd.github.io/yajl/) JSON parser/generator library. ffi-yajl supports multiple Ruby C extension mechanisms, including both MRI native extensions and FFI in order to be compatible with as many Ruby implementations as possible while providing good performance where possible.
 
 ## How to Install
