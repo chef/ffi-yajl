@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # Copyright (c) 2015 Lamont Granquist
 # Copyright (c) 2015-2017, Chef Software Inc.
 #

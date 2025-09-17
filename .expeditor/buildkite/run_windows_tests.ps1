@@ -6,18 +6,15 @@ param([String]$version)
 # unneccesary to check the exit code of each program being run - non-zero exit will force it to fail and terminate.
 $ErrorActionPreference = "Stop"
 
-# The specific paths of tools within the ruby30/31 devkit vary a bit across 3.0 and 3.1
-if ($version -eq "3.0")
-{
-    $base_dir = "C:\ruby30\"
-    $Env:PATH += ";" + $base_dir + "ruby\bin;" + $base_dir + "msys64\usr\bin;" + $base_dir + "msys64\mingw64\bin"
-}
-elseif($version -eq "3.1")
-{
-    $base_dir = "C:\ruby31\"
-    # Note path change - gcc is living in ucrt64\bin here, and mingw64 in earlier versions.
-    $Env:PATH += ";" + $base_dir + "ruby\bin;" + $base_dir + "msys64\usr\bin;" + $base_dir + "msys64\ucrt64\bin"
-}
+Write-Output "--- Updating system gems"
+gem update --system
+
+Write-Output "--- Ensuring Make and GCC are installed"
+$gccs = Get-ChildItem -path c:\ gcc.exe -Recurse -ErrorAction SilentlyContinue
+$env:path = "$($gccs[0].DirectoryName)" + ";" + $env:path 
+
+$makes = Get-ChildItem -Path c:\ make.exe -Recurse -ErrorAction SilentlyContinue
+$env:path = "$($makes[0].DirectoryName)" + ";" + $env:path
 
 Write-Output "--- Ensuring required bins are in path"
 Write-Output  "PATH: " + $Env:PATH
@@ -25,9 +22,6 @@ make --version
 gcc --version
 ruby --version
 bundler --version
-
-Write-Output "--- Updating system gems"
-gem update --system
 
 Write-Output "--- Bundle install"
 bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle

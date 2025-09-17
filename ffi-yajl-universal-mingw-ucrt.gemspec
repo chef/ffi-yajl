@@ -1,5 +1,4 @@
-# frozen_string_literal: true
-$:.unshift File.expand_path("lib", __dir__)
+$:.unshift(File.dirname(__FILE__) + "/lib")
 require "ffi_yajl/version"
 
 Gem::Specification.new do |s|
@@ -25,5 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "yajl"
 
   s.add_development_dependency "cookstyle", "~> 8.1"
-  s.platform = Gem::Platform::RUBY
+
+  s.platform = Gem::Platform.new(%w{universal mingw-ucrt})
+
 end

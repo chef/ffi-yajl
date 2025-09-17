@@ -20,8 +20,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require "ffi_yajl/benchmark/encode.rb"
-require "ffi_yajl/benchmark/encode_profile.rb"
-require "ffi_yajl/benchmark/parse.rb"
-require "ffi_yajl/benchmark/parse_profile.rb"
-require "ffi_yajl/benchmark/parse_profile_ruby_prof.rb"
+require "ffi_yajl/benchmark/encode"
+require "ffi_yajl/benchmark/encode_profile"
+require "ffi_yajl/benchmark/parse"
+require "ffi_yajl/benchmark/parse_profile"
+require "ffi_yajl/benchmark/parse_profile_ruby_prof"

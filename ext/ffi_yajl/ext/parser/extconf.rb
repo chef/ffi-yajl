@@ -41,7 +41,7 @@ end
 # this flag by default in DLDFLAGS. Let's specify the list of dynamic symbols
 # here to avoid compilation failures.
 if clang? && macos?
-  symfile = File.join(__dir__, '../dlopen/yajl.sym')
+  symfile = File.join(__dir__, "../dlopen/yajl.sym")
   dynamic_symbols = File.readlines(symfile)
   dynamic_symbols.each do |sym|
     $DLDFLAGS << " -Wl,-U,#{sym.strip}"

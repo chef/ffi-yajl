@@ -21,5 +21,5 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 module FFI_Yajl
-  VERSION = "2.6.0".freeze
+  VERSION = "2.7.3".freeze
 end
