@@ -107,3 +107,6 @@ This was initially going to be a clean rewrite of an ffi ruby wrapper around yaj
 ## License
 
 Given that this draws heavily from the yajl-ruby sources, and could be considered a derivative work, the MIT License from that project has been preserved and this source code has deliberately not been dual licensed under Chef's typical Apache License. See the [LICENSE](https://github.com/chef/ffi-yajl/blob/master/LICENSE) file in this project.
+
+# Copyright
+See [COPYRIGHT.md](./COPYRIGHT.md).
