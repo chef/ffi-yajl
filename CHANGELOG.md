@@ -1,15 +1,16 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.3 -->
-## [2.7.3](https://github.com/chef/ffi-yajl/tree/2.7.3) (2025-09-11)
+<!-- latest_release 2.7.4 -->
+## [2.7.4](https://github.com/chef/ffi-yajl/tree/2.7.4) (2025-11-14)
 
 #### Merged Pull Requests
-- Add GitHub Security Actions Workflow [#129](https://github.com/chef/ffi-yajl/pull/129) ([sean-sype-simmons](https://github.com/sean-sype-simmons))
+- set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda))
 <!-- latest_release -->
 <!-- release_rollup since=2.4.0 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda)) <!-- 2.7.4 -->
 - Add GitHub Security Actions Workflow [#129](https://github.com/chef/ffi-yajl/pull/129) ([sean-sype-simmons](https://github.com/sean-sype-simmons)) <!-- 2.7.3 -->
 - Add myself to codeowners [#131](https://github.com/chef/ffi-yajl/pull/131) ([jaymzh](https://github.com/jaymzh)) <!-- 2.7.2 -->
 - Undefine allocation function for C extension class [#126](https://github.com/chef/ffi-yajl/pull/126) ([stanhu](https://github.com/stanhu)) <!-- 2.7.1 -->
