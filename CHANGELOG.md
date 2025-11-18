@@ -1,15 +1,16 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.4 -->
-## [2.7.4](https://github.com/chef/ffi-yajl/tree/2.7.4) (2025-11-14)
+<!-- latest_release 2.7.5 -->
+## [2.7.5](https://github.com/chef/ffi-yajl/tree/2.7.5) (2025-11-18)
 
 #### Merged Pull Requests
-- set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda))
+- add AI compliance workflow to copilot instructions [#136](https://github.com/chef/ffi-yajl/pull/136) ([rishichawda](https://github.com/rishichawda))
 <!-- latest_release -->
 <!-- release_rollup since=2.4.0 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- add AI compliance workflow to copilot instructions [#136](https://github.com/chef/ffi-yajl/pull/136) ([rishichawda](https://github.com/rishichawda)) <!-- 2.7.5 -->
 - set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda)) <!-- 2.7.4 -->
 - Add GitHub Security Actions Workflow [#129](https://github.com/chef/ffi-yajl/pull/129) ([sean-sype-simmons](https://github.com/sean-sype-simmons)) <!-- 2.7.3 -->
 - Add myself to codeowners [#131](https://github.com/chef/ffi-yajl/pull/131) ([jaymzh](https://github.com/jaymzh)) <!-- 2.7.2 -->
