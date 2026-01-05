@@ -1,32 +1,29 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.5 -->
-## [2.7.5](https://github.com/chef/ffi-yajl/tree/2.7.5) (2025-11-18)
-
-#### Merged Pull Requests
-- add AI compliance workflow to copilot instructions [#136](https://github.com/chef/ffi-yajl/pull/136) ([rishichawda](https://github.com/rishichawda))
 <!-- latest_release -->
-<!-- release_rollup since=2.4.0 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- add AI compliance workflow to copilot instructions [#136](https://github.com/chef/ffi-yajl/pull/136) ([rishichawda](https://github.com/rishichawda)) <!-- 2.7.5 -->
-- set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda)) <!-- 2.7.4 -->
-- Add GitHub Security Actions Workflow [#129](https://github.com/chef/ffi-yajl/pull/129) ([sean-sype-simmons](https://github.com/sean-sype-simmons)) <!-- 2.7.3 -->
-- Add myself to codeowners [#131](https://github.com/chef/ffi-yajl/pull/131) ([jaymzh](https://github.com/jaymzh)) <!-- 2.7.2 -->
-- Undefine allocation function for C extension class [#126](https://github.com/chef/ffi-yajl/pull/126) ([stanhu](https://github.com/stanhu)) <!-- 2.7.1 -->
-- Updating for Ruby 3.4 and Cookstyle 8.1 support [#128](https://github.com/chef/ffi-yajl/pull/128) ([johnmccrae](https://github.com/johnmccrae)) <!-- 2.7.0 -->
-- Updated README with libyajl2 warning [#121](https://github.com/chef/ffi-yajl/pull/121) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.6.0 -->
-- Remove 2.4 and 2.5 pipelines [#119](https://github.com/chef/ffi-yajl/pull/119) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.5.0 -->
-- Fix broken compilation with Ruby interpreter compiled with XCode 14 [#114](https://github.com/chef/ffi-yajl/pull/114) ([stanhu](https://github.com/stanhu)) <!-- 2.4.0 -->
+<!-- latest_release -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [2.7.5](https://github.com/chef/ffi-yajl/tree/2.7.5) (2026-01-05)
+
+#### Merged Pull Requests
+- Fix broken compilation with Ruby interpreter compiled with XCode 14 [#114](https://github.com/chef/ffi-yajl/pull/114) ([stanhu](https://github.com/stanhu))
+- Remove 2.4 and 2.5 pipelines [#119](https://github.com/chef/ffi-yajl/pull/119) ([tpowell-progress](https://github.com/tpowell-progress))
+- Updated README with libyajl2 warning [#121](https://github.com/chef/ffi-yajl/pull/121) ([tpowell-progress](https://github.com/tpowell-progress))
+- Updating for Ruby 3.4 and Cookstyle 8.1 support [#128](https://github.com/chef/ffi-yajl/pull/128) ([johnmccrae](https://github.com/johnmccrae))
+- Undefine allocation function for C extension class [#126](https://github.com/chef/ffi-yajl/pull/126) ([stanhu](https://github.com/stanhu))
+- Add myself to codeowners [#131](https://github.com/chef/ffi-yajl/pull/131) ([jaymzh](https://github.com/jaymzh))
+- Add GitHub Security Actions Workflow [#129](https://github.com/chef/ffi-yajl/pull/129) ([sean-sype-simmons](https://github.com/sean-sype-simmons))
+- set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda))
+- add AI compliance workflow to copilot instructions [#136](https://github.com/chef/ffi-yajl/pull/136) ([rishichawda](https://github.com/rishichawda))
+<!-- latest_stable_release -->
+
 ## [2.3.4](https://github.com/chef/ffi-yajl/tree/2.3.4) (2020-08-17)
 
 #### Merged Pull Requests
 - Optimize our requires [#109](https://github.com/chef/ffi-yajl/pull/109) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [2.3.3](https://github.com/chef/ffi-yajl/tree/2.3.3) (2019-12-30)
 
