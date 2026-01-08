@@ -7,7 +7,8 @@ echo "---Bundle install---"
 ruby --version
 bundle --version
 gem update --system
-bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle
+bundle config set --local path 'vendor/bundle'
+bundle install --without development_extras --jobs 3 --retry 3
 gem install yajl-ruby json psych
 
 echo "---Bundle Exec---"

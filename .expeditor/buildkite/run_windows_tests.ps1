@@ -24,7 +24,8 @@ ruby --version
 bundler --version
 
 Write-Output "--- Bundle install"
-bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle
+bundle config set --local path 'vendor/bundle'
+bundle install --without development_extras --jobs 3 --retry 3
 
 Write-Output "--- Gem install"
 gem install yajl-ruby json psych
