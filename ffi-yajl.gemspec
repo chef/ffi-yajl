@@ -4,6 +4,7 @@ require "ffi_yajl/version"
 
 Gem::Specification.new do |s|
   s.name             = "ffi-yajl"
+  s.platform         = Gem::Platform::RUBY
   s.version          = FFI_Yajl::VERSION
   s.extra_rdoc_files = ["README.md", "LICENSE" ]
   s.license          = "MIT"
@@ -12,6 +13,7 @@ Gem::Specification.new do |s|
   s.author           = "Lamont Granquist"
   s.email            = "lamont@chef.io"
   s.homepage         = "http://github.com/chef/ffi-yajl"
+  s.extensions       = %w{ext/ffi_yajl/ext/encoder/extconf.rb ext/ffi_yajl/ext/parser/extconf.rb ext/ffi_yajl/ext/dlopen/extconf.rb}
 
   s.required_ruby_version = ">= 3.1"
 
