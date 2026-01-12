@@ -11,7 +11,7 @@ gem update --system
 
 Write-Output "--- Ensuring Make and GCC are installed"
 $gccs = Get-ChildItem -path c:\ gcc.exe -Recurse -ErrorAction SilentlyContinue
-$env:path = "$($gccs[0].DirectoryName)" + ";" + $env:path 
+$env:path = "$($gccs[0].DirectoryName)" + ";" + $env:path
 
 $makes = Get-ChildItem -Path c:\ make.exe -Recurse -ErrorAction SilentlyContinue
 $env:path = "$($makes[0].DirectoryName)" + ";" + $env:path
@@ -24,7 +24,9 @@ ruby --version
 bundler --version
 
 Write-Output "--- Bundle install"
-bundle install --without development_extras --jobs 3 --retry 3 --path vendor/bundle
+bundle config set --local path 'vendor/bundle'
+bundle config set --local without 'development_extras'
+bundle install --jobs 3 --retry 3
 
 Write-Output "--- Gem install"
 gem install yajl-ruby json psych

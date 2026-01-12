@@ -1,4 +1,5 @@
-$:.unshift(File.dirname(__FILE__) + "/lib")
+# frozen_string_literal: true
+$:.unshift File.expand_path("lib", __dir__)
 require "ffi_yajl/version"
 
 Gem::Specification.new do |s|
