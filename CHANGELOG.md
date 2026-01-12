@@ -1,8 +1,16 @@
 # ffi-yajl Log
 
+<!-- latest_release 2.7.6 -->
+## [2.7.6](https://github.com/chef/ffi-yajl/tree/2.7.6) (2026-01-12)
+
+#### Merged Pull Requests
+- Fix C extensions not building [#139](https://github.com/chef/ffi-yajl/pull/139) ([stanhu](https://github.com/stanhu))
 <!-- latest_release -->
-<!-- latest_release -->
-<!-- release_rollup -->
+<!-- release_rollup since=3.0.0 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Fix C extensions not building [#139](https://github.com/chef/ffi-yajl/pull/139) ([stanhu](https://github.com/stanhu)) <!-- 2.7.6 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
