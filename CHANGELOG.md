@@ -1,19 +1,17 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.6 -->
+<!-- latest_release -->
+<!-- latest_release -->
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [2.7.6](https://github.com/chef/ffi-yajl/tree/2.7.6) (2026-01-12)
 
 #### Merged Pull Requests
 - Fix C extensions not building [#139](https://github.com/chef/ffi-yajl/pull/139) ([stanhu](https://github.com/stanhu))
-<!-- latest_release -->
-<!-- release_rollup since=3.0.0 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fix C extensions not building [#139](https://github.com/chef/ffi-yajl/pull/139) ([stanhu](https://github.com/stanhu)) <!-- 2.7.6 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [2.7.5](https://github.com/chef/ffi-yajl/tree/2.7.5) (2026-01-05)
 
 #### Merged Pull Requests
@@ -26,7 +24,6 @@
 - Add GitHub Security Actions Workflow [#129](https://github.com/chef/ffi-yajl/pull/129) ([sean-sype-simmons](https://github.com/sean-sype-simmons))
 - set up ai assisted development workflow [#134](https://github.com/chef/ffi-yajl/pull/134) ([rishichawda](https://github.com/rishichawda))
 - add AI compliance workflow to copilot instructions [#136](https://github.com/chef/ffi-yajl/pull/136) ([rishichawda](https://github.com/rishichawda))
-<!-- latest_stable_release -->
 
 ## [2.3.4](https://github.com/chef/ffi-yajl/tree/2.3.4) (2020-08-17)
 
