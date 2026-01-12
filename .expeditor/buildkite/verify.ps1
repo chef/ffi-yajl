@@ -30,7 +30,9 @@ If ($lastexitcode -ne 0) { Exit $lastexitcode }
 Write-Output "--- bundle install"
 bundle config set --local path 'vendor/bundle'
 If ($lastexitcode -ne 0) { Exit $lastexitcode }
-bundle install --without development_extras --jobs 3 --retry 3
+bundle config set --local without 'development_extras'
+If ($lastexitcode -ne 0) { Exit $lastexitcode }
+bundle install --jobs 3 --retry 3
 If ($lastexitcode -ne 0) { Exit $lastexitcode }
 
 Write-Output "+++ bundle exec rake compile"
