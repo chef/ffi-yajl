@@ -1,24 +1,21 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.7 -->
-## [2.7.7](https://github.com/chef/ffi-yajl/tree/2.7.7) (2026-01-16)
-
-#### Merged Pull Requests
-- Fix C extensions not building - Windows [#141](https://github.com/chef/ffi-yajl/pull/141) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
-<!-- release_rollup since=3.0.0 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fix C extensions not building - Windows [#141](https://github.com/chef/ffi-yajl/pull/141) ([nikhil2611](https://github.com/nikhil2611)) <!-- 2.7.7 -->
+<!-- latest_release -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [2.7.8](https://github.com/chef/ffi-yajl/tree/2.7.8) (2026-01-16)
+
+#### Merged Pull Requests
+- Fix C extensions not building - Windows [#141](https://github.com/chef/ffi-yajl/pull/141) ([nikhil2611](https://github.com/nikhil2611))
+<!-- latest_stable_release -->
+
 ## [2.7.6](https://github.com/chef/ffi-yajl/tree/2.7.6) (2026-01-12)
 
 #### Merged Pull Requests
 - Fix C extensions not building [#139](https://github.com/chef/ffi-yajl/pull/139) ([stanhu](https://github.com/stanhu))
-<!-- latest_stable_release -->
 
 ## [2.7.5](https://github.com/chef/ffi-yajl/tree/2.7.5) (2026-01-05)
 
