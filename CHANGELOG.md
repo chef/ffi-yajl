@@ -1,9 +1,16 @@
 # ffi-yajl Log
 
-<!-- latest_release -->
+<!-- latest_release 2.7.8 -->
+## [2.7.8](https://github.com/chef/ffi-yajl/tree/2.7.8) (2026-01-29)
+
+#### Merged Pull Requests
+- Add ubuntu test to GitHub Actions so that verify can fully move to GHA. [#143](https://github.com/chef/ffi-yajl/pull/143) ([tpowell-progress](https://github.com/tpowell-progress))
 <!-- latest_release -->
 <!-- release_rollup since=2.7.7 -->
 ### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Add ubuntu test to GitHub Actions so that verify can fully move to GHA. [#143](https://github.com/chef/ffi-yajl/pull/143) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.7.8 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
