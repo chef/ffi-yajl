@@ -53,7 +53,7 @@ Provide a definitive, actionable reference so that an AI assistant (or human fol
 - Release Automation: Expeditor (.expeditor) handles version bump, changelog, gem build, publish on merge to release branch.
 - CI Pipelines:
   - `lint.yml`: Runs Cookstyle.
-  - `unit-test.yml`: Runs specs across OS (currently Windows) and Ruby versions.
+  - `unit-test.yml`: Runs specs across OS (Linux and Windows) and Ruby versions (3.1, 3.4) with FORCE_FFI_YAJL=ext. Compiles extensions and executes `rake spec`.
   - `ci-main-pull-request-checks.yml`: Stub invoking centralized org workflow for broader compliance scans (secret scanning, SBOM, optional SAST/SCA, complexity checks). Many features currently disabled via inputs.
 - Coverage Tooling: Not explicitly configured; if adding coverage enforcement, integrate `simplecov` (see Testing & Coverage section) while keeping threshold > 80%.
 
@@ -279,7 +279,7 @@ Generic mapping guidance for additional common intents:
 ## 11. CI / Expeditor Integration
 ### 11.1 GitHub Actions Workflows
 - `lint.yml`: Triggers on PR + push to main. Runs cookstyle (RuboCop variant) with problem matchers.
-- `unit-test.yml`: Runs RSpec across Windows (3.1, 3.4). Compiles extensions and executes `rake spec`.
+- `unit-test.yml`: Triggers on PR + push. Runs RSpec across Linux (ubuntu-latest) and Windows (windows-latest) with Ruby 3.1 and 3.4. Sets FORCE_FFI_YAJL=ext environment variable. Compiles extensions and executes `rake spec`.
 - `ci-main-pull-request-checks.yml`: Stub invoking centralized org workflow (common security, complexity, SBOM, optional SAST/SCA). Many toggles currently off (e.g., build: false, unit-tests: false in stub layer). Provides secret scanning (Trufflehog) and SBOM generation.
 
 ### 11.2 Expeditor
@@ -288,8 +288,9 @@ Generic mapping guidance for additional common intents:
 - Labels influence version semantics (major/minor) or skip behaviors.
 - Branch deletion enabled post-merge.
 
-### 11.3 Buildkite (via Expeditor)
-- `.expeditor/verify.pipeline.yml` defines matrix of Ruby versions and OS (Linux via Docker, Windows). Runs `bundle install`, compile, spec.
+### 11.3 Test Scripts
+- `.github/workflows/scripts/run_linux_tests.sh`: Helper script for Linux test execution (legacy, now integrated into unit-test.yml).
+- `.github/workflows/scripts/run_windows_tests.ps1`: Helper script for Windows test execution (legacy, now integrated into unit-test.yml).
 
 ---
 ## 12. Security & Protected Files
