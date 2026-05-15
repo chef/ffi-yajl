@@ -1,24 +1,21 @@
 # ffi-yajl Log
 
-<!-- latest_release 2.7.11 -->
-## [2.7.11](https://github.com/chef/ffi-yajl/tree/2.7.11) (2026-05-15)
-
-#### Merged Pull Requests
-- Remove bogus yajl gem runtime dependency [#145](https://github.com/chef/ffi-yajl/pull/145) ([ramereth](https://github.com/ramereth))
 <!-- latest_release -->
-<!-- release_rollup since=2.7.7 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Remove bogus yajl gem runtime dependency [#145](https://github.com/chef/ffi-yajl/pull/145) ([ramereth](https://github.com/ramereth)) <!-- 2.7.11 -->
-- CHEF-28547 - Create SECURITY.md file with standard template [#137](https://github.com/chef/ffi-yajl/pull/137) ([cgunasree08](https://github.com/cgunasree08)) <!-- 2.7.10 -->
-- Update copilot instructions and remove blank verify pipeline [#144](https://github.com/chef/ffi-yajl/pull/144) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.7.9 -->
-- Add ubuntu test to GitHub Actions so that verify can fully move to GHA. [#143](https://github.com/chef/ffi-yajl/pull/143) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 2.7.8 -->
+<!-- latest_release -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
-## [2.7.7](https://github.com/chef/ffi-yajl/tree/2.7.7) (2026-01-16)
+## [2.7.11](https://github.com/chef/ffi-yajl/tree/2.7.11) (2026-05-15)
+
+#### Merged Pull Requests
+- Add ubuntu test to GitHub Actions so that verify can fully move to GHA. [#143](https://github.com/chef/ffi-yajl/pull/143) ([tpowell-progress](https://github.com/tpowell-progress))
+- Update copilot instructions and remove blank verify pipeline [#144](https://github.com/chef/ffi-yajl/pull/144) ([tpowell-progress](https://github.com/tpowell-progress))
+- CHEF-28547 - Create SECURITY.md file with standard template [#137](https://github.com/chef/ffi-yajl/pull/137) ([cgunasree08](https://github.com/cgunasree08))
+- Remove bogus yajl gem runtime dependency [#145](https://github.com/chef/ffi-yajl/pull/145) ([ramereth](https://github.com/ramereth))
 <!-- latest_stable_release -->
+
+## [2.7.7](https://github.com/chef/ffi-yajl/tree/2.7.7) (2026-01-16)
 
 ## [2.7.8](https://github.com/chef/ffi-yajl/tree/2.7.8) (2026-01-16)
 
