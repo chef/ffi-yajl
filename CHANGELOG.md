@@ -2,16 +2,19 @@
 
 <!-- latest_release -->
 <!-- latest_release -->
-<!-- release_rollup -->
+<!-- release_rollup since=3.0.1 -->
+### Changes not yet released to rubygems.org
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [3.0.1](https://github.com/chef/ffi-yajl/tree/3.0.1) (2026-07-28)
+<!-- latest_stable_release -->
+
 ## [3.0.1](https://github.com/chef/ffi-yajl/tree/3.0.1) (2026-07-28)
 
 #### Merged Pull Requests
 - version: bump gem version to 3.0.0 [#146](https://github.com/chef/ffi-yajl/pull/146) ([tpowell-progress](https://github.com/tpowell-progress))
 - CHEF-24891 - Create CONTRIBUTING.md file with standard template for chef [#130](https://github.com/chef/ffi-yajl/pull/130) ([cgunasree08](https://github.com/cgunasree08))
-<!-- latest_stable_release -->
 
 ## [2.7.11](https://github.com/chef/ffi-yajl/tree/2.7.11) (2026-05-15)
 
