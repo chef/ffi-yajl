@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Lamont Granquist
-# Copyright (c) 2015-2018, Chef Software Inc.
+# Copyright (c) 2013-2025 Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
