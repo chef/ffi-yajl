@@ -1,20 +1,18 @@
 # ffi-yajl Log
 
-<!-- latest_release 3.0.1 -->
-## [3.0.1](https://github.com/chef/ffi-yajl/tree/3.0.1) (2026-07-28)
-
-#### Merged Pull Requests
-- CHEF-24891 - Create CONTRIBUTING.md file with standard template for chef [#130](https://github.com/chef/ffi-yajl/pull/130) ([cgunasree08](https://github.com/cgunasree08))
 <!-- latest_release -->
-<!-- release_rollup since=3.0.0 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- CHEF-24891 - Create CONTRIBUTING.md file with standard template for chef [#130](https://github.com/chef/ffi-yajl/pull/130) ([cgunasree08](https://github.com/cgunasree08)) <!-- 3.0.1 -->
-- version: bump gem version to 3.0.0 [#146](https://github.com/chef/ffi-yajl/pull/146) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 3.0.0 -->
+<!-- latest_release -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [3.0.1](https://github.com/chef/ffi-yajl/tree/3.0.1) (2026-07-28)
+
+#### Merged Pull Requests
+- version: bump gem version to 3.0.0 [#146](https://github.com/chef/ffi-yajl/pull/146) ([tpowell-progress](https://github.com/tpowell-progress))
+- CHEF-24891 - Create CONTRIBUTING.md file with standard template for chef [#130](https://github.com/chef/ffi-yajl/pull/130) ([cgunasree08](https://github.com/cgunasree08))
+<!-- latest_stable_release -->
+
 ## [2.7.11](https://github.com/chef/ffi-yajl/tree/2.7.11) (2026-05-15)
 
 #### Merged Pull Requests
@@ -22,7 +20,6 @@
 - Update copilot instructions and remove blank verify pipeline [#144](https://github.com/chef/ffi-yajl/pull/144) ([tpowell-progress](https://github.com/tpowell-progress))
 - CHEF-28547 - Create SECURITY.md file with standard template [#137](https://github.com/chef/ffi-yajl/pull/137) ([cgunasree08](https://github.com/cgunasree08))
 - Remove bogus yajl gem runtime dependency [#145](https://github.com/chef/ffi-yajl/pull/145) ([ramereth](https://github.com/ramereth))
-<!-- latest_stable_release -->
 
 ## [2.7.7](https://github.com/chef/ffi-yajl/tree/2.7.7) (2026-01-16)
 
