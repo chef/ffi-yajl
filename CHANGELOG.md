@@ -1,8 +1,16 @@
 # ffi-yajl Log
 
+<!-- latest_release 3.0.0 -->
+## [3.0.0](https://github.com/chef/ffi-yajl/tree/3.0.0) (2026-07-28)
+
+#### Merged Pull Requests
+- version: bump gem version to 3.0.0 [#146](https://github.com/chef/ffi-yajl/pull/146) ([tpowell-progress](https://github.com/tpowell-progress))
 <!-- latest_release -->
-<!-- latest_release -->
-<!-- release_rollup -->
+<!-- release_rollup since=3.0.0 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- version: bump gem version to 3.0.0 [#146](https://github.com/chef/ffi-yajl/pull/146) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 3.0.0 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
