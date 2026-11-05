@@ -5,6 +5,13 @@ static VALUE mFFI_Yajl, mExt, mEncoder, mEncoder2, cEncodeError;
 static VALUE cDate, cTime, cDateTime, cStringIO;
 static VALUE cYajl_Gen;
 
+/* the yajl_gen is owned and freed by mEncoder_do_yajl_encode, so the wrapper has no free function */
+static const rb_data_type_t yajl_gen_type = {
+  "FFI_Yajl::Ext::Encoder::YajlGen",
+  { NULL, NULL, NULL },
+  NULL, NULL, RUBY_TYPED_FREE_IMMEDIATELY
+};
+
 /* FIXME: the json gem does a whole bunch of indirection around monkeypatching...  not sure if we need to as well... */
 
 static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts, VALUE json_opts) {
@@ -42,7 +49,7 @@ static VALUE mEncoder_do_yajl_encode(VALUE self, VALUE obj, VALUE yajl_gen_opts,
 
   rb_hash_aset(state, rb_str_new2("json_opts"), json_opts);
 
-  rb_yajl_gen = Data_Wrap_Struct(cYajl_Gen, NULL, NULL, yajl_gen);
+  rb_yajl_gen = TypedData_Wrap_Struct(cYajl_Gen, &yajl_gen_type, yajl_gen);
 
   rb_funcall(obj, sym_ffi_yajl, 2, rb_yajl_gen, state);
 
@@ -79,7 +86,7 @@ int rb_cHash_ffi_yajl_callback(VALUE key, VALUE val, VALUE extra) {
 VALUE gen_cstring(VALUE rb_yajl_gen, char *cptr, int len) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_string(yajl_gen, (unsigned char *)cptr, len)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new(cptr, len));
@@ -105,7 +112,7 @@ static VALUE gen_string_to_s(VALUE rb_yajl_gen, VALUE self) {
 VALUE gen_number(VALUE rb_yajl_gen, VALUE str) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
   char *cptr = RSTRING_PTR(str);
   int len = RSTRING_LEN(str);
 
@@ -120,7 +127,7 @@ VALUE gen_number(VALUE rb_yajl_gen, VALUE str) {
 VALUE gen_map_open(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_map_open(yajl_gen)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("{"));
@@ -133,7 +140,7 @@ VALUE gen_map_open(VALUE rb_yajl_gen) {
 VALUE gen_map_close(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_map_close(yajl_gen)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("}"));
@@ -146,7 +153,7 @@ VALUE gen_map_close(VALUE rb_yajl_gen) {
 VALUE gen_array_open(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_array_open(yajl_gen)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("["));
@@ -159,7 +166,7 @@ VALUE gen_array_open(VALUE rb_yajl_gen) {
 VALUE gen_array_close(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_array_close(yajl_gen)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("]"));
@@ -172,7 +179,7 @@ VALUE gen_array_close(VALUE rb_yajl_gen) {
 VALUE gen_null(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_null(yajl_gen)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("null"));
@@ -185,7 +192,7 @@ VALUE gen_null(VALUE rb_yajl_gen) {
 VALUE gen_true(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_bool(yajl_gen, 1)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("true"));
@@ -198,7 +205,7 @@ VALUE gen_true(VALUE rb_yajl_gen) {
 VALUE gen_false(VALUE rb_yajl_gen) {
   yajl_gen_status status;
   struct yajl_gen_t *yajl_gen;
-  Data_Get_Struct(rb_yajl_gen, struct yajl_gen_t, yajl_gen);
+  TypedData_Get_Struct(rb_yajl_gen, struct yajl_gen_t, &yajl_gen_type, yajl_gen);
 
   if ((status = yajl_gen_bool(yajl_gen, 0)) != yajl_gen_status_ok) {
     rb_funcall(mEncoder2, rb_intern("raise_error_for_status"), 2, INT2FIX(status), rb_str_new2("false"));
